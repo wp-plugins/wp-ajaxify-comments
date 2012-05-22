@@ -84,6 +84,19 @@ function wpac_add_settings_link($links, $file) {
 }
 add_filter('plugin_action_links', 'wpac_add_settings_link', 10, 2 );
 
+function wpac_admin_notice() {
+	if (basename($_SERVER['PHP_SELF']) == 'plugins.php') {
+		if (!get_option(WPAC_OPTION_NAME_ENABLE)) {
+			// Show error if plugin is not enabled
+			echo '<div class="error"><p><strong>'.WPAC_PLUGIN_NAME.' is not enabled!</strong> Click <a href="'.WPAC_SETTINGS_URL.'">here</a> to configure the plugin.</p></div>';
+		} else if (get_option(WPAC_OPTION_NAME_DEBUG)) {
+			// Show info if plugin is running in debug mode
+			echo '<div class="updated"><p><strong>'.WPAC_PLUGIN_NAME.' is running in debug mode!</strong> Click <a href="'.WPAC_SETTINGS_URL.'">here</a> to configure the plugin.</p></div>';
+		}
+	}
+}
+add_action('admin_notices', 'wpac_admin_notice');
+
 function wpac_option_page() {
 
 	if (!current_user_can('manage_options'))  {
@@ -196,21 +209,10 @@ if (!is_admin() && !wpac_is_login_page()) {
 	}
 } else {
 
-	require_once(ABSPATH . '/wp-admin/includes/plugin.php');
-	require_once(ABSPATH . '/wp-admin/includes/template.php');
-	require_once(ABSPATH . WPINC . '/pluggable.php');
+	require_once(ABSPATH.'/wp-admin/includes/plugin.php');
+	require_once(ABSPATH.'/wp-admin/includes/template.php');
+	require_once(ABSPATH.WPINC.'/pluggable.php');
 	add_options_page(WPAC_PLUGIN_NAME, WPAC_PLUGIN_NAME, 'manage_options', WPAC_PLUGIN_NAME, 'wpac_option_page');
-	
-	if (basename($PHP_SELF) == 'plugins.php') {
-		if (!get_option(WPAC_OPTION_NAME_ENABLE)) {
-			// Show error if plugin is not enabled
-			echo '<div class="error"><p><strong>'.WPAC_PLUGIN_NAME.' is not enabled!</strong> Click <a href="'.WPAC_SETTINGS_URL.'">here</a> to configure the plugin.</p></div>';
-		} else if (get_option(WPAC_OPTION_NAME_DEBUG)) {
-			// Show info if plugin is running in debug mode
-			echo '<div class="updated"><p><strong>'.WPAC_PLUGIN_NAME.' is running in debug mode!</strong> Click <a href="'.WPAC_SETTINGS_URL.'">here</a> to configure the plugin.</p></div>';
-		}
-	}
-
 }
 
 ?>
