@@ -67,4 +67,4 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Fixed error with warning and info notices on admin page "Plugins"
 
 = 0.0.1 =
-* Initial release
+* Initial release 
