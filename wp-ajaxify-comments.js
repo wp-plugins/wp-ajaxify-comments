@@ -141,7 +141,7 @@ jQuery(document).ready(function() {
 					wpac_resetForm(form);
 
 					// Smooth scroll to comment url and update browser url
-					var commentUrl = request.getResponseHeader('X-WAPC-URL');
+					var commentUrl = request.getResponseHeader('X-WPAC-URL');
 					if (commentUrl) {
 						var anchor = commentUrl.substr(commentUrl.indexOf("#"));
 						if (anchor) {
@@ -149,7 +149,7 @@ jQuery(document).ready(function() {
 							if (anchorElement.length > 0) {
 								jQuery('html,body').animate({scrollTop: anchorElement.offset().top}, {
 									duration: wpac_options.scrollSpeed,
-									complete: function() { location.href = commentUrl; }
+									complete: function() { window.location.hash = anchor; }
 								});
 							}
 						}

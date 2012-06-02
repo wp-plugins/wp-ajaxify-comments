@@ -4,7 +4,7 @@ Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.3.2
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,10 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Changelog ==
 
+= 0.1.1 =
+
+* Fixed updating of browser address bar
+
 = 0.1.0 =
 * Support for themes with threaded comments where form tag is not nested in comment container
 * (Smooth) scrolling to new comment after new comment has been posted
@@ -85,6 +89,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.1.1 =
+Bug-fix
 
 = 0.1.0 =
 Better theme support (for threaded comments) and new features
