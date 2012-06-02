@@ -42,7 +42,7 @@ function wpac_showMessage(message, type) {
 	}); 
 }
 
-function ac_resetForm(form) {
+function wpac_resetForm(form) {
 	jQuery(form).find('input:text, input:password, input:file, select, textarea').val('');
 	jQuery(form).find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
 }
@@ -50,8 +50,8 @@ function ac_resetForm(form) {
 var wpac_debug_errorShown = false;
 function wpac_debug(level, message) {
 
-	if (typeof window["console"] === 'undefined') {
-		if (!wpac_debug_errorShown) alert("console object is undefined, debugging wp-ajaxify-comments is disabled!");
+	if (typeof window["console"] === "undefined" || typeof window["console"][level] === "undefined" || typeof window["console"][level].apply === "undefined") {
+		if (!wpac_debug_errorShown) alert("console object is undefined or is not supported, debugging wp-ajaxify-comments is disabled! Please use Firebug or Google Chrome for debugging wp-ajaxify-comments.");
 		wpac_debug_errorShown = true;
 		return;
 	}
@@ -60,29 +60,38 @@ function wpac_debug(level, message) {
 	console[level].apply(console, args);
 }
 
-jQuery(document).ready(function() {
+function wpac_test_selector(elementType, selector) {
+	var element = jQuery(selector);
+	if (element.length > 0) {
+		wpac_debug("info", "Search %s ('%s')... Found: %o", elementType, selector, element);
+	} else {
+		wpac_debug("error", "Search %s ('%s')... Not found", elementType, selector);
+	}
+}
 
-	var form = jQuery(jQuery(wpac_options.selectorCommentForm)[0]);
-	var commentsContainer = jQuery(jQuery(wpac_options.selectorCommentsContainer)[0]);
+jQuery(document).ready(function() {
 
 	// Debug infos
 	if (wpac_options.debug) {
-		wpac_debug("info", "Enabled (Version: %s)", wpac_options.version);
-		wpac_debug("info", "Search jQuery... Found: %s", jQuery.fn.jquery);
-		if (form.length > 0) {
-			wpac_debug("info", "Search comment form ('%s')... Found: %o", wpac_options.selectorCommentForm, form);
-		} else {
-			wpac_debug("error", "Search comment form ('%s')... Not found", wpac_options.selectorCommentForm);
-		}
-		if (commentsContainer.length > 0) {
-			wpac_debug("info", "Search comments container ('%s')... Found: %o", wpac_options.selectorCommentsContainer, commentsContainer);
-		} else {
-			wpac_debug("error", "Search comment container ('%s')... Not found", wpac_options.selectorCommentsContainer);
-		}
+		wpac_debug("info", "Initializing (Version: %s)", wpac_options.version);
 	}
-	
-	// Abort initialization
-	if (form.length == 0 || commentsContainer.length == 0) return;
+
+	// Skip initialization if comments are not allowed
+	if (!wpac_options.commentsAllowed) {
+		if (wpac_options.debug) {
+			wpac_debug("info", "Abort initialization (comments are not allowed on current page)");
+		}
+		return;
+	}
+
+	// Debug infos
+	if (wpac_options.debug) {
+		wpac_debug("info", "Search jQuery... Found: %s", jQuery.fn.jquery);
+		wpac_test_selector("comment form", wpac_options.selectorCommentForm);
+		wpac_test_selector("comments container", wpac_options.selectorCommentsContainer);
+		wpac_test_selector("respond container", wpac_options.selectorRespondContainer);
+		wpac_debug("info", "Initialization complete");
+	}
 	
 	// Intercept comment form submit
 	jQuery(wpac_options["selectorCommentForm"]).live("submit", function (event) {
@@ -93,23 +102,66 @@ jQuery(document).ready(function() {
 	  
 		wpac_showMessage(wpac_options["textLoading"], "loading");
 	  
-		jQuery.ajax({
+		var request = jQuery.ajax({
 			url: form.attr('action'),
 			type: "POST",
 			data: form.serialize(),
 			success: function (data) {
 
-				var newComments = wpac_extractBody(data).find(wpac_options.selectorCommentsContainer);
+				var extractedBody = wpac_extractBody(data);
+				var newComments = extractedBody.find(wpac_options.selectorCommentsContainer);
 				var oldComments = jQuery(wpac_options.selectorCommentsContainer);
+				var needFallback = true;
+				
 				if (oldComments.length > 0 && newComments.length > 0) {
-					// Update comments
-					ac_resetForm(jQuery(form));
+
 					wpac_showMessage(wpac_options["textPosted"], "success");
+				
+					// Update comment list
 					oldComments.replaceWith(newComments);
-				} else {
-					// Fallback (page reload) if something went wrong
-					location.reload(); 
-				}
+					
+					// "Re-inject" comment form, if comment form was removed by updating the comment list; could happen 
+					// if theme support threaded/nested comments and form tag is not nested in comment container
+					// -> Replace Wordpress placeholder div (#wp-temp-form-div) with respond div
+					if (jQuery(wpac_options.selectorCommentForm).length == 0) {
+
+						var wpTempFormDiv = jQuery("#wp-temp-form-div");
+						var newCommentForm = extractedBody.find(wpac_options.selectorRespondContainer);		
+					
+						if (wpTempFormDiv.length > 0 && newCommentForm.length > 0) {
+							wpTempFormDiv.replaceWith(newCommentForm);
+							needFallback = false;
+						}
+						
+					} else {
+						needFallback = false;
+					}
+
+					// Reset comment form
+					wpac_resetForm(form);
+
+					// Smooth scroll to comment url and update browser url
+					var commentUrl = request.getResponseHeader('X-WAPC-URL');
+					if (commentUrl) {
+						var anchor = commentUrl.substr(commentUrl.indexOf("#"));
+						if (anchor) {
+							var anchorElement = jQuery(anchor)
+							if (anchorElement.length > 0) {
+								jQuery('html,body').animate({scrollTop: anchorElement.offset().top}, {
+									duration: wpac_options.scrollSpeed,
+									complete: function() { location.href = commentUrl; }
+								});
+							}
+						}
+					}
+					
+				} 
+				
+				if (!needFallback) return;
+				
+				// Fallback (page reload) if something went wrong
+				wpac_showMessage(wpac_options["textReloadPage"], "loading");
+				location.reload(); 
 				
 			},
 			error: function (jqXhr, textStatus, errorThrown) {

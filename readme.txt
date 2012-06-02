@@ -1,10 +1,10 @@
 === WP-Ajaxify-Comments ===
 Contributors: janjonas
-Donate link: http://janjonas.net/
+Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.3.2
-Stable tag: 0.0.2
+Stable tag: 0.1.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,6 +18,11 @@ Since the plugin hooks (on client-side) into the theme to intercept the submit o
 
 Summarized the WP-Ajaxify-Comments plugin hooks into your theme and improves the usability of the comment form by validating and adding comments without the need of complete page reloads.
 
+== Screenshots ==
+
+1. Info popup overlay after the comment has successfully been posted
+2. Error popup overlay with error message when posting a comment failed
+
 == Installation ==
 
 1. Upload wp-ajaxify-comments.zip to your WordPress plugins directory, usually `wp-content/plugins/` and unzip the file. It will create a `wp-content/plugins/wp-ajaxify-comments/` directory.
@@ -28,14 +33,16 @@ Summarized the WP-Ajaxify-Comments plugin hooks into your theme and improves the
 
 = The plugin is not working, what can I do? =
 
-It is recommended to use the plugin's debug mode that could be enabled on the plugin's settings page (Settings > WP-Ajaxify-Comments). After enabling the debug mode use a browser that supports console.log(...), e.g., Firefox with the Firebug extension and open a page that contains a comment form. If the plugin is not working you most likley find an error message in the console saying that one of the selectors does not match any element.
-If your theme does not use the default IDs for the comment form (`#commentform`) and the comment container (`#comments`) you need to go to the plugins settings page and provide the proper selectors.
+It is recommended to use the plugin's debug mode that could be enabled on the plugin's settings page ("Settings > WP-Ajaxify-Comments"). After enabling the debug mode use a browser that supports console.log(...), e.g., Firefox with the Firebug extension or Google Chrome and open a page that contains a comment form. If the plugin is not working you most likley find an error message in the console saying that one of the selectors does not match any element.
+If your theme does not use the default IDs for the comment form (`#commentform`), the comment container (`#comments`) or the respond container (`#respond`) you need to go to the plugins settings page and provide the proper selectors.
 
-Last but not least: The plugin is still in a prototype state, so there could be some bugs. Please do not hesitate to contact me, if you have problems to get the plugin working.
+Last but not least: The plugin is still in a prototype state, so there could be some bugs. Please do not hesitate to <a href="http://blog.janjonas.net/contact">contact me</a> or to use the <a href="http://wordpress.org/support/plugin/wp-ajaxify-comments">support forum</a>, if you have problems to get the plugin working.
 
 = Are there any known problems? =
 
 There are problems when using an old jQuery version. The plugin was successfully tested with jQuery 1.4.4.
+
+The debugging mode does not work in Internet Explorer; please use Firebug or Google Chrome for debugging wp-ajaxify-comments.
 
 = Does this plugin work with every WordPress theme? =
 
@@ -52,6 +59,7 @@ Yes, there are some features I would like to add in future versions:
 
 * Internationalization (i18n) and localization (L10n)
 * More options to customize the look and feel
+* Client-side validation
 
 = How to enable the debug mode? =
 
@@ -63,8 +71,23 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Changelog ==
 
+= 0.1.0 =
+* Support for themes with threaded comments where form tag is not nested in comment container
+* (Smooth) scrolling to new comment after new comment has been posted
+* Update browser address bar to show comment URL after new comment has been posted
+* Abort plugin initialization on pages and posts where comments are not allowed
+* Info popup overlay when complete page reload is performed in fallback mode
+
 = 0.0.2 =
 * Fixed error with warning and info notices on admin page "Plugins"
 
 = 0.0.1 =
-* Initial release 
+* Initial release
+
+== Upgrade Notice ==
+
+= 0.1.0 =
+Better theme support (for threaded comments) and new features
+
+= 0.0.2 =
+Bug-fix

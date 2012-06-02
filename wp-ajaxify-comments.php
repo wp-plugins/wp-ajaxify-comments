@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.0.2
+Version: 0.1.0
 License: GPLv2
 Text Domain: 
 */ 
@@ -28,17 +28,19 @@ Text Domain:
 
 define('WPAC_PLUGIN_NAME', 'WP-Ajaxify-Comments');
 define('WPAC_SETTINGS_URL', 'admin.php?page='.WPAC_PLUGIN_NAME);
+define('WPAC_SESSION_VAR', 'wapc_url');
 
 // Option names
 define('WPAC_OPTION_NAME_DEBUG', 'wpac_debug');
 define('WPAC_OPTION_NAME_ENABLE', 'wpac_enable');
 define('WPAC_OPTION_NAME_SELECTOR_COMMENT_FORM', 'wpac_selectorCommentForm');
 define('WPAC_OPTION_NAME_SELECTOR_COMMENTS_CONTAINER', 'wpac_selectorCommentsContainer');
+define('WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER', 'wpac_selectorRespondContainer');
 
 // Option defaults
 define('WPAC_OPTION_DEFAULTS_SELECTOR_COMMENT_FORM', '#commentform');
 define('WPAC_OPTION_DEFAULTS_SELECTOR_COMMENTS_CONTAINER', '#comments');
-
+define('WPAC_OPTION_DEFAULTS_SELECTOR_RESPOND_CONTAINER', '#respond');
 
 function wpac_enqueue_scripts() {
 	$version = wpac_get_version();
@@ -54,16 +56,21 @@ function wpac_get_version() {
 
 function wpac_initialize() {
 	if (get_option(WPAC_OPTION_NAME_ENABLE)) {
+		global $post;
 		$version = wpac_get_version();
 		echo '<script type="text/javascript">
 		var wpac_options = {
+			commentsAllowed: '.((is_page() || is_single()) && comments_open($post->ID) ? 'true' : 'false').',
 			debug: '.(get_option('wpac_debug') ? 'true' : 'false').',
 			version: "'.wpac_get_version().'",
 			selectorCommentForm: "'.(get_option(WPAC_OPTION_NAME_SELECTOR_COMMENT_FORM) ? get_option(WPAC_OPTION_NAME_SELECTOR_COMMENT_FORM) : WPAC_OPTION_DEFAULTS_SELECTOR_COMMENT_FORM).'",
+			selectorRespondContainer: "'.(get_option(WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER) ? get_option(WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER) : WPAC_OPTION_DEFAULTS_SELECTOR_RESPOND_CONTAINER).'",
 			selectorCommentsContainer: "'.(get_option(WPAC_OPTION_NAME_SELECTOR_COMMENTS_CONTAINER) ? get_option(WPAC_OPTION_NAME_SELECTOR_COMMENTS_CONTAINER) : WPAC_OPTION_DEFAULTS_SELECTOR_COMMENTS_CONTAINER).'",
 			textLoading: "Posting your comment. Please wait&hellip;",
-			textPosted: "Your comment was posted. Thank you!",
-			popupCornerRadius: 5
+			textPosted: "Your comment has been posted. Thank you!",
+			textReloadPage: "Reloading page. Please wait&hellip;",
+			popupCornerRadius: 5,
+			scrollSpeed: 500
 		};
 	   </script>';
 	}
@@ -95,7 +102,39 @@ function wpac_admin_notice() {
 		}
 	}
 }
-add_action('admin_notices', 'wpac_admin_notice');
+
+add_action('init', 'wpac_init');
+function wpac_init()
+{
+
+	// Start session
+	if (!session_id()) {
+		@session_cache_limiter('private, must-revalidate');
+		@session_cache_expire(0);
+		@session_start();	
+	}
+
+	// Update session var and add header if session var is defined
+	if ($_SESSION[WPAC_SESSION_VAR]) {
+		$currentUrl = 'http'.($_SERVER['HTTPS'] ? 's' : '').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+		$sessionUrl = $_SESSION[WPAC_SESSION_VAR];
+		if ($sessionUrl !== $currentUrl && strpos($sessionUrl, $currentUrl.'#') !== 0) {	
+			$_SESSION[WPAC_SESSION_VAR] = null;
+		} else  {
+			header('X-WAPC-URL: '.$_SESSION[WPAC_SESSION_VAR]);
+		}
+	}
+
+}
+
+add_action('comment_post_redirect', 'wpac_comment_post_redirect');
+function wpac_comment_post_redirect($location)
+{
+	// Save comment url in session
+	$_SESSION[WPAC_SESSION_VAR] = $location;
+	return $location;
+}
+
 
 function wpac_option_page() {
 
@@ -162,6 +201,15 @@ function wpac_option_page() {
 									<br/>Leave empty for default value <em><?php echo WPAC_OPTION_DEFAULTS_SELECTOR_COMMENTS_CONTAINER; ?></em>
 								</td>
 							</tr>
+							<tr>
+								<th scope="row">
+									<label for="<?php echo WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER; ?>">Respond Container Selector:</label>
+								</th>
+								<td>
+									<input type="input" name="wpac[<?php echo WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER; ?>]" id="<?php echo WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER; ?>" value="<?php echo get_option(WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER); ?>" style="width: 300px"/>
+									<br/>Leave empty for default value <em><?php echo WPAC_OPTION_DEFAULTS_SELECTOR_RESPOND_CONTAINER; ?></em>
+								</td>
+							</tr>
 						</table>
 						<p class="submit">
 						  <input type="hidden" name="action" value="wpac_update_settings"/>
@@ -187,7 +235,7 @@ function wpac_option_page() {
 				<div class="postbox">
 					<h3 id="plugin-settings">Contact & Donation</h3>
 					<div class="inside">	
-						<p>If you have trouble using the plugin or you miss a feature please do not hesitate to contact me (mail@janjonas.net).
+						<p>If you have trouble using the plugin or you miss a feature please do not hesitate to use the plugin's support forum (<a target="_blank" href="http://wordpress.org/support/plugin/wp-ajaxify-comments">Link</a>).
 						</p>
 						<p>
 							If you would like to support future development, please consider making a small donation. Thank you!
