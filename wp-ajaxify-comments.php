@@ -89,7 +89,7 @@ function wpac_add_settings_link($links, $file) {
 	}
 	return $links;
 }
-add_filter('plugin_action_links', 'wpac_add_settings_link', 10, 2 );
+add_filter('plugin_action_links', 'wpac_add_settings_link', 10, 2);
 
 function wpac_admin_notice() {
 	if (basename($_SERVER['PHP_SELF']) == 'plugins.php') {
@@ -102,6 +102,7 @@ function wpac_admin_notice() {
 		}
 	}
 }
+add_action('admin_notices', 'wpac_admin_notice');
 
 add_action('init', 'wpac_init');
 function wpac_init()
@@ -137,9 +138,8 @@ function wpac_comment_post_redirect($location)
 
 
 function wpac_option_page() {
-
 	if (!current_user_can('manage_options'))  {
-		wp_die( __('You do not have sufficient permissions to access this page.') );
+		wp_die(__('You do not have sufficient permissions to access this page.'));
 	} 
   
 	if (!empty($_POST) && check_admin_referer('wpac_update_settings','wpac_nonce_field'))
@@ -250,17 +250,20 @@ function wpac_option_page() {
 		
 <?php }
 
+function wpac_admin_menu() {
+	add_options_page(WPAC_PLUGIN_NAME, WPAC_PLUGIN_NAME, 'manage_options', WPAC_PLUGIN_NAME, 'wpac_option_page');
+}
+
 if (!is_admin() && !wpac_is_login_page()) {
 	if (get_option(WPAC_OPTION_NAME_ENABLE)) {
 		add_action('wp_head', 'wpac_initialize');
 		add_action('init', 'wpac_enqueue_scripts');
 	}
 } else {
-
 	require_once(ABSPATH.'/wp-admin/includes/plugin.php');
 	require_once(ABSPATH.'/wp-admin/includes/template.php');
 	require_once(ABSPATH.WPINC.'/pluggable.php');
-	add_options_page(WPAC_PLUGIN_NAME, WPAC_PLUGIN_NAME, 'manage_options', WPAC_PLUGIN_NAME, 'wpac_option_page');
+	add_action('admin_menu', 'wpac_admin_menu');
 }
 
 ?>
