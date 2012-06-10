@@ -4,7 +4,7 @@ Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.3.2
-Stable tag: 0.2.0
+Stable tag: 0.2.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,11 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Changelog ==
 
+= 0.2.1 =
+
+* Fallback mode reloads page with comment anchor
+* Bug-fix for themes where comment form is nested in comments container (thanks to saymonz)
+
 = 0.2.0 =
 
 * Added Option "Error Container Selector" to customize the error message extraction
@@ -100,6 +105,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.2.1 =
+Bug-fix & minor improvements
 
 = 0.2.0 =
 Added compatibility with comment spam protection plugins

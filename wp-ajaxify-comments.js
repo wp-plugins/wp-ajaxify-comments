@@ -1,6 +1,6 @@
 function wpac_extractBody(html) {
 	var regex = new RegExp("<body[^>]*>((.|\n|\r)*)</body>", "i");
-	return jQuery("<div>" + regex.exec(html)[1] + "</div>");
+	return jQuery("<div>"+regex.exec(html)[1]+"</div>");
 }
 
 function wpac_showMessage(message, type) {
@@ -64,9 +64,13 @@ function wpac_test_selector(elementType, selector) {
 	}
 }
 
-function wpac_fallback() {
+function wpac_fallback(commentUrl) {
 	wpac_showMessage(wpac_options["textReloadPage"], "loading");
-	location.reload(); 
+	if (commentUrl) {
+		location.href = commentUrl.replace("#", "&t=" + (new Date()).getTime() + "#");
+	} else {
+		location.reload();
+	}
 }
 
 jQuery(document).ready(function() {
@@ -109,38 +113,42 @@ jQuery(document).ready(function() {
 			success: function (data) {
 
 				var extractedBody = wpac_extractBody(data);
-				var newComments = extractedBody.find(wpac_options.selectorCommentsContainer);
-				var oldComments = jQuery(wpac_options.selectorCommentsContainer);
+				var newCommentsContainer = extractedBody.find(wpac_options.selectorCommentsContainer);
+				var oldCommentsContainer = jQuery(wpac_options.selectorCommentsContainer);
+
+				var commentUrl = request.getResponseHeader('X-WPAC-URL');
 				
-				if (oldComments.length == 0 || newComments.length == 0) return wpac_fallback();
+				if (oldCommentsContainer.length == 0 || newCommentsContainer.length == 0) return wpac_fallback(commentUrl);
 
 				// Show success message
 				wpac_showMessage(wpac_options["textPosted"], "success");
 			
-				// Update comment list
-				oldComments.replaceWith(newComments);
+				// Update comments container
+				oldCommentsContainer.replaceWith(newCommentsContainer);
 				
 				if (jQuery(wpac_options.selectorCommentForm).length == 0) {
 
-					// "Re-inject" comment form, if comment form was removed by updating the comment list; could happen 
-					// if theme support threaded/nested comments and form tag is not nested in comment container
+					// "Re-inject" comment form, if comment form was removed by updating the comments container; could happen 
+					// if theme support threaded/nested comments and form tag is not nested in comments container
 					// -> Replace Wordpress placeholder div (#wp-temp-form-div) with respond div
 					var wpTempFormDiv = jQuery("#wp-temp-form-div");
 					var newRespondContainer = extractedBody.find(wpac_options.selectorRespondContainer);
-					if (wpTempFormDiv.length == 0 || newRespondContainer.length == 0) return wpac_fallback();
+					if (wpTempFormDiv.length == 0 || newRespondContainer.length == 0) return wpac_fallback(commentUrl);
 					wpTempFormDiv.replaceWith(newRespondContainer);
 					
 				} else {
 
-					// Replace comment form (for spam protection plugin compatibility)
-					var newCommentForm = extractedBody.find(wpac_options.selectorCommentForm);
-					if (newCommentForm.length == 0) return wpac_fallback();
-					form.replaceWith(newCommentForm);
+					// Replace comment form (for spam protection plugin compatibility) if comment form is not nested in comments container
+					// If comment form is nested in comments container comment form is already replaced
+					if (newCommentsContainer.find(wpac_options.selectorCommentForm).length == 0) {
+						var newCommentForm = extractedBody.find(wpac_options.selectorCommentForm);
+						if (newCommentForm.length == 0) return wpac_fallback(commentUrl);
+						form.replaceWith(newCommentForm);
+					}
 
 				}
 
 				// Smooth scroll to comment url and update browser url
-				var commentUrl = request.getResponseHeader('X-WPAC-URL');
 				if (commentUrl) {
 					var anchor = commentUrl.substr(commentUrl.indexOf("#"));
 					if (anchor) {
