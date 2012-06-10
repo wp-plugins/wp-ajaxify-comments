@@ -5,12 +5,13 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.1.2
+Version: 0.2.0
 License: GPLv2
 Text Domain: 
 */ 
 
-/*  Copyright 2012, Jan Jonas, (email : mail@janjonas.net)
+/*  
+	Copyright 2012, Jan Jonas, (email : mail@janjonas.net)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -36,11 +37,13 @@ define('WPAC_OPTION_NAME_ENABLE', 'wpac_enable');
 define('WPAC_OPTION_NAME_SELECTOR_COMMENT_FORM', 'wpac_selectorCommentForm');
 define('WPAC_OPTION_NAME_SELECTOR_COMMENTS_CONTAINER', 'wpac_selectorCommentsContainer');
 define('WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER', 'wpac_selectorRespondContainer');
+define('WPAC_OPTION_NAME_SELECTOR_ERROR_CONTAINER', 'wpac_selectorErrorContainer');
 
 // Option defaults
 define('WPAC_OPTION_DEFAULTS_SELECTOR_COMMENT_FORM', '#commentform');
 define('WPAC_OPTION_DEFAULTS_SELECTOR_COMMENTS_CONTAINER', '#comments');
 define('WPAC_OPTION_DEFAULTS_SELECTOR_RESPOND_CONTAINER', '#respond');
+define('WPAC_OPTION_DEFAULTS_SELECTOR_ERROR_CONTAINER', 'p:parent');
 
 function wpac_enqueue_scripts() {
 	$version = wpac_get_version();
@@ -63,10 +66,12 @@ function wpac_initialize() {
 			commentsAllowed: '.((is_page() || is_single()) && comments_open($post->ID) ? 'true' : 'false').',
 			debug: '.(get_option('wpac_debug') ? 'true' : 'false').',
 			version: "'.wpac_get_version().'",
+			selectorErrorContainer: "'.(get_option(WPAC_OPTION_NAME_SELECTOR_ERROR_CONTAINER) ? get_option(WPAC_OPTION_NAME_SELECTOR_ERROR_CONTAINER) : WPAC_OPTION_DEFAULTS_SELECTOR_ERROR_CONTAINER).'",
 			selectorCommentForm: "'.(get_option(WPAC_OPTION_NAME_SELECTOR_COMMENT_FORM) ? get_option(WPAC_OPTION_NAME_SELECTOR_COMMENT_FORM) : WPAC_OPTION_DEFAULTS_SELECTOR_COMMENT_FORM).'",
 			selectorRespondContainer: "'.(get_option(WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER) ? get_option(WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER) : WPAC_OPTION_DEFAULTS_SELECTOR_RESPOND_CONTAINER).'",
 			selectorCommentsContainer: "'.(get_option(WPAC_OPTION_NAME_SELECTOR_COMMENTS_CONTAINER) ? get_option(WPAC_OPTION_NAME_SELECTOR_COMMENTS_CONTAINER) : WPAC_OPTION_DEFAULTS_SELECTOR_COMMENTS_CONTAINER).'",
 			textLoading: "Posting your comment. Please wait&hellip;",
+			textUnknownError: "Something went wrong, your comment has not been posted.",
 			textPosted: "Your comment has been posted. Thank you!",
 			textReloadPage: "Reloading page. Please wait&hellip;",
 			popupCornerRadius: 5,
@@ -208,6 +213,15 @@ function wpac_option_page() {
 								<td>
 									<input type="input" name="wpac[<?php echo WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER; ?>]" id="<?php echo WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER; ?>" value="<?php echo get_option(WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER); ?>" style="width: 300px"/>
 									<br/>Leave empty for default value <em><?php echo WPAC_OPTION_DEFAULTS_SELECTOR_RESPOND_CONTAINER; ?></em>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label for="<?php echo WPAC_OPTION_NAME_SELECTOR_ERROR_CONTAINER; ?>">Error Container Selector:</label>
+								</th>
+								<td>
+									<input type="input" name="wpac[<?php echo WPAC_OPTION_NAME_SELECTOR_ERROR_CONTAINER; ?>]" id="<?php echo WPAC_OPTION_NAME_SELECTOR_ERROR_CONTAINER; ?>" value="<?php echo get_option(WPAC_OPTION_NAME_SELECTOR_ERROR_CONTAINER); ?>" style="width: 300px"/>
+									<br/>Leave empty for default value <em><?php echo WPAC_OPTION_DEFAULTS_SELECTOR_ERROR_CONTAINER; ?></em>
 								</td>
 							</tr>
 						</table>

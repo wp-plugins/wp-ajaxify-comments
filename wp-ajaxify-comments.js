@@ -1,6 +1,6 @@
 function wpac_extractBody(html) {
-	var regex = new RegExp('<body[^>]*>((.|\n|\r)*)</body>', 'i');
-	return jQuery(regex.exec(html)[1]);
+	var regex = new RegExp("<body[^>]*>((.|\n|\r)*)</body>", "i");
+	return jQuery("<div>" + regex.exec(html)[1] + "</div>");
 }
 
 function wpac_showMessage(message, type) {
@@ -19,7 +19,7 @@ function wpac_showMessage(message, type) {
 		message: message, 
 		fadeIn: 400, 
 		fadeOut: 400, 
-		timeout: 3000,
+		timeout: (type == "loading") ? 0 : 3000,
 		centerY: false,
 		centerX: true,
 		showOverlay: (type == "loading"),
@@ -40,11 +40,6 @@ function wpac_showMessage(message, type) {
 			opacity: 0
 		}
 	}); 
-}
-
-function wpac_resetForm(form) {
-	jQuery(form).find('input:text, input:password, input:file, select, textarea').val('');
-	jQuery(form).find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
 }
 
 var wpac_debug_errorShown = false;
@@ -69,12 +64,15 @@ function wpac_test_selector(elementType, selector) {
 	}
 }
 
+function wpac_fallback() {
+	wpac_showMessage(wpac_options["textReloadPage"], "loading");
+	location.reload(); 
+}
+
 jQuery(document).ready(function() {
 
 	// Debug infos
-	if (wpac_options.debug) {
-		wpac_debug("info", "Initializing (Version: %s)", wpac_options.version);
-	}
+	if (wpac_options.debug) wpac_debug("info", "Initializing (Version: %s)", wpac_options.version);
 
 	// Skip initialization if comments are not allowed
 	if (!wpac_options.commentsAllowed) {
@@ -95,11 +93,13 @@ jQuery(document).ready(function() {
 	
 	// Intercept comment form submit
 	jQuery(wpac_options["selectorCommentForm"]).live("submit", function (event) {
-	
+
 		var form = jQuery(this);
-	
+
+		// Stop default event handling
 		event.preventDefault();
-	  
+	
+		// Show loading info
 		wpac_showMessage(wpac_options["textLoading"], "loading");
 	  
 		var request = jQuery.ajax({
@@ -111,62 +111,71 @@ jQuery(document).ready(function() {
 				var extractedBody = wpac_extractBody(data);
 				var newComments = extractedBody.find(wpac_options.selectorCommentsContainer);
 				var oldComments = jQuery(wpac_options.selectorCommentsContainer);
-				var needFallback = true;
 				
-				if (oldComments.length > 0 && newComments.length > 0) {
+				if (oldComments.length == 0 || newComments.length == 0) return wpac_fallback();
 
-					wpac_showMessage(wpac_options["textPosted"], "success");
+				// Show success message
+				wpac_showMessage(wpac_options["textPosted"], "success");
+			
+				// Update comment list
+				oldComments.replaceWith(newComments);
 				
-					// Update comment list
-					oldComments.replaceWith(newComments);
-					
+				if (jQuery(wpac_options.selectorCommentForm).length == 0) {
+
 					// "Re-inject" comment form, if comment form was removed by updating the comment list; could happen 
 					// if theme support threaded/nested comments and form tag is not nested in comment container
 					// -> Replace Wordpress placeholder div (#wp-temp-form-div) with respond div
-					if (jQuery(wpac_options.selectorCommentForm).length == 0) {
-
-						var wpTempFormDiv = jQuery("#wp-temp-form-div");
-						var newCommentForm = extractedBody.find(wpac_options.selectorRespondContainer);		
+					var wpTempFormDiv = jQuery("#wp-temp-form-div");
+					var newRespondContainer = extractedBody.find(wpac_options.selectorRespondContainer);
+					if (wpTempFormDiv.length == 0 || newRespondContainer.length == 0) return wpac_fallback();
+					wpTempFormDiv.replaceWith(newRespondContainer);
 					
-						if (wpTempFormDiv.length > 0 && newCommentForm.length > 0) {
-							wpTempFormDiv.replaceWith(newCommentForm);
-							needFallback = false;
-						}
-						
-					} else {
-						needFallback = false;
-					}
+				} else {
 
-					// Reset comment form
-					wpac_resetForm(form);
+					// Replace comment form (for spam protection plugin compatibility)
+					var newCommentForm = extractedBody.find(wpac_options.selectorCommentForm);
+					if (newCommentForm.length == 0) return wpac_fallback();
+					form.replaceWith(newCommentForm);
 
-					// Smooth scroll to comment url and update browser url
-					var commentUrl = request.getResponseHeader('X-WPAC-URL');
-					if (commentUrl) {
-						var anchor = commentUrl.substr(commentUrl.indexOf("#"));
-						if (anchor) {
-							var anchorElement = jQuery(anchor)
-							if (anchorElement.length > 0) {
-								jQuery('html,body').animate({scrollTop: anchorElement.offset().top}, {
-									duration: wpac_options.scrollSpeed,
-									complete: function() { window.location.hash = anchor; }
-								});
-							}
+				}
+
+				// Smooth scroll to comment url and update browser url
+				var commentUrl = request.getResponseHeader('X-WPAC-URL');
+				if (commentUrl) {
+					var anchor = commentUrl.substr(commentUrl.indexOf("#"));
+					if (anchor) {
+						var anchorElement = jQuery(anchor)
+						if (anchorElement.length > 0) {
+							jQuery('html,body').animate({scrollTop: anchorElement.offset().top}, {
+								duration: wpac_options.scrollSpeed,
+								complete: function() { window.location.hash = anchor; }
+							});
 						}
 					}
-					
-				} 
-				
-				if (!needFallback) return;
-				
-				// Fallback (page reload) if something went wrong
-				wpac_showMessage(wpac_options["textReloadPage"], "loading");
-				location.reload(); 
+				}
 				
 			},
 			error: function (jqXhr, textStatus, errorThrown) {
-				var error = wpac_extractBody(jqXhr.responseText).html();
-				wpac_showMessage(error, "error");
+
+				if (wpac_options.debug) {
+					wpac_debug("info", "Comment has not been posted");
+					wpac_debug("info", "Try to extract error message with selector '%s'...", wpac_options.selectorErrorContainer);
+				}
+			
+				// Extract error message
+				var extractedBody = wpac_extractBody(jqXhr.responseText);
+				var errorMessage = extractedBody.find(wpac_options.selectorErrorContainer);
+				if (errorMessage.length == 0) {
+					if (wpac_options.debug) {
+						wpac_debug("error", "Error message could not be extracted, use error message '%s'.", wpac_options.textUnknownError);
+					}
+					errorMessage = wpac_options.textUnknownError;
+				} else {
+					errorMessage = errorMessage.html();
+					wpac_debug("info", "Error message '%s' successfully extracted", errorMessage);
+				}
+				
+				wpac_showMessage(errorMessage, "error");
 			}
   	    });
 	  
