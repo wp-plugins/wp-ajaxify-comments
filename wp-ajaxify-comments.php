@@ -5,9 +5,9 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.2.1
+Version: 0.3.0
 License: GPLv2
-Text Domain: 
+Text Domain: wpac
 */ 
 
 /*  
@@ -30,6 +30,7 @@ Text Domain:
 define('WPAC_PLUGIN_NAME', 'WP-Ajaxify-Comments');
 define('WPAC_SETTINGS_URL', 'admin.php?page='.WPAC_PLUGIN_NAME);
 define('WPAC_SESSION_VAR', 'wpac_url');
+define('WPAC_DOMAIN', 'wpac');
 
 // Option names
 define('WPAC_OPTION_NAME_DEBUG', 'wpac_debug');
@@ -57,6 +58,12 @@ function wpac_get_version() {
     return $data['Version'];
 }
 
+function wpac_plugins_loaded() {
+	$dir = dirname(plugin_basename(__FILE__)).DIRECTORY_SEPARATOR.'languages'.DIRECTORY_SEPARATOR;
+	load_plugin_textdomain(WPAC_DOMAIN, false, $dir);
+}
+add_action('plugins_loaded', 'wpac_plugins_loaded');
+
 function wpac_initialize() {
 	if (get_option(WPAC_OPTION_NAME_ENABLE)) {
 		global $post;
@@ -70,10 +77,10 @@ function wpac_initialize() {
 			selectorCommentForm: "'.(get_option(WPAC_OPTION_NAME_SELECTOR_COMMENT_FORM) ? get_option(WPAC_OPTION_NAME_SELECTOR_COMMENT_FORM) : WPAC_OPTION_DEFAULTS_SELECTOR_COMMENT_FORM).'",
 			selectorRespondContainer: "'.(get_option(WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER) ? get_option(WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER) : WPAC_OPTION_DEFAULTS_SELECTOR_RESPOND_CONTAINER).'",
 			selectorCommentsContainer: "'.(get_option(WPAC_OPTION_NAME_SELECTOR_COMMENTS_CONTAINER) ? get_option(WPAC_OPTION_NAME_SELECTOR_COMMENTS_CONTAINER) : WPAC_OPTION_DEFAULTS_SELECTOR_COMMENTS_CONTAINER).'",
-			textLoading: "Posting your comment. Please wait&hellip;",
-			textUnknownError: "Something went wrong, your comment has not been posted.",
-			textPosted: "Your comment has been posted. Thank you!",
-			textReloadPage: "Reloading page. Please wait&hellip;",
+			textLoading: "'.__('Posting your comment. Please wait&hellip;', WPAC_DOMAIN).'",
+			textUnknownError: "'.__('Something went wrong, your comment has not been posted.', WPAC_DOMAIN).'",
+			textPosted: "'.__('Your comment has been posted. Thank you!', WPAC_DOMAIN).'",
+			textReloadPage: "'.__('Reloading page. Please wait&hellip;', WPAC_DOMAIN).'",
 			popupCornerRadius: 5,
 			scrollSpeed: 500
 		};
@@ -109,7 +116,6 @@ function wpac_admin_notice() {
 }
 add_action('admin_notices', 'wpac_admin_notice');
 
-add_action('init', 'wpac_init');
 function wpac_init()
 {
 
@@ -132,19 +138,19 @@ function wpac_init()
 	}
 
 }
+add_action('init', 'wpac_init');
 
-add_action('comment_post_redirect', 'wpac_comment_post_redirect');
 function wpac_comment_post_redirect($location)
 {
 	// Save comment url in session
 	$_SESSION[WPAC_SESSION_VAR] = $location;
 	return $location;
 }
-
+add_action('comment_post_redirect', 'wpac_comment_post_redirect');
 
 function wpac_option_page() {
 	if (!current_user_can('manage_options'))  {
-		wp_die(__('You do not have sufficient permissions to access this page.'));
+		wp_die('You do not have sufficient permissions to access this page.');
 	} 
   
 	if (!empty($_POST) && check_admin_referer('wpac_update_settings','wpac_nonce_field'))
@@ -227,7 +233,7 @@ function wpac_option_page() {
 						</table>
 						<p class="submit">
 						  <input type="hidden" name="action" value="wpac_update_settings"/>
-						  <input type="submit" name="wpac_update_settings" class="button-primary" value="<?php _e('Save Changes') ?>"/>
+						  <input type="submit" name="wpac_update_settings" class="button-primary" value="Save Changes"/>
 						</p>
 					</div>
 				</div>
