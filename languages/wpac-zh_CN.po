@@ -8,25 +8,27 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2012-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Jan Jonas <mail@janjnas.net>\n"
-"Language-Team: Jan Jonas <mail@janjnas.net>\n"
+"PO-Revision-Date: 2012-06-22 13:01+0800\n"
+"Last-Translator: David Pi <portableappc@gmail.com>\n"
+"Language-Team: PortableAppC.com <portableappc@gmail.com>\n"
+"X-Poedit-Language: Chinese\n"
+"X-Poedit-Country: CHINA\n"
 
 #: wp-ajaxify-comments.php:80
 msgid "Posting your comment. Please wait&hellip;"
-msgstr "Kommentar wird gespeichert. Bitte warten&hellip;"
+msgstr "提交评论中，请稍候&hellip;"
 
 #: wp-ajaxify-comments.php:81
 msgid "Something went wrong, your comment has not been posted."
-msgstr "Etwas ist schiefgelaufen, der Kommentar wurde nicht gespeichert."
+msgstr "发生错误，评论提交失败。"
 
 #: wp-ajaxify-comments.php:82
 msgid "Your comment has been posted. Thank you!"
-msgstr "Der Kommentar wurde gespeichert. Vielen Dank!"
+msgstr "您的评论已提交，非常感谢！"
 
 #: wp-ajaxify-comments.php:83
 msgid "Reloading page. Please wait&hellip;"
-msgstr "Seite wird neugalden. Bitte warten&hellip;"
+msgstr "正在重载页面，请稍候&hellip;"
 
 #. Plugin Name of the plugin/theme
 msgid "WP-Ajaxify-Comments"
@@ -37,9 +39,8 @@ msgid "http://wordpress.org/extend/plugins/wp-ajaxify-comments/"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid ""
-"WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form."
-msgstr "WP-Ajaxify-Comments erweitert das Kommentar-Formular ihres aktuelles Themes um AJAX-Funktionalität."
+msgid "WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form."
+msgstr "WP-Ajaxify-Comments 将嵌入您的当前主题，为评论框增加 AJAX 动态效果。"
 
 #. Author of the plugin/theme
 msgid "Jan Jonas"
@@ -48,3 +49,4 @@ msgstr ""
 #. Author URI of the plugin/theme
 msgid "http://janjonas.net"
 msgstr ""
+
