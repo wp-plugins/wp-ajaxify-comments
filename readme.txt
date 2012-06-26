@@ -74,6 +74,12 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Changelog ==
 
+= 0.4.0 =
+
+* Success and error popup overlays now show default cursor instead of loading cursor
+* Fixed problems for translations containing double quotes 
+* Added options to customize the look and feel
+
 = 0.3.2 =
 
 * Added localization for fr-FR (thanks to saymonz)
@@ -121,6 +127,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.4.0 =
+Added options to customize the look and feel
 
 = 0.3.2 =
 Added localization for fr-FR

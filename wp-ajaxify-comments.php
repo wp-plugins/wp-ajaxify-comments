@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.3.2
+Version: 0.4.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -31,20 +31,143 @@ define('WPAC_PLUGIN_NAME', 'WP-Ajaxify-Comments');
 define('WPAC_SETTINGS_URL', 'admin.php?page='.WPAC_PLUGIN_NAME);
 define('WPAC_SESSION_VAR', 'wpac_url');
 define('WPAC_DOMAIN', 'wpac');
+define('WPAC_OPTION_PREFIX', 'wpac_');
 
-// Option names
-define('WPAC_OPTION_NAME_DEBUG', 'wpac_debug');
-define('WPAC_OPTION_NAME_ENABLE', 'wpac_enable');
-define('WPAC_OPTION_NAME_SELECTOR_COMMENT_FORM', 'wpac_selectorCommentForm');
-define('WPAC_OPTION_NAME_SELECTOR_COMMENTS_CONTAINER', 'wpac_selectorCommentsContainer');
-define('WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER', 'wpac_selectorRespondContainer');
-define('WPAC_OPTION_NAME_SELECTOR_ERROR_CONTAINER', 'wpac_selectorErrorContainer');
-
-// Option defaults
-define('WPAC_OPTION_DEFAULTS_SELECTOR_COMMENT_FORM', '#commentform');
-define('WPAC_OPTION_DEFAULTS_SELECTOR_COMMENTS_CONTAINER', '#comments');
-define('WPAC_OPTION_DEFAULTS_SELECTOR_RESPOND_CONTAINER', '#respond');
-define('WPAC_OPTION_DEFAULTS_SELECTOR_ERROR_CONTAINER', 'p:parent');
+$wpac_config = array(
+	array(
+		'section' => 'General',
+		'options' => array(
+			'debug' => array(
+				'type' => 'boolean',
+				'default' => false,
+				'label' => 'Debug mode:',
+			),
+			'enable' => array(
+				'type' => 'boolean',
+				'default' => false,
+				'label' => 'Enabled plugin:',
+			),
+		),
+	),
+	array(
+		'section' => 'Selectors',
+		'options' => array(
+			'selectorCommentForm' => array(
+				'type' => 'string',
+				'default' => '#commentform',
+				'label' => 'Comment Form Selector:',
+			),
+			'selectorCommentsContainer' => array(
+				'type' => 'string',
+				'default' => '#comments',
+				'label' => 'Comments Container Selector:',
+			),
+			'selectorRespondContainer' => array(
+				'type' => 'string',
+				'default' => '#respond',
+				'label' => 'Respond Container Selector:',
+			),
+			'selectorErrorContainer' => array(
+				'type' => 'string',
+				'default' => '#p:parent',
+				'label' => 'Error Container Selector:',
+			),
+		),
+	),
+	array(
+		'section' => 'Popup',
+		'options' => array(
+			'popupCornerRadius' => array(
+				'type' => 'int',
+				'default' => '5',
+				'label' => 'Corner radius:',
+				'pattern' => '/^[0-9]*$/',
+			),
+			'popupMarginTop' => array(
+				'type' => 'int',
+				'default' => '10',
+				'label' => 'Margin top (px):',
+				'pattern' => '/^[0-9]*$/',
+			),
+			'popupFadeIn' => array(
+				'type' => 'int',
+				'default' => '400',
+				'label' => 'Fade in time (ms):',
+				'pattern' => '/^[0-9]*$/',
+			),
+			'popupFadeOut' => array(
+				'type' => 'int',
+				'default' => '400',
+				'label' => 'Fade out time (ms):',
+				'pattern' => '/^[0-9]*$/',
+			),
+			'popupTimeout' => array(
+				'type' => 'int',
+				'default' => '3000',
+				'label' => 'Timeout (ms):',
+				'pattern' => '/^[0-9]*$/',
+			),
+			'popupBackgroundColorLoading' => array(
+				'type' => 'string',
+				'default' => '#000',
+				'label' => 'Background color (loading):',
+			),
+			'popupTextColorLoading' => array(
+				'type' => 'string',
+				'default' => '#fff',
+				'label' => 'Text color (loading):',
+			),
+			'popupBackgroundColorSuccess' => array(
+				'type' => 'string',
+				'default' => '#008000',
+				'label' => 'Background color (success):',
+			),
+			'popupTextColorSuccess' => array(
+				'type' => 'string',
+				'default' => '#fff',
+				'label' => 'Text color (success):',
+			),			
+			'popupBackgroundColorError' => array(
+				'type' => 'string',
+				'default' => '#f00',
+				'label' => 'Background color (error):',
+			),
+			'popupTextColorError' => array(
+				'type' => 'string',
+				'default' => '#fff',
+				'label' => 'Text color (error):',
+			),			
+			'popupOpacity' => array(
+				'type' => 'int',
+				'default' => 70,
+				'label' => 'Opacity (%):',
+				'pattern' => '/^(100|[1-9][0-9]|[1-9])$/',
+			),
+			'popupTextAlign' => array(
+				'type' => 'string',
+				'default' => 'center',
+				'label' => 'Text align (left|center|right):',
+				'pattern' => '/^(left|center|right)$/',
+			),
+			'popupZindex' => array(
+				'type' => 'int',
+				'default' => '1000',
+				'label' => 'Z-Index:',
+				'/^[0-9]*$/',
+			),
+		),
+	),
+	array(
+		'section' => 'Miscellaneous',
+		'options' => array(
+			'scrollSpeed' => array(
+				'type' => 'int',
+				'default' => '500',
+				'label' => 'Scroll speed (ms):',
+			),
+		)
+	)
+);
 
 function wpac_enqueue_scripts() {
 	$version = wpac_get_version();
@@ -64,27 +187,33 @@ function wpac_plugins_loaded() {
 }
 add_action('plugins_loaded', 'wpac_plugins_loaded');
 
+function wpac_js_escape($s) {
+	return str_replace('"',"\\\"", $s);
+}
+
 function wpac_initialize() {
-	if (get_option(WPAC_OPTION_NAME_ENABLE)) {
+
+	if (get_option(WPAC_OPTION_PREFIX.'enable')) {
+
 		global $post;
-		$version = wpac_get_version();
-		echo '<script type="text/javascript">
-		var wpac_options = {
-			commentsAllowed: '.((is_page() || is_single()) && comments_open($post->ID) ? 'true' : 'false').',
-			debug: '.(get_option('wpac_debug') ? 'true' : 'false').',
-			version: "'.wpac_get_version().'",
-			selectorErrorContainer: "'.(get_option(WPAC_OPTION_NAME_SELECTOR_ERROR_CONTAINER) ? get_option(WPAC_OPTION_NAME_SELECTOR_ERROR_CONTAINER) : WPAC_OPTION_DEFAULTS_SELECTOR_ERROR_CONTAINER).'",
-			selectorCommentForm: "'.(get_option(WPAC_OPTION_NAME_SELECTOR_COMMENT_FORM) ? get_option(WPAC_OPTION_NAME_SELECTOR_COMMENT_FORM) : WPAC_OPTION_DEFAULTS_SELECTOR_COMMENT_FORM).'",
-			selectorRespondContainer: "'.(get_option(WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER) ? get_option(WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER) : WPAC_OPTION_DEFAULTS_SELECTOR_RESPOND_CONTAINER).'",
-			selectorCommentsContainer: "'.(get_option(WPAC_OPTION_NAME_SELECTOR_COMMENTS_CONTAINER) ? get_option(WPAC_OPTION_NAME_SELECTOR_COMMENTS_CONTAINER) : WPAC_OPTION_DEFAULTS_SELECTOR_COMMENTS_CONTAINER).'",
-			textLoading: "'.__('Posting your comment. Please wait&hellip;', WPAC_DOMAIN).'",
-			textUnknownError: "'.__('Something went wrong, your comment has not been posted.', WPAC_DOMAIN).'",
-			textPosted: "'.__('Your comment has been posted. Thank you!', WPAC_DOMAIN).'",
-			textReloadPage: "'.__('Reloading page. Please wait&hellip;', WPAC_DOMAIN).'",
-			popupCornerRadius: 5,
-			scrollSpeed: 500
-		};
-	   </script>';
+		global $wpac_config;
+
+		echo '<script type="text/javascript">var wpac_options = {';
+		foreach($wpac_config as $config) {
+			foreach($config['options'] as $optionName => $option) {
+				$value = get_option(WPAC_OPTION_PREFIX.$optionName);
+				if (!$value) $value = $option['default'];
+				echo $optionName.':'.($option['type'] == 'int' ? $value :'"'.wpac_js_escape($value).'"').',';
+			}
+		}
+		echo 'textLoading:"'.wpac_js_escape(__('Posting your comment. Please wait&hellip;', WPAC_DOMAIN)).'",';
+		echo 'textUnknownError:"'.wpac_js_escape(__('Something went wrong, your comment has not been posted.', WPAC_DOMAIN)).'",';
+		echo 'textPosted:"'.wpac_js_escape(__('Your comment has been posted. Thank you!', WPAC_DOMAIN)).'",';
+		echo 'textReloadPage:"'.wpac_js_escape(__('Reloading page. Please wait&hellip;', WPAC_DOMAIN)).'",';
+		echo 'commentsAllowed:'.((is_page() || is_single()) && comments_open($post->ID) ? 'true' : 'false').',';
+		echo 'debug:'.(get_option('wpac_debug') ? 'true' : 'false').',';
+		echo 'version:"'.wpac_get_version().'"}</script>';
+
 	}
 }
 
@@ -105,10 +234,10 @@ add_filter('plugin_action_links', 'wpac_add_settings_link', 10, 2);
 
 function wpac_admin_notice() {
 	if (basename($_SERVER['PHP_SELF']) == 'plugins.php') {
-		if (!get_option(WPAC_OPTION_NAME_ENABLE)) {
+		if (!get_option(WPAC_OPTION_PREFIX.'enable')) {
 			// Show error if plugin is not enabled
 			echo '<div class="error"><p><strong>'.WPAC_PLUGIN_NAME.' is not enabled!</strong> Click <a href="'.WPAC_SETTINGS_URL.'">here</a> to configure the plugin.</p></div>';
-		} else if (get_option(WPAC_OPTION_NAME_DEBUG)) {
+		} else if (get_option(WPAC_OPTION_PREFIX.'debug')) {
 			// Show info if plugin is running in debug mode
 			echo '<div class="updated"><p><strong>'.WPAC_PLUGIN_NAME.' is running in debug mode!</strong> Click <a href="'.WPAC_SETTINGS_URL.'">here</a> to configure the plugin.</p></div>';
 		}
@@ -152,13 +281,42 @@ function wpac_option_page() {
 	if (!current_user_can('manage_options'))  {
 		wp_die('You do not have sufficient permissions to access this page.');
 	} 
-  
+
+	global $wpac_config;
+	
+	$errors = array();
+	
 	if (!empty($_POST) && check_admin_referer('wpac_update_settings','wpac_nonce_field'))
 	{
-		foreach($_POST['wpac'] as $key => $value) {
-			update_option($key, stripslashes($value));
+		foreach($_POST['wpac'] as $section => $options) {
+		
+			foreach ($options as $optionName => $value) {
+
+				$value = stripslashes($value);
+				$pattern = $wpac_config[$section]['options'][$optionName]['pattern'];
+				
+				if ($value) {
+					if ($pattern) {
+						$error = (preg_match($pattern, $value) !== 1);
+					}
+					if ($error) {
+						$errors[] = $optionName;
+					} else {
+						update_option(WPAC_OPTION_PREFIX.$optionName, $value);
+					}
+				} else {
+					delete_option(WPAC_OPTION_PREFIX.$optionName);
+				}
+			
+			}
+		
 		}
-		echo '<div class="updated"><p><strong>Settings saved successfully.</strong></p></div>';
+		
+		if (count($errors) == 0) {
+			echo '<div class="updated"><p><strong>Settings saved successfully.</strong></p></div>';
+		} else {
+			echo '<div class="error"><p><strong>Settings not saved! Please correct the red marked input fields.</strong></p></div>';
+		}
 	}
   
   ?>
@@ -172,64 +330,40 @@ function wpac_option_page() {
 
 			<div id="poststuff">
 				<div class="postbox">
+			
 					<h3 id="plugin-settings">Plugin Settings</h3>
 					<div class="inside">
-				
+
 						<table class="form-table">
-							<tr>
-								<th scope="row">
-									<label for="<?php echo WPAC_OPTION_NAME_ENABLE; ?>">Enabled plugin:</label>
-								</th>
-								<td>
-									<input type="hidden" name="wpac[<?php echo WPAC_OPTION_NAME_ENABLE; ?>]" value="0">
-									<input type="checkbox" name="wpac[<?php echo WPAC_OPTION_NAME_ENABLE; ?>]" id="<?php echo WPAC_OPTION_NAME_ENABLE; ?>" <?php if (get_option(WPAC_OPTION_NAME_ENABLE)) echo 'checked="checked"'; ?>/>
-								</td>
-							</tr>						
-							<tr>
-								<th scope="row">
-									<label for="<?php echo WPAC_OPTION_NAME_DEBUG; ?>">Debug mode:</label>
-								</th>
-								<td>
-									<input type="hidden" name="wpac[<?php echo WPAC_OPTION_NAME_DEBUG; ?>]" value="0">
-									<input type="checkbox" name="wpac[<?php echo WPAC_OPTION_NAME_DEBUG; ?>]" id="<?php echo WPAC_OPTION_NAME_DEBUG; ?>" <?php if (get_option(WPAC_OPTION_NAME_DEBUG)) echo 'checked="checked"'; ?>/>
-								</td>
-							</tr>							
-							<tr>
-								<th scope="row">
-									<label for="<?php echo WPAC_OPTION_NAME_SELECTOR_COMMENT_FORM; ?>">Comment Form Selector:</label>
-								</th>
-								<td>
-									<input type="input" name="wpac[<?php echo WPAC_OPTION_NAME_SELECTOR_COMMENT_FORM; ?>]" id="<?php echo WPAC_OPTION_NAME_SELECTOR_COMMENT_FORM; ?>" value="<?php echo get_option(WPAC_OPTION_NAME_SELECTOR_COMMENT_FORM); ?>" style="width: 300px"/>
-									<br/>Leave empty for default value <em><?php echo WPAC_OPTION_DEFAULTS_SELECTOR_COMMENT_FORM; ?></em>
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="<?php echo WPAC_OPTION_NAME_SELECTOR_COMMENTS_CONTAINER; ?>">Comments Container Selector:</label>
-								</th>
-								<td>
-									<input type="input" name="wpac[<?php echo WPAC_OPTION_NAME_SELECTOR_COMMENTS_CONTAINER; ?>]" id="<?php echo WPAC_OPTION_NAME_SELECTOR_COMMENTS_CONTAINER; ?>" value="<?php echo get_option(WPAC_OPTION_NAME_SELECTOR_COMMENTS_CONTAINER); ?>" style="width: 300px"/>
-									<br/>Leave empty for default value <em><?php echo WPAC_OPTION_DEFAULTS_SELECTOR_COMMENTS_CONTAINER; ?></em>
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="<?php echo WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER; ?>">Respond Container Selector:</label>
-								</th>
-								<td>
-									<input type="input" name="wpac[<?php echo WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER; ?>]" id="<?php echo WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER; ?>" value="<?php echo get_option(WPAC_OPTION_NAME_SELECTOR_RESPOND_CONTAINER); ?>" style="width: 300px"/>
-									<br/>Leave empty for default value <em><?php echo WPAC_OPTION_DEFAULTS_SELECTOR_RESPOND_CONTAINER; ?></em>
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="<?php echo WPAC_OPTION_NAME_SELECTOR_ERROR_CONTAINER; ?>">Error Container Selector:</label>
-								</th>
-								<td>
-									<input type="input" name="wpac[<?php echo WPAC_OPTION_NAME_SELECTOR_ERROR_CONTAINER; ?>]" id="<?php echo WPAC_OPTION_NAME_SELECTOR_ERROR_CONTAINER; ?>" value="<?php echo get_option(WPAC_OPTION_NAME_SELECTOR_ERROR_CONTAINER); ?>" style="width: 300px"/>
-									<br/>Leave empty for default value <em><?php echo WPAC_OPTION_DEFAULTS_SELECTOR_ERROR_CONTAINER; ?></em>
-								</td>
-							</tr>
+
+	<?php
+	
+		$section = 0;
+		foreach($wpac_config as $config) {
+			echo '<tr><th colspan="2"><h4>'.$config['section'].'</h4></th></tr>';
+			foreach($config['options'] as $optionName => $option) {
+
+				$color = in_array($optionName, $errors) ? 'red' : '';
+
+				echo '<tr><th scope="row"><label for="'.$optionName.'" style="color: '.$color.'">'.$option['label'].'</label></th><td>';
+				
+				$value = $_POST['wpac'][$section][$optionName] ? $_POST['wpac'][$section][$optionName] : get_option(WPAC_OPTION_PREFIX.$optionName);
+				$name = 'wpac['.$section.']['.$optionName.']';
+				
+				if ($option['type'] == 'boolean') {
+					echo '<input type="hidden" name="'.$name.'" value="0">';
+					echo '<input type="checkbox" name="'.$name.'" id="'.$optionName.'" '.($value ? 'checked="checked"' : '').'/>';
+				} else {
+					echo '<input type="input" name="'.$name.'" id="'.$optionName.'" value="'.htmlentities($value).'" style="width: 300px; color: '.$color.'"/>';
+					echo '<br/>Leave empty for default value <em>'.$option['default'].'</em>';
+				}
+				echo '</td></tr>';
+			}
+			$section++;
+		}
+	
+	?>
+	
 						</table>
 						<p class="submit">
 						  <input type="hidden" name="action" value="wpac_update_settings"/>

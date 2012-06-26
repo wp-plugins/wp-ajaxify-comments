@@ -5,41 +5,50 @@ function wpac_extractBody(html) {
 
 function wpac_showMessage(message, type) {
 
-	var top = 10;
+	var top = wpac_options.popupMarginTop;
 	var wpAdminBar = jQuery("#wpadminbar")[0];
 	if (wpAdminBar) {
 		top += jQuery(wpAdminBar).outerHeight();
 	}
 
-	var backgroundColor = "#000";
-	if (type == "error") backgroundColor = "#f00";
-	if (type == "success") backgroundColor = "#008000";
+	var backgroundColor = wpac_options.popupBackgroundColorLoading;
+	var textColor = wpac_options.popupTextColorLoading;
+	if (type == "error") {
+		backgroundColor = wpac_options.popupBackgroundColorError;
+		textColor = wpac_options.popupTextColorError;
+	} else if (type == "success") {
+		backgroundColor = wpac_options.popupBackgroundColorSuccess;
+		textColor = wpac_options.popupTextColorSuccess;
+	}
 	
 	jQuery.blockUI({ 
 		message: message, 
-		fadeIn: 400, 
-		fadeOut: 400, 
-		timeout: (type == "loading") ? 0 : 3000,
+		fadeIn: wpac_options.popupFadeIn, 
+		fadeOut: wpac_options.popupFadeOut, 
+		timeout:(type == "loading") ? 0 : wpac_options.popupTimeout,
 		centerY: false,
 		centerX: true,
 		showOverlay: (type == "loading"),
 		css: { 
 			top: top + 'px',
-			right: '10px', 
 			border: 'none', 
 			padding: '5px', 
 			backgroundColor: backgroundColor, 
 			'-webkit-border-radius': wpac_options.popupCornerRadius + "px",
 			'-moz-border-radius': wpac_options.popupCornerRadius + "px",
 			'border-radius': wpac_options.popupCornerRadius + "px",
-			opacity: .7, 
-			color: '#fff' 
+			opacity: wpac_options.popupOpacity/100, 
+			color: textColor,
+			textAlign: wpac_options.popupTextAlign,
+			cursor: (type == "loading") ? 'wait' : 'default'
 		},
 		overlayCSS:  { 
 			backgroundColor: '#000', 
 			opacity: 0
-		}
+		},
+		baseZ: wpac_options.popupZindex
 	}); 
+	
 }
 
 var wpac_debug_errorShown = false;
