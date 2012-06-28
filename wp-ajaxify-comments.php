@@ -37,15 +37,15 @@ $wpac_config = array(
 	array(
 		'section' => 'General',
 		'options' => array(
-			'debug' => array(
-				'type' => 'boolean',
-				'default' => false,
-				'label' => 'Debug mode:',
-			),
 			'enable' => array(
 				'type' => 'boolean',
 				'default' => false,
 				'label' => 'Enabled plugin:',
+			),
+			'debug' => array(
+				'type' => 'boolean',
+				'default' => false,
+				'label' => 'Debug mode:',
 			),
 		),
 	),
