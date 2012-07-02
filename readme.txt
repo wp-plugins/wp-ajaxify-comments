@@ -4,7 +4,7 @@ Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.4
-Stable tag: 0.3.3
+Stable tag: 0.3.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -80,6 +80,10 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Fixed problems for translations containing double quotes 
 * Added options to customize the look and feel
 
+= 0.3.4 =
+
+* Added localization for pl-PL (thanks to Jacek Tomaszewski)
+
 = 0.3.3 =
 
 * Bugfix for Internet Explorer
@@ -134,6 +138,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 = 0.4.0 =
 Added options to customize the look and feel
+
+= 0.3.4 =
+Added localization for pl-PL
 
 = 0.3.3 =
 Bug-fix
