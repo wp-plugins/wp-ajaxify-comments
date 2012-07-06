@@ -1,4 +1,4 @@
-=== WP-Ajaxify-Comments ===
+﻿=== WP-Ajaxify-Comments ===
 Contributors: janjonas
 Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
@@ -79,6 +79,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Success and error popup overlays now show default cursor instead of loading cursor
 * Fixed problems for translations containing double quotes 
 * Added options to customize the look and feel
+* Added localization for vi-VN (thanks to Nguyễn Hà Duy Phương)
 
 = 0.3.4 =
 
@@ -137,7 +138,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 == Upgrade Notice ==
 
 = 0.4.0 =
-Added options to customize the look and feel
+Bug-fix, added options to customize the look and feel, added localization for vi-VN
 
 = 0.3.4 =
 Added localization for pl-PL
