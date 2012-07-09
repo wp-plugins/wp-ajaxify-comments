@@ -26,7 +26,7 @@ msgstr "Der Kommentar wurde gespeichert. Vielen Dank!"
 
 #: wp-ajaxify-comments.php:83
 msgid "Reloading page. Please wait&hellip;"
-msgstr "Seite wird neugalden. Bitte warten&hellip;"
+msgstr "Seite wird neugeladen. Bitte warten&hellip;"
 
 #. Plugin Name of the plugin/theme
 msgid "WP-Ajaxify-Comments"

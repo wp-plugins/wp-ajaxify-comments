@@ -80,6 +80,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Fixed problems for translations containing double quotes 
 * Added options to customize the look and feel
 * Added localization for vi-VN (thanks to Nguyễn Hà Duy Phương)
+* Updated localization for de-DE
 
 = 0.3.4 =
 
@@ -138,7 +139,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 == Upgrade Notice ==
 
 = 0.4.0 =
-Bug-fix, added options to customize the look and feel, added localization for vi-VN
+Bug-fix, added options to customize the look and feel, added localization for vi-VN, updated localization for de-DE
 
 = 0.3.4 =
 Added localization for pl-PL
