@@ -72,9 +72,9 @@ function wpac_debug_selector(elementType, selector) {
 
 	var element = jQuery(selector);
 	if (element.length > 0) {
-		wpac_debug("info", "Search %s ('%s')... Found: %o", elementType, selector, element);
+		wpac_debug("info", "Search %s (selector '%s')... Found: %o", elementType, selector, element);
 	} else {
-		wpac_debug("error", "Search %s ('%s')... Not found", elementType, selector);
+		wpac_debug("error", "Search %s (selector '%s')... Not found", elementType, selector);
 	}
 }
 

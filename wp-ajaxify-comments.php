@@ -75,12 +75,12 @@ $wpac_config = array(
 		),
 	),
 	array(
-		'section' => 'Popup',
+		'section' => 'Popup overlay',
 		'options' => array(
 			'popupCornerRadius' => array(
 				'type' => 'int',
 				'default' => '5',
-				'label' => 'Corner radius:',
+				'label' => 'Corner radius (px):',
 				'pattern' => '/^[0-9]*$/',
 			),
 			'popupMarginTop' => array(
@@ -110,36 +110,36 @@ $wpac_config = array(
 			'popupBackgroundColorLoading' => array(
 				'type' => 'string',
 				'default' => '#000',
-				'label' => 'Background color (loading):',
+				'label' => 'Loading background color:',
 			),
 			'popupTextColorLoading' => array(
 				'type' => 'string',
 				'default' => '#fff',
-				'label' => 'Text color (loading):',
+				'label' => 'Loading text color:',
 			),
 			'popupBackgroundColorSuccess' => array(
 				'type' => 'string',
 				'default' => '#008000',
-				'label' => 'Background color (success):',
+				'label' => 'Success background color:',
 			),
 			'popupTextColorSuccess' => array(
 				'type' => 'string',
 				'default' => '#fff',
-				'label' => 'Text color (success):',
+				'label' => 'Success text color:',
 			),			
 			'popupBackgroundColorError' => array(
 				'type' => 'string',
 				'default' => '#f00',
-				'label' => 'Background color (error):',
+				'label' => 'Error background color:',
 			),
 			'popupTextColorError' => array(
 				'type' => 'string',
 				'default' => '#fff',
-				'label' => 'Text color (error):',
+				'label' => 'Error text color:',
 			),			
 			'popupOpacity' => array(
 				'type' => 'int',
-				'default' => 70,
+				'default' => '70',
 				'label' => 'Opacity (%):',
 				'pattern' => '/^(100|[1-9][0-9]|[1-9])$/',
 			),
@@ -153,7 +153,7 @@ $wpac_config = array(
 				'type' => 'int',
 				'default' => '1000',
 				'label' => 'Z-Index:',
-				'/^[0-9]*$/',
+				'pattern' => '/^[0-9]*$/',
 			),
 		),
 	),

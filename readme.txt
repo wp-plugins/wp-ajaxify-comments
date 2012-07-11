@@ -67,6 +67,7 @@ Yes, there are some features I would like to add in future versions:
 
 * Client-side validation
 * Debug mode support for Internet Explorer
+* i18n support for admin backend 
 
 = How to enable the debug mode? =
 
