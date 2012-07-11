@@ -77,7 +77,8 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 = 0.4.0 =
 
 * Success and error popup overlays now show default cursor instead of loading cursor
-* Fixed problems for translations containing double quotes 
+* Fixed problems for translations containing double quotes
+* Cancel AJAX request if cross-domain scripting is detected
 * Added options to customize the look and feel
 * Added localization for vi-VN (thanks to guzmanfg)
 * Added localization for es-ES (thanks to Nguyễn Hà Duy Phương)

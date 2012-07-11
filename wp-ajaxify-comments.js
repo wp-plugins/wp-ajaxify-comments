@@ -54,6 +54,8 @@ function wpac_showMessage(message, type) {
 var wpac_debug_errorShown = false;
 function wpac_debug(level, message) {
 
+	if (!wpac_options.debug) return;
+
 	if (typeof window["console"] === "undefined" || typeof window["console"][level] === "undefined" || typeof window["console"][level].apply === "undefined") {
 		if (!wpac_debug_errorShown) alert("console object is undefined or is not supported, debugging wp-ajaxify-comments is disabled! Please use Firebug or Google Chrome for debugging wp-ajaxify-comments.");
 		wpac_debug_errorShown = true;
@@ -64,7 +66,10 @@ function wpac_debug(level, message) {
 	console[level].apply(console, args);
 }
 
-function wpac_test_selector(elementType, selector) {
+function wpac_debug_selector(elementType, selector) {
+
+	if (!wpac_options.debug) return;
+
 	var element = jQuery(selector);
 	if (element.length > 0) {
 		wpac_debug("info", "Search %s ('%s')... Found: %o", elementType, selector, element);
@@ -85,30 +90,35 @@ function wpac_fallback(commentUrl) {
 jQuery(document).ready(function() {
 
 	// Debug infos
-	if (wpac_options.debug) wpac_debug("info", "Initializing (Version: %s)", wpac_options.version);
+	wpac_debug("info", "Initializing (Version: %s)", wpac_options.version);
 
-	// Skip initialization if comments are not allowed
+	// Skip initialization if comments are not enabled
 	if (!wpac_options.commentsAllowed) {
-		if (wpac_options.debug) {
-			wpac_debug("info", "Abort initialization (comments are not allowed on current page)");
-		}
+		wpac_debug("info", "Abort initialization (comments are not enabled on current page)");
 		return;
 	}
-
+	
 	// Debug infos
-	if (wpac_options.debug) {
-		wpac_debug("info", "Search jQuery... Found: %s", jQuery.fn.jquery);
-		wpac_test_selector("comment form", wpac_options.selectorCommentForm);
-		wpac_test_selector("comments container", wpac_options.selectorCommentsContainer);
-		wpac_test_selector("respond container", wpac_options.selectorRespondContainer);
-		wpac_debug("info", "Initialization complete");
-	}
+	wpac_debug("info", "Search jQuery... Found: %s", jQuery.fn.jquery);
+	wpac_debug_selector("comment form", wpac_options.selectorCommentForm);
+	wpac_debug_selector("comments container", wpac_options.selectorCommentsContainer);
+	wpac_debug_selector("respond container", wpac_options.selectorRespondContainer);
+	wpac_debug("info", "Initialization complete");
 	
 	// Intercept comment form submit
 	jQuery(wpac_options["selectorCommentForm"]).live("submit", function (event) {
 
 		var form = jQuery(this);
 
+		var submitUrl = form.attr('action');
+
+		// Cancel AJAX request if cross-domain scripting is detected
+		var domain = window.location.protocol + "//+" + window.location.host;
+		if (submitUrl.indexOf(domain) != 0) {
+			wpac_debug("error", "Cross-domain scripting detected (domain: %s, submit url: %s), cancel AJAX request", domain, submitUrl);
+			return;
+		}
+		
 		// Stop default event handling
 		event.preventDefault();
 	
@@ -116,7 +126,7 @@ jQuery(document).ready(function() {
 		wpac_showMessage(wpac_options["textLoading"], "loading");
 	  
 		var request = jQuery.ajax({
-			url: form.attr('action'),
+			url: submitUrl,
 			type: "POST",
 			data: form.serialize(),
 			success: function (data) {
@@ -174,18 +184,14 @@ jQuery(document).ready(function() {
 			},
 			error: function (jqXhr, textStatus, errorThrown) {
 
-				if (wpac_options.debug) {
-					wpac_debug("info", "Comment has not been posted");
-					wpac_debug("info", "Try to extract error message with selector '%s'...", wpac_options.selectorErrorContainer);
-				}
+				wpac_debug("info", "Comment has not been posted");
+				wpac_debug("info", "Try to extract error message with selector '%s'...", wpac_options.selectorErrorContainer);
 			
 				// Extract error message
 				var extractedBody = wpac_extractBody(jqXhr.responseText);
 				var errorMessage = extractedBody.find(wpac_options.selectorErrorContainer);
 				if (errorMessage.length == 0) {
-					if (wpac_options.debug) {
-						wpac_debug("error", "Error message could not be extracted, use error message '%s'.", wpac_options.textUnknownError);
-					}
+					wpac_debug("error", "Error message could not be extracted, use error message '%s'.", wpac_options.textUnknownError);
 					errorMessage = wpac_options.textUnknownError;
 				} else {
 					errorMessage = errorMessage.html();
