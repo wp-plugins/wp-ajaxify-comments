@@ -409,7 +409,7 @@ function wpac_admin_menu() {
 }
 
 if (!is_admin() && !wpac_is_login_page()) {
-	if (get_option(WPAC_OPTION_NAME_ENABLE)) {
+	if (get_option(WPAC_OPTION_PREFIX.'enable')) {
 		add_action('wp_head', 'wpac_initialize');
 		add_action('init', 'wpac_enqueue_scripts');
 	}
