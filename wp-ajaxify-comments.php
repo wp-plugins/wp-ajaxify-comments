@@ -210,7 +210,7 @@ function wpac_initialize() {
 		echo 'textUnknownError:"'.wpac_js_escape(__('Something went wrong, your comment has not been posted.', WPAC_DOMAIN)).'",';
 		echo 'textPosted:"'.wpac_js_escape(__('Your comment has been posted. Thank you!', WPAC_DOMAIN)).'",';
 		echo 'textReloadPage:"'.wpac_js_escape(__('Reloading page. Please wait&hellip;', WPAC_DOMAIN)).'",';
-		echo 'commentsAllowed:'.((is_page() || is_single()) && comments_open($post->ID) ? 'true' : 'false').',';
+		echo 'commentsEnabled:'.((is_page() || is_single()) && comments_open($post->ID) ? 'true' : 'false').',';
 		echo 'debug:'.(get_option('wpac_debug') ? 'true' : 'false').',';
 		echo 'version:"'.wpac_get_version().'"}</script>';
 

@@ -93,7 +93,7 @@ jQuery(document).ready(function() {
 	wpac_debug("info", "Initializing (Version: %s)", wpac_options.version);
 
 	// Skip initialization if comments are not enabled
-	if (!wpac_options.commentsAllowed) {
+	if (!wpac_options.commentsEnabled) {
 		wpac_debug("info", "Abort initialization (comments are not enabled on current page)");
 		return;
 	}
