@@ -201,7 +201,7 @@ function wpac_initialize() {
 		echo '<script type="text/javascript">var wpac_options = {';
 		foreach($wpac_config as $config) {
 			foreach($config['options'] as $optionName => $option) {
-				$value = get_option(WPAC_OPTION_PREFIX.$optionName);
+				$value = trim(get_option(WPAC_OPTION_PREFIX.$optionName));
 				if (strlen($value) == 0) $value = $option['default'];
 				echo $optionName.':'.($option['type'] == 'int' ? $value :'"'.wpac_js_escape($value).'"').',';
 			}
@@ -292,7 +292,7 @@ function wpac_option_page() {
 		
 			foreach ($options as $optionName => $value) {
 
-				$value = stripslashes($value);
+				$value = trim(stripslashes($value));
 				$pattern = $wpac_config[$section]['options'][$optionName]['pattern'];
 				
 				if (strlen($value) > 0) {
