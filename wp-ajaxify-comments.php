@@ -69,7 +69,7 @@ $wpac_config = array(
 			),
 			'selectorErrorContainer' => array(
 				'type' => 'string',
-				'default' => '#p:parent',
+				'default' => 'p:parent',
 				'label' => 'Error Container Selector:',
 			),
 		),

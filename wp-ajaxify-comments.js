@@ -185,7 +185,7 @@ jQuery(document).ready(function() {
 			error: function (jqXhr, textStatus, errorThrown) {
 
 				wpac_debug("info", "Comment has not been posted");
-				wpac_debug("info", "Try to extract error message with selector '%s'...", wpac_options.selectorErrorContainer);
+				wpac_debug("info", "Try to extract error message (selector: '%s')...", wpac_options.selectorErrorContainer);
 			
 				// Extract error message
 				var extractedBody = wpac_extractBody(jqXhr.responseText);
