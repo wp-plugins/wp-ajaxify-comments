@@ -79,7 +79,8 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Success and error popup overlays now show default cursor instead of loading cursor
 * Fixed problems for translations containing double quotes 
 * Added options to customize the look and feel
-* Added localization for vi-VN (thanks to Nguyễn Hà Duy Phương)
+* Added localization for vi-VN (thanks to guzmanfg)
+* Added localization for es-ES (thanks to Nguyễn Hà Duy Phương)
 * Updated localization for de-DE
 
 = 0.3.4 =
@@ -139,7 +140,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 == Upgrade Notice ==
 
 = 0.4.0 =
-Bug-fix, added options to customize the look and feel, added localization for vi-VN, updated localization for de-DE
+Bug-fix, added options to customize the look and feel, added localizations (vi-VN and en-ES), updated localization for de-DE
 
 = 0.3.4 =
 Added localization for pl-PL
