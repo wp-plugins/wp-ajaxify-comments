@@ -39,12 +39,12 @@ $wpac_config = array(
 		'options' => array(
 			'enable' => array(
 				'type' => 'boolean',
-				'default' => false,
+				'default' => '0',
 				'label' => 'Enabled plugin:',
 			),
 			'debug' => array(
 				'type' => 'boolean',
-				'default' => false,
+				'default' => '0',
 				'label' => 'Debug mode:',
 			),
 		),
@@ -202,7 +202,7 @@ function wpac_initialize() {
 		foreach($wpac_config as $config) {
 			foreach($config['options'] as $optionName => $option) {
 				$value = get_option(WPAC_OPTION_PREFIX.$optionName);
-				if (!$value) $value = $option['default'];
+				if (strlen($value) == 0) $value = $option['default'];
 				echo $optionName.':'.($option['type'] == 'int' ? $value :'"'.wpac_js_escape($value).'"').',';
 			}
 		}
@@ -295,7 +295,7 @@ function wpac_option_page() {
 				$value = stripslashes($value);
 				$pattern = $wpac_config[$section]['options'][$optionName]['pattern'];
 				
-				if ($value) {
+				if (strlen($value) > 0) {
 					if ($pattern) {
 						$error = (preg_match($pattern, $value) !== 1);
 					}
@@ -352,7 +352,7 @@ function wpac_option_page() {
 				
 				if ($option['type'] == 'boolean') {
 					echo '<input type="hidden" name="'.$name.'" value="0">';
-					echo '<input type="checkbox" name="'.$name.'" id="'.$optionName.'" '.($value ? 'checked="checked"' : '').'/>';
+					echo '<input type="checkbox" name="'.$name.'" id="'.$optionName.'" '.($value ? 'checked="checked"' : '').' value="1"/>';
 				} else {
 					echo '<input type="input" name="'.$name.'" id="'.$optionName.'" value="'.htmlentities($value).'" style="width: 300px; color: '.$color.'"/>';
 					echo '<br/>Leave empty for default value <em>'.$option['default'].'</em>';
