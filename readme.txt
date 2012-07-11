@@ -38,6 +38,10 @@ If your theme does not use the default IDs for the comment form (`#commentform`)
 
 Last but not least: The plugin is still in a prototype state, so there could be some bugs. Please do not hesitate to <a href="http://blog.janjonas.net/contact">contact me</a> or to use the <a href="http://wordpress.org/support/plugin/wp-ajaxify-comments">support forum</a>, if you have problems to get the plugin working.
 
+= Can I suggest new features? =
+
+If you miss a feature or if you have any other suggestions, please <a href="http://blog.janjonas.net/contact">contact me</a> or to use the <a href="http://wordpress.org/support/plugin/wp-ajaxify-comments">support forum</a>.
+
 = Are there any known problems? =
 
 There are problems when using an old jQuery version. The plugin was successfully tested with jQuery 1.4.4.
@@ -61,8 +65,8 @@ Most likely yes, but it has not been tested yet. Please leave me a message if yo
 
 Yes, there are some features I would like to add in future versions:
 
-* More options to customize the look and feel
 * Client-side validation
+* Debug mode support for Internet Explorer
 
 = How to enable the debug mode? =
 
