@@ -113,7 +113,7 @@ jQuery(document).ready(function() {
 		var submitUrl = form.attr('action');
 
 		// Cancel AJAX request if cross-domain scripting is detected
-		var domain = window.location.protocol + "//+" + window.location.host;
+		var domain = window.location.protocol + "//" + window.location.host;
 		if (submitUrl.indexOf(domain) != 0) {
 			wpac_debug("error", "Cross-domain scripting detected (domain: %s, submit url: %s), cancel AJAX request", domain, submitUrl);
 			return;
