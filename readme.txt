@@ -85,8 +85,8 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Fixed problems for translations containing double quotes
 * Cancel AJAX request if cross-domain scripting is detected
 * Added options to customize the look and feel
-* Added localization for vi-VN (thanks to guzmanfg)
-* Added localization for es-ES (thanks to Nguyễn Hà Duy Phương)
+* Added localization for vi-VN (thanks to Nguyễn Hà Duy Phương)
+* Added localization for es-ES (thanks to guzmanfg)
 * Updated localization for de-DE
 
 = 0.3.4 =
@@ -134,7 +134,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Support for themes with threaded comments where form tag is not nested in comment container
 * (Smooth) scrolling to new comment after new comment has been posted
 * Update browser address bar to show comment URL after new comment has been posted
-* Abort plugin initialization on pages and posts where comments are not allowed
+* Abort plugin initialization on pages and posts where comments are not enabled
 * Info popup overlay when complete page reload is performed in fallback mode
 
 = 0.0.2 =
