@@ -4,7 +4,7 @@ Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.4
-Stable tag: 0.4.0
+Stable tag: 0.4.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,6 +79,10 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Changelog ==
 
+= 0.4.1 =
+
+* Added localization for nl-NL (thanks to Daniël Tulp)
+
 = 0.4.0 =
 
 * Success and error popup overlays now show default cursor instead of loading cursor
@@ -144,6 +148,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.4.1 =
+Added localization for nl-NL
 
 = 0.4.0 =
 Bug-fix, added options to customize the look and feel, added localizations (vi-VN and en-ES), updated localization for de-DE
