@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.4.1
+Version: 0.5.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -29,9 +29,9 @@ Text Domain: wpac
 
 define('WPAC_PLUGIN_NAME', 'WP-Ajaxify-Comments');
 define('WPAC_SETTINGS_URL', 'admin.php?page='.WPAC_PLUGIN_NAME);
-define('WPAC_SESSION_VAR', 'wpac_url');
 define('WPAC_DOMAIN', 'wpac');
-define('WPAC_OPTION_PREFIX', 'wpac_');
+define('WPAC_SESSION_VAR', WPAC_DOMAIN.'_session');
+define('WPAC_OPTION_PREFIX', WPAC_DOMAIN.'_');
 
 $wpac_config = array(
 	array(
@@ -209,9 +209,10 @@ function wpac_initialize() {
 		echo 'textLoading:"'.wpac_js_escape(__('Posting your comment. Please wait&hellip;', WPAC_DOMAIN)).'",';
 		echo 'textUnknownError:"'.wpac_js_escape(__('Something went wrong, your comment has not been posted.', WPAC_DOMAIN)).'",';
 		echo 'textPosted:"'.wpac_js_escape(__('Your comment has been posted. Thank you!', WPAC_DOMAIN)).'",';
+		echo 'textPostedUnapproved:"'.wpac_js_escape(__('Your comment has been posted and is awaiting moderation. Thank you!', WPAC_DOMAIN)).'",';
 		echo 'textReloadPage:"'.wpac_js_escape(__('Reloading page. Please wait&hellip;', WPAC_DOMAIN)).'",';
 		echo 'commentsEnabled:'.((is_page() || is_single()) && comments_open($post->ID) ? 'true' : 'false').',';
-		echo 'debug:'.(get_option('wpac_debug') ? 'true' : 'false').',';
+		echo 'debug:'.(get_option(WPAC_OPTION_PREFIX.'debug') ? 'true' : 'false').',';
 		echo 'version:"'.wpac_get_version().'"}</script>';
 
 	}
@@ -247,7 +248,6 @@ add_action('admin_notices', 'wpac_admin_notice');
 
 function wpac_init()
 {
-
 	// Start session
 	if (!session_id()) {
 		@session_cache_limiter('private, must-revalidate');
@@ -258,21 +258,27 @@ function wpac_init()
 	// Update session var and add header if session var is defined
 	if ($_SESSION[WPAC_SESSION_VAR]) {
 		$currentUrl = 'http'.($_SERVER['HTTPS'] ? 's' : '').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-		$sessionUrl = $_SESSION[WPAC_SESSION_VAR];
+		$sessionUrl = $_SESSION[WPAC_SESSION_VAR]['url'];
 		if ($sessionUrl !== $currentUrl && strpos($sessionUrl, $currentUrl.'#') !== 0) {	
 			$_SESSION[WPAC_SESSION_VAR] = null;
 		} else  {
-			header('X-WPAC-URL: '.$_SESSION[WPAC_SESSION_VAR]);
+			header('X-WPAC-UNAPPROVED: '.$_SESSION[WPAC_SESSION_VAR]['unapproved']);
+			header('X-WPAC-URL: '.$sessionUrl);
 		}
 	}
-
 }
 add_action('init', 'wpac_init');
 
 function wpac_comment_post_redirect($location)
 {
-	// Save comment url in session
-	$_SESSION[WPAC_SESSION_VAR] = $location;
+	global $comment;
+
+	// Save comment data in session
+	$_SESSION[WPAC_SESSION_VAR] = array(
+		'url' => $location, 
+		'unapproved' => ($comment && $comment->comment_approved == '0') ? '1' : '0',
+	);
+	
 	return $location;
 }
 add_action('comment_post_redirect', 'wpac_comment_post_redirect');

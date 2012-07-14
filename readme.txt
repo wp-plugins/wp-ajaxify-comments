@@ -79,6 +79,10 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Changelog ==
 
+= 0.5.0 =
+
+* Success popup overlay now supports comments that are awaiting moderation
+
 = 0.4.1 =
 
 * Added localization for nl-NL (thanks to Daniël Tulp)
@@ -148,6 +152,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.5.0 =
+Support for comments that are awaiting moderation
 
 = 0.4.1 =
 Added localization for nl-NL

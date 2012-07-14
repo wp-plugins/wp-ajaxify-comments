@@ -5,11 +5,7 @@ function wpac_extractBody(html) {
 
 function wpac_showMessage(message, type) {
 
-	var top = wpac_options.popupMarginTop;
-	var wpAdminBar = jQuery("#wpadminbar")[0];
-	if (wpAdminBar) {
-		top += jQuery(wpAdminBar).outerHeight();
-	}
+	var top = wpac_options.popupMarginTop + jQuery("#wpadminbar").outerHeight();
 
 	var backgroundColor = wpac_options.popupBackgroundColorLoading;
 	var textColor = wpac_options.popupTextColorLoading;
@@ -71,10 +67,10 @@ function wpac_debug_selector(elementType, selector) {
 	if (!wpac_options.debug) return;
 
 	var element = jQuery(selector);
-	if (element.length > 0) {
-		wpac_debug("info", "Search %s (selector '%s')... Found: %o", elementType, selector, element);
-	} else {
+	if (!element.length) {
 		wpac_debug("error", "Search %s (selector '%s')... Not found", elementType, selector);
+	} else {
+		wpac_debug("info", "Search %s (selector '%s')... Found: %o", elementType, selector, element);
 	}
 }
 
@@ -131,39 +127,52 @@ jQuery(document).ready(function() {
 			data: form.serialize(),
 			success: function (data) {
 
+				wpac_debug("info", "Comment has been posted");
+
+				var oldCommentsContainer = jQuery(wpac_options.selectorCommentsContainer);
+				if (!oldCommentsContainer.length) {
+					wpac_debug("info", "Comment container on current page not found (selector: '%s'), reloading page...", wpac_options.selectorCommentsContainer);
+					return wpac_fallback(commentUrl);
+				}
+				
 				var extractedBody = wpac_extractBody(data);
 				var newCommentsContainer = extractedBody.find(wpac_options.selectorCommentsContainer);
-				var oldCommentsContainer = jQuery(wpac_options.selectorCommentsContainer);
+				if (!newCommentsContainer.length) {
+					wpac_debug("info", "Comment container on requested page not found (selector: '%s'), reloading page...", wpac_options.selectorCommentsContainer);
+					return wpac_fallback(commentUrl);
+				}
 
 				var commentUrl = request.getResponseHeader('X-WPAC-URL');
-				
-				if (oldCommentsContainer.length == 0 || newCommentsContainer.length == 0) return wpac_fallback(commentUrl);
+				var unapproved = request.getResponseHeader('X-WPAC-UNAPPROVED');
 
+				wpac_debug("info", "Found comment URL '%s' in X-WPAC-URL header.", commentUrl);
+				wpac_debug("info", "Found unapproved state '%s' in X-WPAC-UNAPPROVED", unapproved);
+				
 				// Show success message
-				wpac_showMessage(wpac_options["textPosted"], "success");
+				wpac_showMessage(unapproved == '1' ? wpac_options["textPostedUnapproved"] : wpac_options["textPosted"], "success");
 			
 				// Update comments container
 				oldCommentsContainer.replaceWith(newCommentsContainer);
 				
-				if (jQuery(wpac_options.selectorCommentForm).length == 0) {
+				if (jQuery(wpac_options.selectorCommentForm).length) {
+
+					// Replace comment form (for spam protection plugin compatibility) if comment form is not nested in comments container
+					// If comment form is nested in comments container comment form is already replaced
+					if (!newCommentsContainer.find(wpac_options.selectorCommentForm).length) {
+						var newCommentForm = extractedBody.find(wpac_options.selectorCommentForm);
+						if (newCommentForm.length == 0) return wpac_fallback(commentUrl);
+						form.replaceWith(newCommentForm);
+					}
+					
+				} else {
 
 					// "Re-inject" comment form, if comment form was removed by updating the comments container; could happen 
 					// if theme support threaded/nested comments and form tag is not nested in comments container
 					// -> Replace Wordpress placeholder div (#wp-temp-form-div) with respond div
 					var wpTempFormDiv = jQuery("#wp-temp-form-div");
 					var newRespondContainer = extractedBody.find(wpac_options.selectorRespondContainer);
-					if (wpTempFormDiv.length == 0 || newRespondContainer.length == 0) return wpac_fallback(commentUrl);
+					if (!wpTempFormDiv.length || !newRespondContainer.length) return wpac_fallback(commentUrl);
 					wpTempFormDiv.replaceWith(newRespondContainer);
-					
-				} else {
-
-					// Replace comment form (for spam protection plugin compatibility) if comment form is not nested in comments container
-					// If comment form is nested in comments container comment form is already replaced
-					if (newCommentsContainer.find(wpac_options.selectorCommentForm).length == 0) {
-						var newCommentForm = extractedBody.find(wpac_options.selectorCommentForm);
-						if (newCommentForm.length == 0) return wpac_fallback(commentUrl);
-						form.replaceWith(newCommentForm);
-					}
 
 				}
 
@@ -172,7 +181,7 @@ jQuery(document).ready(function() {
 					var anchor = commentUrl.substr(commentUrl.indexOf("#"));
 					if (anchor) {
 						var anchorElement = jQuery(anchor)
-						if (anchorElement.length > 0) {
+						if (anchorElement.length) {
 							jQuery('html,body').animate({scrollTop: anchorElement.offset().top}, {
 								duration: wpac_options.scrollSpeed,
 								complete: function() { window.location.hash = anchor; }
@@ -190,12 +199,12 @@ jQuery(document).ready(function() {
 				// Extract error message
 				var extractedBody = wpac_extractBody(jqXhr.responseText);
 				var errorMessage = extractedBody.find(wpac_options.selectorErrorContainer);
-				if (errorMessage.length == 0) {
-					wpac_debug("error", "Error message could not be extracted, use error message '%s'.", wpac_options.textUnknownError);
-					errorMessage = wpac_options.textUnknownError;
-				} else {
+				if (errorMessage.length) {
 					errorMessage = errorMessage.html();
 					wpac_debug("info", "Error message '%s' successfully extracted", errorMessage);
+				} else {
+					wpac_debug("error", "Error message could not be extracted, use error message '%s'.", wpac_options.textUnknownError);
+					errorMessage = wpac_options.textUnknownError;
 				}
 				
 				wpac_showMessage(errorMessage, "error");
