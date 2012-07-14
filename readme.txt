@@ -46,7 +46,7 @@ If you miss a feature or if you have any other suggestions, please <a href="http
 
 There are problems when using an old jQuery version. The plugin was successfully tested with jQuery 1.4.4.
 
-The debugging mode does not work in Internet Explorer; please use Firebug or Google Chrome for debugging wp-ajaxify-comments.
+The debugging mode does not work in Internet Explorer 8 (and older versions); please use Firebug, Google Chrome or Internet Explorer 9 or above for debugging wp-ajaxify-comments.
 
 = Does this plugin work with every WordPress theme? =
 
@@ -66,7 +66,6 @@ Most likely yes, but it has not been tested yet. Please leave me a message if yo
 Yes, there are some features I would like to add in future versions:
 
 * Client-side validation
-* Debug mode support for Internet Explorer
 * i18n support for admin backend 
 
 = How to enable the debug mode? =
@@ -82,6 +81,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 = 0.5.0 =
 
 * Success popup overlay now supports comments that are awaiting moderation
+* Debug support for Internet Explorer 9
 
 = 0.4.1 =
 
@@ -154,7 +154,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 == Upgrade Notice ==
 
 = 0.5.0 =
-Support for comments that are awaiting moderation
+Support for comments that are awaiting moderation, Debug support for IE 9
 
 = 0.4.1 =
 Added localization for nl-NL

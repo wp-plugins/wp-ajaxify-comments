@@ -52,8 +52,14 @@ function wpac_debug(level, message) {
 
 	if (!wpac_options.debug) return;
 
+	// Fix console.log.apply for IE9
+	// see http://stackoverflow.com/a/5539378/516472
+	if (Function.prototype.call && Function.prototype.call.bind && console && typeof console.log == "object" && typeof window["console"][level].apply === "undefined") {
+		console[level] = Function.prototype.call.bind(console[level], console);
+	}
+
 	if (typeof window["console"] === "undefined" || typeof window["console"][level] === "undefined" || typeof window["console"][level].apply === "undefined") {
-		if (!wpac_debug_errorShown) alert("console object is undefined or is not supported, debugging wp-ajaxify-comments is disabled! Please use Firebug or Google Chrome for debugging wp-ajaxify-comments.");
+		if (!wpac_debug_errorShown) alert("Unfortunately console object is undefined or is not supported in your browser, debugging wp-ajaxify-comments is disabled! Please use Firebug, Google Chrome or Internet Explorer 9 or above for debugging wp-ajaxify-comments.");
 		wpac_debug_errorShown = true;
 		return;
 	}
