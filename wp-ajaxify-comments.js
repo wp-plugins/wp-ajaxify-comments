@@ -83,7 +83,8 @@ function wpac_debug_selector(elementType, selector) {
 function wpac_fallback(commentUrl) {
 	wpac_showMessage(wpac_options["textReloadPage"], "loading");
 	if (commentUrl) {
-		var href = commentUrl.replace("#", "&t=" + (new Date()).getTime() + "#");
+		var questionMark = (commentUrl.indexOf("?") < 0) ? "?" : "";
+		var href = commentUrl.replace("#", questionMark + "&t=" + (new Date()).getTime() + "#");
 		wpac_debug("info", "Reloading page (href: '%s')...", href);
 		location.href = href;
 	} else {
