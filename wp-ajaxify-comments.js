@@ -135,6 +135,9 @@ jQuery(document).ready(function() {
 
 				wpac_debug("info", "Comment has been posted");
 
+				var commentUrl = request.getResponseHeader('X-WPAC-URL');
+				wpac_debug("info", "Found comment URL '%s' in X-WPAC-URL header.", commentUrl);
+
 				var oldCommentsContainer = jQuery(wpac_options.selectorCommentsContainer);
 				if (!oldCommentsContainer.length) {
 					wpac_debug("info", "Comment container on current page not found (selector: '%s'), reloading page...", wpac_options.selectorCommentsContainer);
@@ -148,10 +151,7 @@ jQuery(document).ready(function() {
 					return wpac_fallback(commentUrl);
 				}
 
-				var commentUrl = request.getResponseHeader('X-WPAC-URL');
 				var unapproved = request.getResponseHeader('X-WPAC-UNAPPROVED');
-
-				wpac_debug("info", "Found comment URL '%s' in X-WPAC-URL header.", commentUrl);
 				wpac_debug("info", "Found unapproved state '%s' in X-WPAC-UNAPPROVED", unapproved);
 				
 				// Show success message
