@@ -74,17 +74,20 @@ function wpac_debug_selector(elementType, selector) {
 
 	var element = jQuery(selector);
 	if (!element.length) {
-		wpac_debug("error", "Search %s (selector '%s')... Not found", elementType, selector);
+		wpac_debug("error", "Search %s (selector: '%s')... Not found", elementType, selector);
 	} else {
-		wpac_debug("info", "Search %s (selector '%s')... Found: %o", elementType, selector, element);
+		wpac_debug("info", "Search %s (selector: '%s')... Found: %o", elementType, selector, element);
 	}
 }
 
 function wpac_fallback(commentUrl) {
 	wpac_showMessage(wpac_options["textReloadPage"], "loading");
 	if (commentUrl) {
-		location.href = commentUrl.replace("#", "&t=" + (new Date()).getTime() + "#");
+		var href = commentUrl.replace("#", "&t=" + (new Date()).getTime() + "#");
+		wpac_debug("info", "Reloading page (href: '%s')...", href);
+		location.href = href;
 	} else {
+		wpac_debug("info", "Reloading page...");
 		location.reload();
 	}
 }
@@ -92,7 +95,7 @@ function wpac_fallback(commentUrl) {
 jQuery(document).ready(function() {
 
 	// Debug infos
-	wpac_debug("info", "Initializing (Version: %s)", wpac_options.version);
+	wpac_debug("info", "Initializing version %s", wpac_options.version);
 
 	// Skip initialization if comments are not enabled
 	if (!wpac_options.commentsEnabled) {
@@ -101,11 +104,11 @@ jQuery(document).ready(function() {
 	}
 	
 	// Debug infos
-	wpac_debug("info", "Search jQuery... Found: %s", jQuery.fn.jquery);
+	wpac_debug("info", "Found jQuery version '%s'", jQuery.fn.jquery);
 	wpac_debug_selector("comment form", wpac_options.selectorCommentForm);
 	wpac_debug_selector("comments container", wpac_options.selectorCommentsContainer);
 	wpac_debug_selector("respond container", wpac_options.selectorRespondContainer);
-	wpac_debug("info", "Initialization complete");
+	wpac_debug("info", "Initialization completed");
 	
 	// Intercept comment form submit
 	jQuery(wpac_options["selectorCommentForm"]).live("submit", function (event) {
@@ -117,7 +120,7 @@ jQuery(document).ready(function() {
 		// Cancel AJAX request if cross-domain scripting is detected
 		var domain = window.location.protocol + "//" + window.location.host;
 		if (submitUrl.indexOf(domain) != 0) {
-			wpac_debug("error", "Cross-domain scripting detected (domain: %s, submit url: %s), cancel AJAX request", domain, submitUrl);
+			wpac_debug("error", "Cross-domain scripting detected (domain: '%s', submit url: '%s'), cancel AJAX request", domain, submitUrl);
 			return;
 		}
 		
@@ -140,14 +143,14 @@ jQuery(document).ready(function() {
 
 				var oldCommentsContainer = jQuery(wpac_options.selectorCommentsContainer);
 				if (!oldCommentsContainer.length) {
-					wpac_debug("info", "Comment container on current page not found (selector: '%s'), reloading page...", wpac_options.selectorCommentsContainer);
+					wpac_debug("info", "Comment container on current page not found (selector: '%s')", wpac_options.selectorCommentsContainer);
 					return wpac_fallback(commentUrl);
 				}
 				
 				var extractedBody = wpac_extractBody(data);
 				var newCommentsContainer = extractedBody.find(wpac_options.selectorCommentsContainer);
 				if (!newCommentsContainer.length) {
-					wpac_debug("info", "Comment container on requested page not found (selector: '%s'), reloading page...", wpac_options.selectorCommentsContainer);
+					wpac_debug("info", "Comment container on requested page not found (selector: '%s')", wpac_options.selectorCommentsContainer);
 					return wpac_fallback(commentUrl);
 				}
 
@@ -163,21 +166,35 @@ jQuery(document).ready(function() {
 				if (jQuery(wpac_options.selectorCommentForm).length) {
 
 					// Replace comment form (for spam protection plugin compatibility) if comment form is not nested in comments container
-					// If comment form is nested in comments container comment form is already replaced
+					// If comment form is nested in comments container comment form has already been replaced
 					if (!newCommentsContainer.find(wpac_options.selectorCommentForm).length) {
+
+						wpac_debug("info", "Replace comment form...");
 						var newCommentForm = extractedBody.find(wpac_options.selectorCommentForm);
-						if (newCommentForm.length == 0) return wpac_fallback(commentUrl);
+						if (newCommentForm.length == 0) {
+							wpac_debug("info", "Comment form on requested page not found (selector: '%s')", wpac_options.selectorCommentForm);
+							return wpac_fallback(commentUrl);
+						}
 						form.replaceWith(newCommentForm);
 					}
 					
 				} else {
 
+					wpac_debug("info", "Try to re-inject comment form...");
+				
 					// "Re-inject" comment form, if comment form was removed by updating the comments container; could happen 
 					// if theme support threaded/nested comments and form tag is not nested in comments container
 					// -> Replace Wordpress placeholder div (#wp-temp-form-div) with respond div
 					var wpTempFormDiv = jQuery("#wp-temp-form-div");
+					if (!wpTempFormDiv.length) {
+						wpac_debug("info", "WordPress' #wp-temp-form-div container not found", wpac_options.selectorRespondContainer);
+						return wpac_fallback(commentUrl);
+					}
 					var newRespondContainer = extractedBody.find(wpac_options.selectorRespondContainer);
-					if (!wpTempFormDiv.length || !newRespondContainer.length) return wpac_fallback(commentUrl);
+					if (!newRespondContainer.length) {
+						wpac_debug("info", "Respond container on requested page not found (selector: '%s')", wpac_options.selectorRespondContainer);
+						return wpac_fallback(commentUrl);
+					}
 					wpTempFormDiv.replaceWith(newRespondContainer);
 
 				}
@@ -186,12 +203,16 @@ jQuery(document).ready(function() {
 				if (commentUrl) {
 					var anchor = commentUrl.substr(commentUrl.indexOf("#"));
 					if (anchor) {
+						wpac_debug("info", "Anchor '%s' extracted from comment URL '%s'", anchor, commentUrl);
 						var anchorElement = jQuery(anchor)
 						if (anchorElement.length) {
+							wpac_debug("info", "Scroll to anchor element %o...", anchorElement);
 							jQuery('html,body').animate({scrollTop: anchorElement.offset().top}, {
 								duration: wpac_options.scrollSpeed,
 								complete: function() { window.location.hash = anchor; }
 							});
+						} else {
+							wpac_debug("info", "Anchor element not found");
 						}
 					}
 				}
