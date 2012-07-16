@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WP-Ajaxify-Comments package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP-Ajaxify-Comments 0.2.1\n"
+"Project-Id-Version: WP-Ajaxify-Comments 0.5.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-ajaxify-comments\n"
 "POT-Creation-Date: 2012-06-21 17:32:44+00:00\n"
 "MIME-Version: 1.0\n"
@@ -15,19 +15,23 @@ msgstr ""
 "X-Poedit-Country: VIET NAM\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: wp-ajaxify-comments.php:80
+#: wp-ajaxify-comments.php:209
 msgid "Posting your comment. Please wait&hellip;"
 msgstr "Đang gửi phản hồi của bạn. Vui lòng đợi&hellip;"
 
-#: wp-ajaxify-comments.php:81
+#: wp-ajaxify-comments.php:210
 msgid "Something went wrong, your comment has not been posted."
 msgstr "Đã có một số lỗi. Phản hồi của bạn chưa được gửi!"
 
-#: wp-ajaxify-comments.php:82
+#: wp-ajaxify-comments.php:211
 msgid "Your comment has been posted. Thank you!"
 msgstr "Phản hồi của bạn đã được gửi. Cảm ơn!"
 
-#: wp-ajaxify-comments.php:83
+#: wp-ajaxify-comments.php:212
+msgid "Your comment has been posted and is awaiting moderation. Thank you!"
+msgstr "Phản hồi của bạn đã gửi thành công và đang được kiểm duyệt. Xin cảm ơn!"
+
+#: wp-ajaxify-comments.php:213
 msgid "Reloading page. Please wait&hellip;"
 msgstr "Đang tải lại trang. Vui lòng đợi&hellip;"
 

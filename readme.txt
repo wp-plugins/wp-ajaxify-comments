@@ -83,6 +83,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Success popup overlay now supports comments that are awaiting moderation
 * Add "?" when commentUrl has no query string to reload page in case of partial page update fails
 * Debug support for Internet Explorer 9
+* Added localization for ca (thanks to guzmanfg)
 
 = 0.4.1 =
 
@@ -155,7 +156,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 == Upgrade Notice ==
 
 = 0.5.0 =
-Bug-fix, Support for comments that are awaiting moderation, Debug support for IE 9
+Bug-fix, support for comments that are awaiting moderation, debug support for IE 9, added localization for ca
 
 = 0.4.1 =
 Added localization for nl-NL

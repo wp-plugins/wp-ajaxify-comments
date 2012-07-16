@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WP-Ajaxify-Comments package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP-Ajaxify-Comments 0.2.1\n"
+"Project-Id-Version: WP-Ajaxify-Comments 0.5.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-ajaxify-comments\n"
 "POT-Creation-Date: 2012-06-21 17:32:44+00:00\n"
 "MIME-Version: 1.0\n"
@@ -16,21 +16,25 @@ msgstr ""
 "X-Poedit-Country: SPAIN\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: wp-ajaxify-comments.php:80
+#: wp-ajaxify-comments.php:209
 msgid "Posting your comment. Please wait&hellip;"
 msgstr "Enviando tu comentario. Espera, por favor&hellip;"
 
-#: wp-ajaxify-comments.php:81
+#: wp-ajaxify-comments.php:210
 msgid "Something went wrong, your comment has not been posted."
 msgstr "Algo fue mal, tu comentario no ha sido publicado."
 
-#: wp-ajaxify-comments.php:82
+#: wp-ajaxify-comments.php:211
 msgid "Your comment has been posted. Thank you!"
 msgstr "Tu comentario ha sido publicado. ¡Gracias!"
 
-#: wp-ajaxify-comments.php:83
+#: wp-ajaxify-comments.php:212
+msgid "Your comment has been posted and is awaiting moderation. Thank you!"
+msgstr "Tu comentario ha sido enviado y está pendiente de moderación. ¡Gracias!"
+
+#: wp-ajaxify-comments.php:213
 msgid "Reloading page. Please wait&hellip;"
-msgstr "Recargando página. Espera, por favor%hellip;"
+msgstr "Recargando página. Espera, por favor&hellip;"
 
 #. Plugin Name of the plugin/theme
 msgid "WP-Ajaxify-Comments"
