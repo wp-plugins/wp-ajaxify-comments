@@ -26,20 +26,20 @@ function wpac_showMessage(message, type) {
 		centerX: true,
 		showOverlay: (type == "loading"),
 		css: { 
-			top: top + 'px',
-			border: 'none', 
-			padding: '5px', 
+			top: top + "px",
+			border: "none", 
+			padding: "5px", 
 			backgroundColor: backgroundColor, 
-			'-webkit-border-radius': wpac_options.popupCornerRadius + "px",
-			'-moz-border-radius': wpac_options.popupCornerRadius + "px",
-			'border-radius': wpac_options.popupCornerRadius + "px",
+			"-webkit-border-radius": wpac_options.popupCornerRadius + "px",
+			"-moz-border-radius": wpac_options.popupCornerRadius + "px",
+			"border-radius": wpac_options.popupCornerRadius + "px",
 			opacity: wpac_options.popupOpacity/100, 
 			color: textColor,
 			textAlign: wpac_options.popupTextAlign,
-			cursor: (type == "loading") ? 'wait' : 'default'
+			cursor: (type == "loading") ? "wait" : "default"
 		},
 		overlayCSS:  { 
-			backgroundColor: '#000', 
+			backgroundColor: "#000", 
 			opacity: 0
 		},
 		baseZ: wpac_options.popupZindex
@@ -116,7 +116,7 @@ jQuery(document).ready(function() {
 
 		var form = jQuery(this);
 
-		var submitUrl = form.attr('action');
+		var submitUrl = form.attr("action");
 
 		// Cancel AJAX request if cross-domain scripting is detected
 		var domain = window.location.protocol + "//" + window.location.host;
@@ -139,7 +139,7 @@ jQuery(document).ready(function() {
 
 				wpac_debug("info", "Comment has been posted");
 
-				var commentUrl = request.getResponseHeader('X-WPAC-URL');
+				var commentUrl = request.getResponseHeader("X-WPAC-URL");
 				wpac_debug("info", "Found comment URL '%s' in X-WPAC-URL header.", commentUrl);
 
 				var oldCommentsContainer = jQuery(wpac_options.selectorCommentsContainer);
@@ -155,7 +155,7 @@ jQuery(document).ready(function() {
 					return wpac_fallback(commentUrl);
 				}
 
-				var unapproved = request.getResponseHeader('X-WPAC-UNAPPROVED');
+				var unapproved = request.getResponseHeader("X-WPAC-UNAPPROVED");
 				wpac_debug("info", "Found unapproved state '%s' in X-WPAC-UNAPPROVED", unapproved);
 				
 				// Show success message
@@ -208,7 +208,7 @@ jQuery(document).ready(function() {
 						var anchorElement = jQuery(anchor)
 						if (anchorElement.length) {
 							wpac_debug("info", "Scroll to anchor element %o...", anchorElement);
-							jQuery('html,body').animate({scrollTop: anchorElement.offset().top}, {
+							jQuery("html,body").animate({scrollTop: anchorElement.offset().top}, {
 								duration: wpac_options.scrollSpeed,
 								complete: function() { window.location.hash = anchor; }
 							});
