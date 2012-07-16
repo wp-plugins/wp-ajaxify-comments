@@ -82,14 +82,21 @@ function wpac_debug_selector(elementType, selector) {
 
 function wpac_fallback(commentUrl) {
 	wpac_showMessage(wpac_options["textReloadPage"], "loading");
+	var reload;
 	if (commentUrl) {
 		var questionMark = (commentUrl.indexOf("?") < 0) ? "?" : "";
 		var href = commentUrl.replace("#", questionMark + "&t=" + (new Date()).getTime() + "#");
 		wpac_debug("info", "Reloading page (href: '%s')...", href);
-		location.href = href;
+		reload = function() { location.href = href; };
 	} else {
 		wpac_debug("info", "Reloading page...");
-		location.reload();
+		reload = function() { location.reload(); };
+	}
+	if (!wpac_options.debug) {
+		reload();
+	} else {
+		wpac_debug("info", "Sleep for 5s to enable analyze of debug messages...");
+		window.setTimeout(reload, 5000);
 	}
 }
 
