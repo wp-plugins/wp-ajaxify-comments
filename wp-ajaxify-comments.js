@@ -95,7 +95,7 @@ function wpac_fallback(commentUrl) {
 	if (!wpac_options.debug) {
 		reload();
 	} else {
-		wpac_debug("info", "Sleep for 5s to enable analyze of debug messages...");
+		wpac_debug("info", "Sleep for 5s to enable analyzing debug messages...");
 		window.setTimeout(reload, 5000);
 	}
 }
@@ -151,14 +151,14 @@ jQuery(document).ready(function() {
 
 				var oldCommentsContainer = jQuery(wpac_options.selectorCommentsContainer);
 				if (!oldCommentsContainer.length) {
-					wpac_debug("info", "Comment container on current page not found (selector: '%s')", wpac_options.selectorCommentsContainer);
+					wpac_debug("error", "Comment container on current page not found (selector: '%s')", wpac_options.selectorCommentsContainer);
 					return wpac_fallback(commentUrl);
 				}
 				
 				var extractedBody = wpac_extractBody(data);
 				var newCommentsContainer = extractedBody.find(wpac_options.selectorCommentsContainer);
 				if (!newCommentsContainer.length) {
-					wpac_debug("info", "Comment container on requested page not found (selector: '%s')", wpac_options.selectorCommentsContainer);
+					wpac_debug("error", "Comment container on requested page not found (selector: '%s')", wpac_options.selectorCommentsContainer);
 					return wpac_fallback(commentUrl);
 				}
 
@@ -180,7 +180,7 @@ jQuery(document).ready(function() {
 						wpac_debug("info", "Replace comment form...");
 						var newCommentForm = extractedBody.find(wpac_options.selectorCommentForm);
 						if (newCommentForm.length == 0) {
-							wpac_debug("info", "Comment form on requested page not found (selector: '%s')", wpac_options.selectorCommentForm);
+							wpac_debug("error", "Comment form on requested page not found (selector: '%s')", wpac_options.selectorCommentForm);
 							return wpac_fallback(commentUrl);
 						}
 						form.replaceWith(newCommentForm);
@@ -195,12 +195,12 @@ jQuery(document).ready(function() {
 					// -> Replace Wordpress placeholder div (#wp-temp-form-div) with respond div
 					var wpTempFormDiv = jQuery("#wp-temp-form-div");
 					if (!wpTempFormDiv.length) {
-						wpac_debug("info", "WordPress' #wp-temp-form-div container not found", wpac_options.selectorRespondContainer);
+						wpac_debug("error", "WordPress' #wp-temp-form-div container not found", wpac_options.selectorRespondContainer);
 						return wpac_fallback(commentUrl);
 					}
 					var newRespondContainer = extractedBody.find(wpac_options.selectorRespondContainer);
 					if (!newRespondContainer.length) {
-						wpac_debug("info", "Respond container on requested page not found (selector: '%s')", wpac_options.selectorRespondContainer);
+						wpac_debug("error", "Respond container on requested page not found (selector: '%s')", wpac_options.selectorRespondContainer);
 						return wpac_fallback(commentUrl);
 					}
 					wpTempFormDiv.replaceWith(newRespondContainer);
@@ -220,7 +220,7 @@ jQuery(document).ready(function() {
 								complete: function() { window.location.hash = anchor; }
 							});
 						} else {
-							wpac_debug("info", "Anchor element not found");
+							wpac_debug("error", "Anchor element not found");
 						}
 					}
 				}
