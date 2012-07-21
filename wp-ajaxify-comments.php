@@ -55,22 +55,22 @@ $wpac_config = array(
 			'selectorCommentForm' => array(
 				'type' => 'string',
 				'default' => '#commentform',
-				'label' => 'Comment Form Selector:',
+				'label' => 'Comment form selector:',
 			),
 			'selectorCommentsContainer' => array(
 				'type' => 'string',
 				'default' => '#comments',
-				'label' => 'Comments Container Selector:',
+				'label' => 'Comments container selector:',
 			),
 			'selectorRespondContainer' => array(
 				'type' => 'string',
 				'default' => '#respond',
-				'label' => 'Respond Container Selector:',
+				'label' => 'Respond container selector:',
 			),
 			'selectorErrorContainer' => array(
 				'type' => 'string',
 				'default' => 'p:parent',
-				'label' => 'Error Container Selector:',
+				'label' => 'Error container selector:',
 			),
 		),
 	),
