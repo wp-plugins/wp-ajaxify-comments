@@ -78,7 +78,7 @@ Most likely yes, but it has not been tested yet. Please leave me a message if yo
 Yes, there are some features I would like to add in future versions:
 
 * Client-side validation
-* i18n support for admin backend 
+* i18n support for admin frontend 
 
 = How to enable the debug mode? =
 
