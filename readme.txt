@@ -18,10 +18,22 @@ Since the plugin hooks (on client-side) into the theme to intercept the submit o
 
 Summarized the WP-Ajaxify-Comments plugin hooks into your theme and improves the usability of the comment form by validating and adding comments without the need of complete page reloads.
 
+Some features of the plugin:
+
+* Validating and adding comments without (complete) page reloads
+* Seamless integration in almost every theme (default options should work with most themes)
+* i18n support
+* Support for threaded comments
+* Support for comments that await moderation
+* Compatibility with comment spam protection plugins and other plugins that extend/manipulate the comment form
+* Admin frontend to customize the look and feel
+* Debug mode to support troubleshooting
+
 == Screenshots ==
 
 1. Info popup overlay after the comment has successfully been posted
 2. Error popup overlay with error message when posting a comment failed
+3. Admin frontend (to customize the plugin)
 
 == Installation ==
 
