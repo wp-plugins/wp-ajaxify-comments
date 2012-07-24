@@ -4,11 +4,11 @@ Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.4
-Stable tag: 0.5.0
+Stable tag: 0.5.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
+WP-Ajaxify-Comments hooks into your comment form and adds AJAX functionality - no more page reloads required when validating and posting comments
 
 == Description ==
 
@@ -23,10 +23,12 @@ Some features of the plugin:
 * Validating and adding comments without (complete) page reloads
 * Seamless integration in almost every theme (default options should work with most themes)
 * i18n support
+* Includes localizations for ca, de-DE, es-ES, fr-FR, nl-NL, pl-PL, vi-VN, zh-CN (thanks to all contributors)
 * Support for threaded comments
 * Support for comments that await moderation
 * Compatibility with comment spam protection plugins and other plugins that extend/manipulate the comment form
 * Admin frontend to customize the look and feel
+* (Automatic) fallback mode uses complete page reloads if the plugin is not configured properly or any incompatibility is detected
 * Debug mode to support troubleshooting
 
 == Screenshots ==
@@ -89,6 +91,11 @@ The debug mode can be enabled on the plugin's settings page (Settings > WP-Ajaxi
 Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to block the UI while the comment is sent to the server and to show popup overlays containing the error and info messages.
 
 == Changelog ==
+
+= 0.5.1 =
+
+* Updated localization for zh-CN (thanks to Liberty Pi)
+* Updated jQuery blockUI to 2.42 (thanks to Mexalim)
 
 = 0.5.0 =
 
@@ -167,8 +174,11 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Upgrade Notice ==
 
+= 0.5.1 =
+Updated localization for zh-CN, Updated jQuery blockUI to 2.42
+
 = 0.5.0 =
-Bug-fix, support for comments that are awaiting moderation, more detailed debug mesages & debug support for IE 9, added localization for ca
+Bug-fix, support for comments that are awaiting moderation, more detailed debug messages & debug support for IE 9, added localization for ca
 
 = 0.4.1 =
 Added localization for nl-NL

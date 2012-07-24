@@ -113,6 +113,7 @@ jQuery(document).ready(function() {
 	
 	// Debug infos
 	wpac_debug("info", "Found jQuery version '%s'", jQuery.fn.jquery);
+	wpac_debug("info", "Found jQuery blockUI version '%s'", jQuery.blockUI.version);
 	wpac_debug_selector("comment form", wpac_options.selectorCommentForm);
 	wpac_debug_selector("comments container", wpac_options.selectorCommentsContainer);
 	wpac_debug_selector("respond container", wpac_options.selectorRespondContainer);
