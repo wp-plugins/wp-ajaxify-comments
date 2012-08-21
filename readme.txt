@@ -4,7 +4,7 @@ Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.4
-Stable tag: 0.5.2
+Stable tag: 0.5.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,7 +23,7 @@ Some features of the plugin:
 * Validating and adding comments without (complete) page reloads
 * Seamless integration in almost every theme (default options should work with most themes)
 * i18n support
-* Includes localizations for ca, de-DE, es-ES, fa-IR, fr-FR, nl-NL, pl-PL, vi-VN, zh-CN (thanks to all contributors)
+* Includes localizations for ca, de-DE, es-ES, fa-IR, fr-FR, nl-NL, pl-PL, pt-BR, tr-TR, vi-VN, zh-CN (thanks to all contributors)
 * Support for threaded comments
 * Support for comments that await moderation
 * Compatibility with comment spam protection plugins and other plugins that extend/manipulate the comment form
@@ -91,6 +91,11 @@ The debug mode can be enabled on the plugin's settings page (Settings > WP-Ajaxi
 Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to block the UI while the comment is sent to the server and to show popup overlays containing the error and info messages.
 
 == Changelog ==
+
+= 0.5.3 =
+
+* Added localization for tr-TR (thanks to Çevre Günlüğü)
+* Added localization for pt-BR (thanks to Leandro Martins Guimarães)
 
 = 0.5.2 =
 
@@ -177,6 +182,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.5.2 =
+Added localization for tr-TR and pt-BR
 
 = 0.5.2 =
 Added localization for fa-IR
