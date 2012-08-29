@@ -92,6 +92,10 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Changelog ==
 
+= 0.5.4 =
+
+* jQuery 1.7+ compatibility: Use on() or delegate() if available instead of deprecated live() (thanks to tzdk)
+
 = 0.5.3 =
 
 * Added localization for tr-TR (thanks to Erdinç Aladağ)
@@ -183,7 +187,10 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Upgrade Notice ==
 
-= 0.5.2 =
+= 0.5.4 =
+jQuery 1.7+ compatibility
+
+= 0.5.3 =
 Added localization for tr-TR and pt-BR
 
 = 0.5.2 =

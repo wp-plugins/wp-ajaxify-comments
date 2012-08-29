@@ -120,7 +120,7 @@ jQuery(document).ready(function() {
 	wpac_debug("info", "Initialization completed");
 	
 	// Intercept comment form submit
-	jQuery(wpac_options["selectorCommentForm"]).live("submit", function (event) {
+	var submitHandler = function (event) {
 
 		var form = jQuery(this);
 
@@ -247,6 +247,17 @@ jQuery(document).ready(function() {
 			}
   	    });
 	  
-	});
+	};
 
+	// Add submit handler
+	if (jQuery(document).on) {
+		// jQuery 1.7+
+		jQuery(document).on("submit", wpac_options["selectorCommentForm"], submitHandler);
+	} else if (jQuery(document).delegate) {
+		// jQuery 1.4.3+
+		jQuery(document).delegate(wpac_options["selectorCommentForm"], "submit", submitHandler);
+	} else {
+		// jQuery 1.3+
+		jQuery(wpac_options["selectorCommentForm"]).live("submit", submitHandler);
+	}
 });
