@@ -94,7 +94,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 = 0.5.3 =
 
-* Added localization for tr-TR (thanks to Çevre Günlüğü)
+* Added localization for tr-TR (thanks to Erdinç Aladağ)
 * Added localization for pt-BR (thanks to Leandro Martins Guimarães)
 
 = 0.5.2 =
