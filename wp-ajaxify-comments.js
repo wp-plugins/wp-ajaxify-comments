@@ -169,6 +169,8 @@ jQuery(document).ready(function() {
 				// Show success message
 				wpac_showMessage(unapproved == '1' ? wpac_options["textPostedUnapproved"] : wpac_options["textPosted"], "success");
 			
+				wpac_callbacks["onBeforeUpdateComments"]();
+			
 				// Update comments container
 				oldCommentsContainer.replaceWith(newCommentsContainer);
 				
@@ -208,6 +210,8 @@ jQuery(document).ready(function() {
 
 				}
 
+				wpac_callbacks["onAfterUpdateComments"]();
+				
 				// Smooth scroll to comment url and update browser url
 				if (commentUrl) {
 					var anchor = commentUrl.substr(commentUrl.indexOf("#"));

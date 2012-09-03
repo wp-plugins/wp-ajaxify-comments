@@ -4,7 +4,7 @@ Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.4
-Stable tag: 0.5.4
+Stable tag: 0.6.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,10 @@ The debug mode can be enabled on the plugin's settings page (Settings > WP-Ajaxi
 Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to block the UI while the comment is sent to the server and to show popup overlays containing the error and info messages.
 
 == Changelog ==
+
+= 0.6.0 =
+
+* Added JavaScript callbacks ("Before update comments" and "After update comments")
 
 = 0.5.4 =
 
@@ -186,6 +190,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.6.0 =
+Added JavaScript callbacks
 
 = 0.5.4 =
 jQuery 1.7+ compatibility

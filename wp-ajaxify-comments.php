@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.5.4
+Version: 0.6.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -167,6 +167,23 @@ $wpac_config = array(
 			),
 		)
 	)
+	,array(
+		'section' => 'Expert settings (JavaScript callbacks)',
+		'options' => array(
+			'callbackOnBeforeUpdateComments' => array(
+				'type' => 'multiline',
+				'default' => '',
+				'label' => 'Before update comments',
+				'specialOption' => true,
+			),
+			'callbackOnAfterUpdateComments' => array(
+				'type' => 'multiline',
+				'default' => '',
+				'label' => 'After update comments',
+				'specialOption' => true,
+			),
+		)
+	)
 );
 
 function wpac_enqueue_scripts() {
@@ -198,9 +215,13 @@ function wpac_initialize() {
 		global $post;
 		global $wpac_config;
 
-		echo '<script type="text/javascript">var wpac_options = {';
+		echo '<script type="text/javascript">';
+		
+		// Options
+		echo 'var wpac_options = {';
 		foreach($wpac_config as $config) {
 			foreach($config['options'] as $optionName => $option) {
+				if ($option['specialOption']) continue;
 				$value = trim(get_option(WPAC_OPTION_PREFIX.$optionName));
 				if (strlen($value) == 0) $value = $option['default'];
 				echo $optionName.':'.($option['type'] == 'int' ? $value :'"'.wpac_js_escape($value).'"').',';
@@ -213,8 +234,15 @@ function wpac_initialize() {
 		echo 'textReloadPage:"'.wpac_js_escape(__('Reloading page. Please wait&hellip;', WPAC_DOMAIN)).'",';
 		echo 'commentsEnabled:'.((is_page() || is_single()) && comments_open($post->ID) ? 'true' : 'false').',';
 		echo 'debug:'.(get_option(WPAC_OPTION_PREFIX.'debug') ? 'true' : 'false').',';
-		echo 'version:"'.wpac_get_version().'"}</script>';
+		echo 'version:"'.wpac_get_version().'"};';
 
+		// Callbacks
+		echo 'var wpac_callbacks = {};';
+		echo 'wpac_callbacks["onBeforeUpdateComments"] = function() {'.get_option(WPAC_OPTION_PREFIX.'callbackOnBeforeUpdateComments').'};';
+		echo 'wpac_callbacks["onAfterUpdateComments"] = function() {'.get_option(WPAC_OPTION_PREFIX.'callbackOnAfterUpdateComments').'};';
+		
+		echo '</script>';
+		
 	}
 }
 
@@ -353,15 +381,19 @@ function wpac_option_page() {
 
 				echo '<tr><th scope="row"><label for="'.$optionName.'" style="color: '.$color.'">'.$option['label'].'</label></th><td>';
 				
-				$value = $_POST['wpac'][$section][$optionName] ? $_POST['wpac'][$section][$optionName] : get_option(WPAC_OPTION_PREFIX.$optionName);
+				$value = $_POST['wpac'][$section][$optionName] ? stripslashes($_POST['wpac'][$section][$optionName]) : get_option(WPAC_OPTION_PREFIX.$optionName);
 				$name = 'wpac['.$section.']['.$optionName.']';
 				
 				if ($option['type'] == 'boolean') {
 					echo '<input type="hidden" name="'.$name.'" value="0">';
 					echo '<input type="checkbox" name="'.$name.'" id="'.$optionName.'" '.($value ? 'checked="checked"' : '').' value="1"/>';
 				} else {
-					echo '<input type="input" name="'.$name.'" id="'.$optionName.'" value="'.htmlentities($value).'" style="width: 300px; color: '.$color.'"/>';
-					echo '<br/>Leave empty for default value <em>'.$option['default'].'</em>';
+					if ($option['type'] == 'multiline') {
+						echo '<textarea name="'.$name.'" id="'.$optionName.'" style="width: 300px; color: '.$color.'">'.htmlentities($value).'</textarea>';
+					} else {
+						echo '<input type="input" name="'.$name.'" id="'.$optionName.'" value="'.htmlentities($value).'" style="width: 300px; color: '.$color.'"/>';
+					} 
+					if ($option['default']) echo '<br/>Leave empty for default value <em>'.$option['default'].'</em>';
 				}
 				echo '</td></tr>';
 			}
