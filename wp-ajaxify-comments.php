@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.6.1
+Version: 0.6.2
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -284,8 +284,9 @@ function wpac_init()
 	}
 
 	// Update session var and add header if session var is defined
-	if ($_SESSION[WPAC_SESSION_VAR]) {
-		$currentUrl = 'http'.($_SERVER['HTTPS'] ? 's' : '').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+	if (isset($_SESSION[WPAC_SESSION_VAR]) && $_SESSION[WPAC_SESSION_VAR]) {
+		$currentUrl = 'http'.((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] && $_SERVER['HTTPS'] != 'off') ? 's' : '')
+			.'://'.$_SERVER['SERVER_NAME'].($_SERVER['SERVER_PORT'] != '80' ? ':'.$_SERVER['SERVER_PORT'] : '').$_SERVER['REQUEST_URI'];
 		$sessionUrl = $_SESSION[WPAC_SESSION_VAR]['url'];
 		if ($sessionUrl !== $currentUrl && strpos($sessionUrl, $currentUrl.'#') !== 0) {	
 			$_SESSION[WPAC_SESSION_VAR] = null;
@@ -320,19 +321,20 @@ function wpac_option_page() {
 	
 	$errors = array();
 	
-	if (!empty($_POST) && check_admin_referer('wpac_update_settings','wpac_nonce_field'))
+	if (!empty($_POST) && isset($_POST['wpac']) && check_admin_referer('wpac_update_settings','wpac_nonce_field'))
 	{
 		foreach($_POST['wpac'] as $section => $options) {
 		
 			foreach ($options as $optionName => $value) {
 
+				if (!isset($wpac_config[$section])) continue;
+				if (!isset($wpac_config[$section]['options'][$optionName])) continue;
+			
 				$value = trim(stripslashes($value));
-				$pattern = $wpac_config[$section]['options'][$optionName]['pattern'];
+				$pattern = isset($wpac_config[$section]['options'][$optionName]['pattern']) ? $wpac_config[$section]['options'][$optionName]['pattern'] : null;
 				
 				if (strlen($value) > 0) {
-					if ($pattern) {
-						$error = (preg_match($pattern, $value) !== 1);
-					}
+					$error = $pattern ? (preg_match($pattern, $value) !== 1) : null;
 					if ($error) {
 						$errors[] = $optionName;
 					} else {
@@ -381,7 +383,7 @@ function wpac_option_page() {
 
 				echo '<tr><th scope="row"><label for="'.$optionName.'" style="color: '.$color.'">'.$option['label'].'</label></th><td>';
 				
-				$value = $_POST['wpac'][$section][$optionName] ? stripslashes($_POST['wpac'][$section][$optionName]) : get_option(WPAC_OPTION_PREFIX.$optionName);
+				$value = (isset($_POST['wpac']) && $_POST['wpac'][$section][$optionName]) ? stripslashes($_POST['wpac'][$section][$optionName]) : get_option(WPAC_OPTION_PREFIX.$optionName);
 				$name = 'wpac['.$section.']['.$optionName.']';
 				
 				if ($option['type'] == 'boolean') {
