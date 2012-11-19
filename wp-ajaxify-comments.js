@@ -1,6 +1,10 @@
+var wpac_regex = new RegExp("<body[^>]*>((.|\n|\r)*)</body>", "i");
 function wpac_extractBody(html) {
-	var regex = new RegExp("<body[^>]*>((.|\n|\r)*)</body>", "i");
-	return jQuery("<div>"+regex.exec(html)[1]+"</div>");
+	try {
+		return jQuery("<div>"+wpac_regex.exec(html)[1]+"</div>");
+	} catch (e) {
+		return false;
+	}
 }
 
 function wpac_showMessage(message, type) {
@@ -157,6 +161,10 @@ jQuery(document).ready(function() {
 				}
 				
 				var extractedBody = wpac_extractBody(data);
+				if (extractedBody === false) {
+					wpac_debug("error", "Unsupported server response, unable to extract body (data: '%s')", data);
+					return wpac_fallback(commentUrl);
+				}
 				var newCommentsContainer = extractedBody.find(wpac_options.selectorCommentsContainer);
 				if (!newCommentsContainer.length) {
 					wpac_debug("error", "Comment container on requested page not found (selector: '%s')", wpac_options.selectorCommentsContainer);
@@ -238,16 +246,18 @@ jQuery(document).ready(function() {
 			
 				// Extract error message
 				var extractedBody = wpac_extractBody(jqXhr.responseText);
-				var errorMessage = extractedBody.find(wpac_options.selectorErrorContainer);
-				if (errorMessage.length) {
-					errorMessage = errorMessage.html();
-					wpac_debug("info", "Error message '%s' successfully extracted", errorMessage);
-				} else {
-					wpac_debug("error", "Error message could not be extracted, use error message '%s'.", wpac_options.textUnknownError);
-					errorMessage = wpac_options.textUnknownError;
+				if (extractedBody !== false) {
+					var errorMessage = extractedBody.find(wpac_options.selectorErrorContainer);
+					if (errorMessage.length) {
+						errorMessage = errorMessage.html();
+						wpac_debug("info", "Error message '%s' successfully extracted", errorMessage);
+						wpac_showMessage(errorMessage, "error");
+						return;
+					}
 				}
-				
-				wpac_showMessage(errorMessage, "error");
+
+				wpac_debug("error", "Error message could not be extracted, use error message '%s'.", wpac_options.textUnknownError);
+				wpac_showMessage(wpac_options.textUnknownError, "error");
 			}
   	    });
 	  

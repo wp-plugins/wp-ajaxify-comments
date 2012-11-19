@@ -97,6 +97,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Fixed some PHP warnings (thanks to petersb)
 * Fixed HTTPS check for ISAPI under IIS
 * Added support for non-standard HTTP port
+* Fixed handling of unexpected/unsupported server responses
 
 = 0.6.1 =
 
@@ -202,7 +203,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 == Upgrade Notice ==
 
 = 0.6.2 =
-Fixed PHP warnings
+Some bug fixes
 
 = 0.6.1 =
 Added localization for ru-RU and uk
