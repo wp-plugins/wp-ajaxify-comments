@@ -106,6 +106,8 @@ function wpac_fallback(commentUrl) {
 
 jQuery(document).ready(function() {
 
+	wpac_callbacks["onBeforeSelectElements"](jQuery(document));
+	
 	// Debug infos
 	wpac_debug("info", "Initializing version %s", wpac_options.version);
 
@@ -165,6 +167,9 @@ jQuery(document).ready(function() {
 					wpac_debug("error", "Unsupported server response, unable to extract body (data: '%s')", data);
 					return wpac_fallback(commentUrl);
 				}
+				
+				wpac_callbacks["onBeforeSelectElements"](extractedBody);
+				
 				var newCommentsContainer = extractedBody.find(wpac_options.selectorCommentsContainer);
 				if (!newCommentsContainer.length) {
 					wpac_debug("error", "Comment container on requested page not found (selector: '%s')", wpac_options.selectorCommentsContainer);

@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.6.3
+Version: 0.7.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -170,6 +170,13 @@ $wpac_config = array(
 	,array(
 		'section' => 'Expert settings (JavaScript callbacks)',
 		'options' => array(
+			'callbackOnBeforeSelectElements' => array(
+				'type' => 'multiline',
+				'default' => '',
+				'label' => 'Before select elements',
+				'specialOption' => true,
+				'description' => 'Parameter: dom (jQuery DOM element)'
+			),
 			'callbackOnBeforeUpdateComments' => array(
 				'type' => 'multiline',
 				'default' => '',
@@ -238,6 +245,7 @@ function wpac_initialize() {
 
 		// Callbacks
 		echo 'var wpac_callbacks = {};';
+		echo 'wpac_callbacks["onBeforeSelectElements"] = function(dom) {'.get_option(WPAC_OPTION_PREFIX.'callbackOnBeforeSelectElements').'};';
 		echo 'wpac_callbacks["onBeforeUpdateComments"] = function() {'.get_option(WPAC_OPTION_PREFIX.'callbackOnBeforeUpdateComments').'};';
 		echo 'wpac_callbacks["onAfterUpdateComments"] = function() {'.get_option(WPAC_OPTION_PREFIX.'callbackOnAfterUpdateComments').'};';
 		
@@ -396,6 +404,7 @@ function wpac_option_page() {
 						echo '<input type="input" name="'.$name.'" id="'.$optionName.'" value="'.htmlentities($value).'" style="width: 300px; color: '.$color.'"/>';
 					} 
 					if ($option['default']) echo '<br/>Leave empty for default value <em>'.$option['default'].'</em>';
+					if ($option['description']) echo '<br/><em>'.$option['description'].'</em>';
 				}
 				echo '</td></tr>';
 			}
