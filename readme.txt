@@ -80,7 +80,6 @@ Most likely yes, but it has not been tested yet. Please leave me a message if yo
 Yes, there are some features I would like to add in future versions:
 
 * Client-side validation
-* i18n support for admin frontend 
 
 = How to enable the debug mode? =
 
@@ -95,6 +94,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 = 0.8.0 =
 
 * Added option to customize the font size
+* Added i18n support for admin frontend 
 
 = 0.7.0 =
 
@@ -215,7 +215,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 == Upgrade Notice ==
 
 = 0.8.0 =
-Added option to customize the font size
+Added option to customize the font size, i18n support for admin frontend
 
 = 0.7.0 =
 Added JavaScript callback ("Before select elements")
