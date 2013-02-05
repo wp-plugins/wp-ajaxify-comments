@@ -53,9 +53,9 @@ function wpac_showMessage(message, type) {
 }
 
 var wpac_debug_errorShown = false;
-function wpac_debug(level, message) {
+function wpac_debug(level, message, force) {
 
-	if (!wpac_options.debug) return;
+	if (!force && !wpac_options.debug) return;
 
 	// Fix console.log.apply for IE9
 	// see http://stackoverflow.com/a/5539378/516472
@@ -107,6 +107,12 @@ function wpac_fallback(commentUrl) {
 
 jQuery(document).ready(function() {
 
+	// Assert that environment is set up correctly
+	if (!wpac_options || !wpac_callbacks) {
+		wpac_debug("error", "Something unexpected happened, initialization failed. Please try to reinstall the plugin.", true);
+		return;
+	}
+
 	wpac_callbacks["onBeforeSelectElements"](jQuery(document));
 	
 	// Debug infos
@@ -119,12 +125,22 @@ jQuery(document).ready(function() {
 	}
 	
 	// Debug infos
-	wpac_debug("info", "Found jQuery version '%s'", jQuery.fn.jquery);
-	wpac_debug("info", "Found jQuery blockUI version '%s'", jQuery.blockUI.version);
-	wpac_debug_selector("comment form", wpac_options.selectorCommentForm);
-	wpac_debug_selector("comments container", wpac_options.selectorCommentsContainer);
-	wpac_debug_selector("respond container", wpac_options.selectorRespondContainer);
-	wpac_debug("info", "Initialization completed");
+	if (wpac_options.debug) {
+		if (!jQuery || !jQuery.fn || !jQuery.fn.jquery) {
+			wpac_debug("error", "jQuery not found, abort initialization. Please try to reinstall the plugin.");
+			return;
+		}
+		wpac_debug("info", "Found jQuery %s", jQuery.fn.jquery);
+		if (!jQuery || !jQuery.blockUI || !jQuery.blockUI.version) {
+			wpac_debug("error", "jQuery blockUI not found, abort initialization. Please try to reinstall the plugin.");
+			return;
+		}
+		wpac_debug("info", "Found jQuery blockUI %s", jQuery.blockUI.version);
+		wpac_debug_selector("comment form", wpac_options.selectorCommentForm);
+		wpac_debug_selector("comments container", wpac_options.selectorCommentsContainer);
+		wpac_debug_selector("respond container", wpac_options.selectorRespondContainer);
+		wpac_debug("info", "Initialization completed");
+	}
 	
 	// Intercept comment form submit
 	var submitHandler = function (event) {
