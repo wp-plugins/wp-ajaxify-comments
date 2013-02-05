@@ -40,7 +40,8 @@ function wpac_showMessage(message, type) {
 			opacity: wpac_options.popupOpacity/100, 
 			color: textColor,
 			textAlign: wpac_options.popupTextAlign,
-			cursor: (type == "loading") ? "wait" : "default"
+			cursor: (type == "loading") ? "wait" : "default",
+			"font-size": wpac_options.popupTextFontSize
 		},
 		overlayCSS:  { 
 			backgroundColor: "#000", 

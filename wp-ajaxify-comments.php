@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.7.0
+Version: 0.8.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -40,12 +40,12 @@ $wpac_config = array(
 			'enable' => array(
 				'type' => 'boolean',
 				'default' => '0',
-				'label' => 'Enabled plugin:',
+				'label' => 'Enabled plugin',
 			),
 			'debug' => array(
 				'type' => 'boolean',
 				'default' => '0',
-				'label' => 'Debug mode:',
+				'label' => 'Debug mode',
 			),
 		),
 	),
@@ -55,22 +55,22 @@ $wpac_config = array(
 			'selectorCommentForm' => array(
 				'type' => 'string',
 				'default' => '#commentform',
-				'label' => 'Comment form selector:',
+				'label' => 'Comment form selector',
 			),
 			'selectorCommentsContainer' => array(
 				'type' => 'string',
 				'default' => '#comments',
-				'label' => 'Comments container selector:',
+				'label' => 'Comments container selector',
 			),
 			'selectorRespondContainer' => array(
 				'type' => 'string',
 				'default' => '#respond',
-				'label' => 'Respond container selector:',
+				'label' => 'Respond container selector',
 			),
 			'selectorErrorContainer' => array(
 				'type' => 'string',
 				'default' => 'p:parent',
-				'label' => 'Error container selector:',
+				'label' => 'Error container selector',
 			),
 		),
 	),
@@ -80,79 +80,84 @@ $wpac_config = array(
 			'popupCornerRadius' => array(
 				'type' => 'int',
 				'default' => '5',
-				'label' => 'Corner radius (px):',
+				'label' => 'Corner radius (px)',
 				'pattern' => '/^[0-9]*$/',
 			),
 			'popupMarginTop' => array(
 				'type' => 'int',
 				'default' => '10',
-				'label' => 'Margin top (px):',
+				'label' => 'Margin top (px)',
 				'pattern' => '/^[0-9]*$/',
 			),
 			'popupFadeIn' => array(
 				'type' => 'int',
 				'default' => '400',
-				'label' => 'Fade in time (ms):',
+				'label' => 'Fade in time (ms)',
 				'pattern' => '/^[0-9]*$/',
 			),
 			'popupFadeOut' => array(
 				'type' => 'int',
 				'default' => '400',
-				'label' => 'Fade out time (ms):',
+				'label' => 'Fade out time (ms)',
 				'pattern' => '/^[0-9]*$/',
 			),
 			'popupTimeout' => array(
 				'type' => 'int',
 				'default' => '3000',
-				'label' => 'Timeout (ms):',
+				'label' => 'Timeout (ms)',
 				'pattern' => '/^[0-9]*$/',
 			),
 			'popupBackgroundColorLoading' => array(
 				'type' => 'string',
 				'default' => '#000',
-				'label' => 'Loading background color:',
+				'label' => 'Loading background color',
 			),
 			'popupTextColorLoading' => array(
 				'type' => 'string',
 				'default' => '#fff',
-				'label' => 'Loading text color:',
+				'label' => 'Loading text color',
 			),
 			'popupBackgroundColorSuccess' => array(
 				'type' => 'string',
 				'default' => '#008000',
-				'label' => 'Success background color:',
+				'label' => 'Success background color',
 			),
 			'popupTextColorSuccess' => array(
 				'type' => 'string',
 				'default' => '#fff',
-				'label' => 'Success text color:',
+				'label' => 'Success text color',
 			),			
 			'popupBackgroundColorError' => array(
 				'type' => 'string',
 				'default' => '#f00',
-				'label' => 'Error background color:',
+				'label' => 'Error background color',
 			),
 			'popupTextColorError' => array(
 				'type' => 'string',
 				'default' => '#fff',
-				'label' => 'Error text color:',
+				'label' => 'Error text color',
 			),			
 			'popupOpacity' => array(
 				'type' => 'int',
 				'default' => '70',
-				'label' => 'Opacity (%):',
+				'label' => 'Opacity (%)',
 				'pattern' => '/^(100|[1-9][0-9]|[1-9])$/',
 			),
 			'popupTextAlign' => array(
 				'type' => 'string',
 				'default' => 'center',
-				'label' => 'Text align (left|center|right):',
+				'label' => 'Text align (left|center|right)',
 				'pattern' => '/^(left|center|right)$/',
 			),
+			'popupTextFontSize' => array(
+				'type' => 'string',
+				'default' => 'Default font size',
+				'label' => 'Font size (e.g. "14px", "1.1em", &hellip;)',
+			),			
 			'popupZindex' => array(
 				'type' => 'int',
 				'default' => '1000',
-				'label' => 'Z-Index:',
+				'label' => 'Z-Index',
 				'pattern' => '/^[0-9]*$/',
 			),
 		),
@@ -163,7 +168,7 @@ $wpac_config = array(
 			'scrollSpeed' => array(
 				'type' => 'int',
 				'default' => '500',
-				'label' => 'Scroll speed (ms):',
+				'label' => 'Scroll speed (ms)',
 			),
 		)
 	)

@@ -92,6 +92,10 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Changelog ==
 
+= 0.8.0 =
+
+* Added option to customize the font size
+
 = 0.7.0 =
 
 * Added JavaScript callback ("Before select elements")
@@ -209,6 +213,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.8.0 =
+Added option to customize the font size
 
 = 0.7.0 =
 Added JavaScript callback ("Before select elements")
