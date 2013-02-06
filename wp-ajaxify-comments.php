@@ -33,171 +33,174 @@ define('WPAC_DOMAIN', 'wpac');
 define('WPAC_SESSION_VAR', WPAC_DOMAIN.'_session');
 define('WPAC_OPTION_PREFIX', WPAC_DOMAIN.'_');
 
-$wpac_config = array(
-	array(
-		'section' => __('General'),
-		'options' => array(
-			'enable' => array(
-				'type' => 'boolean',
-				'default' => '0',
-				'label' => __('Enabled plugin'),
-			),
-			'debug' => array(
-				'type' => 'boolean',
-				'default' => '0',
-				'label' => __('Debug mode'),
-			),
-		),
-	),
-	array(
-		'section' => __('Selectors'),
-		'options' => array(
-			'selectorCommentForm' => array(
-				'type' => 'string',
-				'default' => '#commentform',
-				'label' => __('Comment form selector'),
-			),
-			'selectorCommentsContainer' => array(
-				'type' => 'string',
-				'default' => '#comments',
-				'label' => __('Comments container selector'),
-			),
-			'selectorRespondContainer' => array(
-				'type' => 'string',
-				'default' => '#respond',
-				'label' => __('Respond container selector'),
-			),
-			'selectorErrorContainer' => array(
-				'type' => 'string',
-				'default' => 'p:parent',
-				'label' => __('Error container selector'),
-			),
-		),
-	),
-	array(
-		'section' => __('Popup overlay'),
-		'options' => array(
-			'popupCornerRadius' => array(
-				'type' => 'int',
-				'default' => '5',
-				'label' => __('Corner radius (px)'),
-				'pattern' => '/^[0-9]*$/',
-			),
-			'popupMarginTop' => array(
-				'type' => 'int',
-				'default' => '10',
-				'label' => __('Margin top (px)'),
-				'pattern' => '/^[0-9]*$/',
-			),
-			'popupFadeIn' => array(
-				'type' => 'int',
-				'default' => '400',
-				'label' => __('Fade in time (ms)'),
-				'pattern' => '/^[0-9]*$/',
-			),
-			'popupFadeOut' => array(
-				'type' => 'int',
-				'default' => '400',
-				'label' => __('Fade out time (ms)'),
-				'pattern' => '/^[0-9]*$/',
-			),
-			'popupTimeout' => array(
-				'type' => 'int',
-				'default' => '3000',
-				'label' => __('Timeout (ms)'),
-				'pattern' => '/^[0-9]*$/',
-			),
-			'popupBackgroundColorLoading' => array(
-				'type' => 'string',
-				'default' => '#000',
-				'label' => __('Loading background color'),
-			),
-			'popupTextColorLoading' => array(
-				'type' => 'string',
-				'default' => '#fff',
-				'label' => __('Loading text color'),
-			),
-			'popupBackgroundColorSuccess' => array(
-				'type' => 'string',
-				'default' => '#008000',
-				'label' => __('Success background color'),
-			),
-			'popupTextColorSuccess' => array(
-				'type' => 'string',
-				'default' => '#fff',
-				'label' => __('Success text color'),
-			),			
-			'popupBackgroundColorError' => array(
-				'type' => 'string',
-				'default' => '#f00',
-				'label' => __('Error background color'),
-			),
-			'popupTextColorError' => array(
-				'type' => 'string',
-				'default' => '#fff',
-				'label' => __('Error text color'),
-			),			
-			'popupOpacity' => array(
-				'type' => 'int',
-				'default' => '70',
-				'label' => __('Opacity (%)'),
-				'pattern' => '/^(100|[1-9][0-9]|[1-9])$/',
-			),
-			'popupTextAlign' => array(
-				'type' => 'string',
-				'default' => 'center',
-				'label' => __('Text align (left|center|right)'),
-				'pattern' => '/^(left|center|right)$/',
-			),
-			'popupTextFontSize' => array(
-				'type' => 'string',
-				'default' => __('Default font size'),
-				'label' => __('Font size (e.g. "14px", "1.1em", &hellip;)'),
-			),			
-			'popupZindex' => array(
-				'type' => 'int',
-				'default' => '1000',
-				'label' => __('Z-Index'),
-				'pattern' => '/^[0-9]*$/',
-			),
-		),
-	),
-	array(
-		'section' => __('Miscellaneous'),
-		'options' => array(
-			'scrollSpeed' => array(
-				'type' => 'int',
-				'default' => '500',
-				'label' => __('Scroll speed (ms)'),
-			),
-		)
-	)
-	,array(
-		'section' => __('Expert settings (JavaScript callbacks)'),
-		'options' => array(
-			'callbackOnBeforeSelectElements' => array(
-				'type' => 'multiline',
-				'default' => '',
-				'label' => 'Before select elements',
-				'specialOption' => true,
-				'description' => __('Parameter: dom (jQuery DOM element)')
-			),
-			'callbackOnBeforeUpdateComments' => array(
-				'type' => 'multiline',
-				'default' => '',
-				'label' => 'Before update comments',
-				'specialOption' => true,
-			),
-			'callbackOnAfterUpdateComments' => array(
-				'type' => 'multiline',
-				'default' => '',
-				'label' => 'After update comments',
-				'specialOption' => true,
-			),
-		)
-	)
-);
+function wpac_get_config() {
 
+	return array(
+		array(
+			'section' => __('General', WPAC_DOMAIN),
+			'options' => array(
+				'enable' => array(
+					'type' => 'boolean',
+					'default' => '0',
+					'label' => __('Enabled plugin', WPAC_DOMAIN),
+				),
+				'debug' => array(
+					'type' => 'boolean',
+					'default' => '0',
+					'label' => __('Debug mode', WPAC_DOMAIN),
+				),
+			),
+		),
+		array(
+			'section' => __('Selectors', WPAC_DOMAIN),
+			'options' => array(
+				'selectorCommentForm' => array(
+					'type' => 'string',
+					'default' => '#commentform',
+					'label' => __('Comment form selector', WPAC_DOMAIN),
+				),
+				'selectorCommentsContainer' => array(
+					'type' => 'string',
+					'default' => '#comments',
+					'label' => __('Comments container selector', WPAC_DOMAIN),
+				),
+				'selectorRespondContainer' => array(
+					'type' => 'string',
+					'default' => '#respond',
+					'label' => __('Respond container selector', WPAC_DOMAIN),
+				),
+				'selectorErrorContainer' => array(
+					'type' => 'string',
+					'default' => 'p:parent',
+					'label' => __('Error container selector', WPAC_DOMAIN),
+				),
+			),
+		),
+		array(
+			'section' => __('Popup overlay', WPAC_DOMAIN),
+			'options' => array(
+				'popupCornerRadius' => array(
+					'type' => 'int',
+					'default' => '5',
+					'label' => __('Corner radius (px)', WPAC_DOMAIN),
+					'pattern' => '/^[0-9]*$/',
+				),
+				'popupMarginTop' => array(
+					'type' => 'int',
+					'default' => '10',
+					'label' => __('Margin top (px)', WPAC_DOMAIN),
+					'pattern' => '/^[0-9]*$/',
+				),
+				'popupFadeIn' => array(
+					'type' => 'int',
+					'default' => '400',
+					'label' => __('Fade in time (ms)', WPAC_DOMAIN),
+					'pattern' => '/^[0-9]*$/',
+				),
+				'popupFadeOut' => array(
+					'type' => 'int',
+					'default' => '400',
+					'label' => __('Fade out time (ms)', WPAC_DOMAIN),
+					'pattern' => '/^[0-9]*$/',
+				),
+				'popupTimeout' => array(
+					'type' => 'int',
+					'default' => '3000',
+					'label' => __('Timeout (ms)', WPAC_DOMAIN),
+					'pattern' => '/^[0-9]*$/',
+				),
+				'popupBackgroundColorLoading' => array(
+					'type' => 'string',
+					'default' => '#000',
+					'label' => __('Loading background color', WPAC_DOMAIN),
+				),
+				'popupTextColorLoading' => array(
+					'type' => 'string',
+					'default' => '#fff',
+					'label' => __('Loading text color', WPAC_DOMAIN),
+				),
+				'popupBackgroundColorSuccess' => array(
+					'type' => 'string',
+					'default' => '#008000',
+					'label' => __('Success background color', WPAC_DOMAIN),
+				),
+				'popupTextColorSuccess' => array(
+					'type' => 'string',
+					'default' => '#fff',
+					'label' => __('Success text color', WPAC_DOMAIN),
+				),			
+				'popupBackgroundColorError' => array(
+					'type' => 'string',
+					'default' => '#f00',
+					'label' => __('Error background color', WPAC_DOMAIN),
+				),
+				'popupTextColorError' => array(
+					'type' => 'string',
+					'default' => '#fff',
+					'label' => __('Error text color', WPAC_DOMAIN),
+				),			
+				'popupOpacity' => array(
+					'type' => 'int',
+					'default' => '70',
+					'label' => __('Opacity (%)', WPAC_DOMAIN),
+					'pattern' => '/^(100|[1-9][0-9]|[1-9])$/',
+				),
+				'popupTextAlign' => array(
+					'type' => 'string',
+					'default' => 'center',
+					'label' => __('Text align (left|center|right)', WPAC_DOMAIN),
+					'pattern' => '/^(left|center|right)$/',
+				),
+				'popupTextFontSize' => array(
+					'type' => 'string',
+					'default' => __('Default font size', WPAC_DOMAIN),
+					'label' => __('Font size (e.g. "14px", "1.1em", &hellip;)', WPAC_DOMAIN),
+				),			
+				'popupZindex' => array(
+					'type' => 'int',
+					'default' => '1000',
+					'label' => __('Z-Index', WPAC_DOMAIN),
+					'pattern' => '/^[0-9]*$/',
+				),
+			),
+		),
+		array(
+			'section' => __('Miscellaneous', WPAC_DOMAIN),
+			'options' => array(
+				'scrollSpeed' => array(
+					'type' => 'int',
+					'default' => '500',
+					'label' => __('Scroll speed (ms)', WPAC_DOMAIN),
+				),
+			)
+		)
+		,array(
+			'section' => __('Expert settings (JavaScript callbacks)', WPAC_DOMAIN),
+			'options' => array(
+				'callbackOnBeforeSelectElements' => array(
+					'type' => 'multiline',
+					'default' => '',
+					'label' => 'Before select elements',
+					'specialOption' => true,
+					'description' => __('Parameter: dom (jQuery DOM element)', WPAC_DOMAIN)
+				),
+				'callbackOnBeforeUpdateComments' => array(
+					'type' => 'multiline',
+					'default' => '',
+					'label' => 'Before update comments',
+					'specialOption' => true,
+				),
+				'callbackOnAfterUpdateComments' => array(
+					'type' => 'multiline',
+					'default' => '',
+					'label' => 'After update comments',
+					'specialOption' => true,
+				),
+			)
+		)
+	);
+}
+	
 function wpac_enqueue_scripts() {
 	$version = wpac_get_version();
 	wp_enqueue_script('jQueryBlockUi', WP_PLUGIN_URL.'/wp-ajaxify-comments/jquery.blockUI.js', array('jquery'), $version);
@@ -225,12 +228,12 @@ function wpac_initialize() {
 	if (get_option(WPAC_OPTION_PREFIX.'enable')) {
 
 		global $post;
-		global $wpac_config;
 
 		echo '<script type="text/javascript">';
 		
 		// Options
 		echo 'var wpac_options = {';
+		$wpac_config = wpac_get_config();
 		foreach($wpac_config as $config) {
 			foreach($config['options'] as $optionName => $option) {
 				if ($option['specialOption']) continue;
@@ -278,10 +281,10 @@ function wpac_admin_notice() {
 	if (basename($_SERVER['PHP_SELF']) == 'plugins.php') {
 		if (!get_option(WPAC_OPTION_PREFIX.'enable')) {
 			// Show error if plugin is not enabled
-			echo '<div class="error"><p><strong>'.sprintf(__('%s is not enabled!'), WPAC_PLUGIN_NAME).'</strong> <a href="'.WPAC_SETTINGS_URL.'">'.__('Click here to configure the plugin.').'</a></p></div>';
+			echo '<div class="error"><p><strong>'.sprintf(__('%s is not enabled!', WPAC_DOMAIN), WPAC_PLUGIN_NAME).'</strong> <a href="'.WPAC_SETTINGS_URL.'">'.__('Click here to configure the plugin.', WPAC_DOMAIN).'</a></p></div>';
 		} else if (get_option(WPAC_OPTION_PREFIX.'debug')) {
 			// Show info if plugin is running in debug mode
-			echo '<div class="updated"><p><strong>'.sprintf(__('%s is running in debug mode!'), WPAC_PLUGIN_NAME).'</strong> <a href="'.WPAC_SETTINGS_URL.'">'.__('Click here to configure the plugin.').'</a></p></div>';
+			echo '<div class="updated"><p><strong>'.sprintf(__('%s is running in debug mode!', WPAC_DOMAIN), WPAC_PLUGIN_NAME).'</strong> <a href="'.WPAC_SETTINGS_URL.'">'.__('Click here to configure the plugin.', WPAC_DOMAIN).'</a></p></div>';
 		}
 	}
 }
@@ -330,7 +333,7 @@ function wpac_option_page() {
 		wp_die('You do not have sufficient permissions to access this page.');
 	} 
 
-	global $wpac_config;
+	$wpac_config = wpac_get_config();
 	
 	$errors = array();
 	
@@ -362,15 +365,15 @@ function wpac_option_page() {
 		}
 		
 		if (count($errors) == 0) {
-			echo '<div class="updated"><p><strong>'.__('Settings saved successfully.').'</strong></p></div>';
+			echo '<div class="updated"><p><strong>'.__('Settings saved successfully.', WPAC_DOMAIN).'</strong></p></div>';
 		} else {
-			echo '<div class="error"><p><strong>'.__('Settings not saved! Please correct the red marked input fields.').'</strong></p></div>';
+			echo '<div class="error"><p><strong>'.__('Settings not saved! Please correct the red marked input fields.', WPAC_DOMAIN).'</strong></p></div>';
 		}
 	}
   
   ?>
 	<div class="wrap">
-	<h2><?php printf(__('Plugin Settings: %s'), WPAC_PLUGIN_NAME.' '.wpac_get_version()); ?></h2>
+	<h2><?php printf(__('Plugin Settings: %s', WPAC_DOMAIN), WPAC_PLUGIN_NAME.' '.wpac_get_version()); ?></h2>
 
 	<div class="postbox-container" style="width: 100%;" >
 
@@ -380,7 +383,7 @@ function wpac_option_page() {
 			<div id="poststuff">
 				<div class="postbox">
 			
-					<h3 id="plugin-settings"><?php _e('Plugin Settings'); ?></h3>
+					<h3 id="plugin-settings"><?php _e('Plugin Settings', WPAC_DOMAIN); ?></h3>
 					<div class="inside">
 
 						<table class="form-table">
@@ -389,12 +392,12 @@ function wpac_option_page() {
 	
 		$section = 0;
 		foreach($wpac_config as $config) {
-			echo '<tr><th colspan="2"><h4>'.$config['section'].'</h4></th></tr>';
+			echo '<tr><th colspan="2" style="white-space: nowrap;"><h4>'.$config['section'].'</h4></th></tr>';
 			foreach($config['options'] as $optionName => $option) {
 
 				$color = in_array($optionName, $errors) ? 'red' : '';
 
-				echo '<tr><th scope="row"><label for="'.$optionName.'" style="color: '.$color.'">'.$option['label'].'</label></th><td>';
+				echo '<tr><th scope="row" style="white-space: nowrap;"><label for="'.$optionName.'" style="color: '.$color.'">'.$option['label'].'</label></th><td>';
 				
 				$value = (isset($_POST['wpac']) && $_POST['wpac'][$section][$optionName]) ? stripslashes($_POST['wpac'][$section][$optionName]) : get_option(WPAC_OPTION_PREFIX.$optionName);
 				$name = 'wpac['.$section.']['.$optionName.']';
@@ -408,7 +411,7 @@ function wpac_option_page() {
 					} else {
 						echo '<input type="input" name="'.$name.'" id="'.$optionName.'" value="'.htmlentities($value).'" style="width: 300px; color: '.$color.'"/>';
 					} 
-					if ($option['default']) echo '<br/>'.sprintf(__('Leave empty for default value %s'), '<em>'.$option['default'].'</em>');
+					if ($option['default']) echo '<br/>'.sprintf(__('Leave empty for default value %s', WPAC_DOMAIN), '<em>'.$option['default'].'</em>');
 					if ($option['description']) echo '<br/><em>'.$option['description'].'</em>';
 				}
 				echo '</td></tr>';
@@ -421,7 +424,7 @@ function wpac_option_page() {
 						</table>
 						<p class="submit">
 						  <input type="hidden" name="action" value="wpac_update_settings"/>
-						  <input type="submit" name="wpac_update_settings" class="button-primary" value="<?php _e('Save Changes'); ?>"/>
+						  <input type="submit" name="wpac_update_settings" class="button-primary" value="<?php _e('Save Changes', WPAC_DOMAIN); ?>"/>
 						</p>
 					</div>
 				</div>
@@ -441,7 +444,7 @@ function wpac_option_page() {
 
 			<div id="poststuff">
 				<div class="postbox">
-					<h3 id="plugin-settings"><?php _e('Contact & Donation'); ?></h3>
+					<h3 id="plugin-settings"><?php _e('Contact & Donation', WPAC_DOMAIN); ?></h3>
 					<div class="inside">	
 						<p>If you have trouble using the plugin or you miss a feature please do not hesitate to use the plugin's support forum (<a target="_blank" href="http://wordpress.org/support/plugin/wp-ajaxify-comments">Link</a>).
 						</p>

@@ -4,7 +4,7 @@ Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.4
-Stable tag: 0.7.0
+Stable tag: 0.8.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,7 +94,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 = 0.8.0 =
 
 * Added option to customize the font size
-* Added i18n support for admin frontend 
+* Added i18n support for admin frontend
 
 = 0.7.0 =
 
