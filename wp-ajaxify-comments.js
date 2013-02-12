@@ -73,7 +73,7 @@ function wpac_debug(level, message, force) {
 	console[level].apply(console, args);
 }
 
-function wpac_debug_selector(elementType, selector) {
+function wpac_debugSelector(elementType, selector) {
 
 	if (!wpac_options.debug) return;
 
@@ -105,12 +105,20 @@ function wpac_fallback(commentUrl) {
 	}
 }
 
-jQuery(document).ready(function() {
+var wpac_initialized = false;
+function wpac_init() {
 
+	// Test if plugin already has been initialized
+	if (wpac_initialized) {
+		wpac_debug("info", "Abort initialization (plugin already initialized)");
+		return false;
+	}
+	wpac_initialized = true;
+	
 	// Assert that environment is set up correctly
 	if (!wpac_options || !wpac_callbacks) {
 		wpac_debug("error", "Something unexpected happened, initialization failed. Please try to reinstall the plugin.", true);
-		return;
+		return false;
 	}
 
 	wpac_callbacks["onBeforeSelectElements"](jQuery(document));
@@ -121,24 +129,24 @@ jQuery(document).ready(function() {
 	// Skip initialization if comments are not enabled
 	if (!wpac_options.commentsEnabled) {
 		wpac_debug("info", "Abort initialization (comments are not enabled on current page)");
-		return;
+		return false;
 	}
 	
 	// Debug infos
 	if (wpac_options.debug) {
 		if (!jQuery || !jQuery.fn || !jQuery.fn.jquery) {
 			wpac_debug("error", "jQuery not found, abort initialization. Please try to reinstall the plugin.");
-			return;
+			return false;
 		}
 		wpac_debug("info", "Found jQuery %s", jQuery.fn.jquery);
 		if (!jQuery || !jQuery.blockUI || !jQuery.blockUI.version) {
 			wpac_debug("error", "jQuery blockUI not found, abort initialization. Please try to reinstall the plugin.");
-			return;
+			return false;
 		}
 		wpac_debug("info", "Found jQuery blockUI %s", jQuery.blockUI.version);
-		wpac_debug_selector("comment form", wpac_options.selectorCommentForm);
-		wpac_debug_selector("comments container", wpac_options.selectorCommentsContainer);
-		wpac_debug_selector("respond container", wpac_options.selectorRespondContainer);
+		wpac_debugSelector("comment form", wpac_options.selectorCommentForm);
+		wpac_debugSelector("comments container", wpac_options.selectorCommentsContainer);
+		wpac_debugSelector("respond container", wpac_options.selectorRespondContainer);
 		wpac_debug("info", "Initialization completed");
 	}
 	
@@ -296,4 +304,8 @@ jQuery(document).ready(function() {
 		// jQuery 1.3+
 		jQuery(wpac_options["selectorCommentForm"]).live("submit", submitHandler);
 	}
-});
+	
+	return true;
+}
+
+jQuery(document).ready(wpac_init);

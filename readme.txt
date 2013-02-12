@@ -91,6 +91,10 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Changelog ==
 
+= 0.9.0 =
+
+* Added JavaScript method wpac_init() to enable manual client side initialization
+
 = 0.8.0 =
 
 * Added option to customize the font size
@@ -213,6 +217,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.9.0 =
+Added JavaScript method wpac_init()
 
 = 0.8.0 =
 Added option to customize the font size, i18n support for admin frontend
