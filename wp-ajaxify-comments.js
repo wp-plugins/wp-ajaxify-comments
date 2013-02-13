@@ -53,9 +53,9 @@ function wpac_showMessage(message, type) {
 }
 
 var wpac_debug_errorShown = false;
-function wpac_debug(level, message, force) {
+function wpac_debug(level, message) {
 
-	if (!force && !wpac_options.debug) return;
+	if (!wpac_options.debug) return;
 
 	// Fix console.log.apply for IE9
 	// see http://stackoverflow.com/a/5539378/516472
@@ -117,7 +117,7 @@ function wpac_init() {
 	
 	// Assert that environment is set up correctly
 	if (!wpac_options || !wpac_callbacks) {
-		wpac_debug("error", "Something unexpected happened, initialization failed. Please try to reinstall the plugin.", true);
+		wpac_debug("error", "Something unexpected happened, initialization failed. Please try to reinstall the plugin.");
 		return false;
 	}
 

@@ -94,6 +94,8 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 = 0.9.0 =
 
 * Added JavaScript method wpac_init() to enable manual client side initialization
+* Optimized SQL queries
+* Added validation for "scrollSpeed" option
 
 = 0.8.0 =
 

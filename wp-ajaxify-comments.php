@@ -31,7 +31,8 @@ define('WPAC_PLUGIN_NAME', 'WP-Ajaxify-Comments');
 define('WPAC_SETTINGS_URL', 'admin.php?page='.WPAC_PLUGIN_NAME);
 define('WPAC_DOMAIN', 'wpac');
 define('WPAC_SESSION_VAR', WPAC_DOMAIN.'_session');
-define('WPAC_OPTION_PREFIX', WPAC_DOMAIN.'_');
+define('WPAC_OPTION_PREFIX', WPAC_DOMAIN.'_'); // used to save options in version <=0.8.0
+define('WPAC_OPTION_KEY', WPAC_DOMAIN); // used to save options in version >= 0.9.0
 
 function wpac_get_config() {
 
@@ -171,6 +172,7 @@ function wpac_get_config() {
 					'type' => 'int',
 					'default' => '500',
 					'label' => __('Scroll speed (ms)', WPAC_DOMAIN),
+					'pattern' => '/^[0-9]*$/',
 				),
 			)
 		)
@@ -223,9 +225,61 @@ function wpac_js_escape($s) {
 	return str_replace('"',"\\\"", $s);
 }
 
+$wpac_options;
+function wpac_load_options() {
+
+	global $wpac_options;
+	
+	// Options already loaded
+	if ($wpac_options) return;
+
+	$wpac_options = get_option(WPAC_OPTION_KEY);
+	if (is_array($wpac_options)) return;
+	
+	// Upgrade options from <= 0.8.0 and delete old options after migration
+	$wpac_config = wpac_get_config();
+	$wpac_options = array();
+	foreach($wpac_config as $config) {
+		foreach($config['options'] as $optionName => $option) {
+			$value = get_option(WPAC_OPTION_PREFIX.$optionName, null);
+			if ($value !== null) $wpac_options[$optionName] = $value;
+		}
+	}
+	update_option(WPAC_OPTION_KEY, $wpac_options);
+	foreach($wpac_config as $config) {
+		foreach($config['options'] as $optionName => $option) {
+			delete_option(WPAC_OPTION_PREFIX.$optionName);
+		}
+	}
+}
+
+function wpac_get_option($option) {
+	global $wpac_options;
+	wpac_load_options();
+	return $wpac_options[$option];
+}
+
+function wpac_update_option($option, $value) {
+	global $wpac_options;
+	wpac_load_options();
+	$wpac_options[$option] = $value;
+}
+
+function wpac_delete_option($option) {
+	global $wpac_options;
+	wpac_load_options();
+	unset($wpac_options[$option]);
+}
+
+function wpac_save_options() {
+	global $wpac_options;
+	wpac_load_options();
+	update_option(WPAC_OPTION_KEY, $wpac_options);
+}
+
 function wpac_initialize() {
 
-	if (get_option(WPAC_OPTION_PREFIX.'enable')) {
+	if (wpac_get_option('enable')) {
 
 		global $post;
 
@@ -237,7 +291,7 @@ function wpac_initialize() {
 		foreach($wpac_config as $config) {
 			foreach($config['options'] as $optionName => $option) {
 				if ($option['specialOption']) continue;
-				$value = trim(get_option(WPAC_OPTION_PREFIX.$optionName));
+				$value = trim(wpac_get_option($optionName));
 				if (strlen($value) == 0) $value = $option['default'];
 				echo $optionName.':'.($option['type'] == 'int' ? $value :'"'.wpac_js_escape($value).'"').',';
 			}
@@ -248,14 +302,14 @@ function wpac_initialize() {
 		echo 'textPostedUnapproved:"'.wpac_js_escape(__('Your comment has been posted and is awaiting moderation. Thank you!', WPAC_DOMAIN)).'",';
 		echo 'textReloadPage:"'.wpac_js_escape(__('Reloading page. Please wait&hellip;', WPAC_DOMAIN)).'",';
 		echo 'commentsEnabled:'.((is_page() || is_single()) && comments_open($post->ID) ? 'true' : 'false').',';
-		echo 'debug:'.(get_option(WPAC_OPTION_PREFIX.'debug') ? 'true' : 'false').',';
+		echo 'debug:'.(wpac_get_option('debug') ? 'true' : 'false').',';
 		echo 'version:"'.wpac_get_version().'"};';
 
 		// Callbacks
 		echo 'var wpac_callbacks = {};';
-		echo 'wpac_callbacks["onBeforeSelectElements"] = function(dom) {'.get_option(WPAC_OPTION_PREFIX.'callbackOnBeforeSelectElements').'};';
-		echo 'wpac_callbacks["onBeforeUpdateComments"] = function() {'.get_option(WPAC_OPTION_PREFIX.'callbackOnBeforeUpdateComments').'};';
-		echo 'wpac_callbacks["onAfterUpdateComments"] = function() {'.get_option(WPAC_OPTION_PREFIX.'callbackOnAfterUpdateComments').'};';
+		echo 'wpac_callbacks["onBeforeSelectElements"] = function(dom) {'.wpac_get_option('callbackOnBeforeSelectElements').'};';
+		echo 'wpac_callbacks["onBeforeUpdateComments"] = function() {'.wpac_get_option('callbackOnBeforeUpdateComments').'};';
+		echo 'wpac_callbacks["onAfterUpdateComments"] = function() {'.wpac_get_option('callbackOnAfterUpdateComments').'};';
 		
 		echo '</script>';
 		
@@ -279,10 +333,10 @@ add_filter('plugin_action_links', 'wpac_add_settings_link', 10, 2);
 
 function wpac_admin_notice() {
 	if (basename($_SERVER['PHP_SELF']) == 'plugins.php') {
-		if (!get_option(WPAC_OPTION_PREFIX.'enable')) {
+		if (!wpac_get_option('enable')) {
 			// Show error if plugin is not enabled
 			echo '<div class="error"><p><strong>'.sprintf(__('%s is not enabled!', WPAC_DOMAIN), WPAC_PLUGIN_NAME).'</strong> <a href="'.WPAC_SETTINGS_URL.'">'.__('Click here to configure the plugin.', WPAC_DOMAIN).'</a></p></div>';
-		} else if (get_option(WPAC_OPTION_PREFIX.'debug')) {
+		} else if (wpac_get_option('debug')) {
 			// Show info if plugin is running in debug mode
 			echo '<div class="updated"><p><strong>'.sprintf(__('%s is running in debug mode!', WPAC_DOMAIN), WPAC_PLUGIN_NAME).'</strong> <a href="'.WPAC_SETTINGS_URL.'">'.__('Click here to configure the plugin.', WPAC_DOMAIN).'</a></p></div>';
 		}
@@ -354,15 +408,17 @@ function wpac_option_page() {
 					if ($error) {
 						$errors[] = $optionName;
 					} else {
-						update_option(WPAC_OPTION_PREFIX.$optionName, $value);
+						wpac_update_option($optionName, $value);
 					}
 				} else {
-					delete_option(WPAC_OPTION_PREFIX.$optionName);
+					wpac_delete_option($optionName);
 				}
 			
 			}
 		
 		}
+		
+		wpac_save_options();
 		
 		if (count($errors) == 0) {
 			echo '<div class="updated"><p><strong>'.__('Settings saved successfully.', WPAC_DOMAIN).'</strong></p></div>';
@@ -399,11 +455,11 @@ function wpac_option_page() {
 
 				echo '<tr><th scope="row" style="white-space: nowrap;"><label for="'.$optionName.'" style="color: '.$color.'">'.$option['label'].'</label></th><td>';
 				
-				$value = (isset($_POST['wpac']) && $_POST['wpac'][$section][$optionName]) ? stripslashes($_POST['wpac'][$section][$optionName]) : get_option(WPAC_OPTION_PREFIX.$optionName);
+				$value = (isset($_POST['wpac']) && $_POST['wpac'][$section][$optionName]) ? stripslashes($_POST['wpac'][$section][$optionName]) : wpac_get_option($optionName);
 				$name = 'wpac['.$section.']['.$optionName.']';
 				
 				if ($option['type'] == 'boolean') {
-					echo '<input type="hidden" name="'.$name.'" value="0">';
+					echo '<input type="hidden" name="'.$name.'" value="">';
 					echo '<input type="checkbox" name="'.$name.'" id="'.$optionName.'" '.($value ? 'checked="checked"' : '').' value="1"/>';
 				} else {
 					if ($option['type'] == 'multiline') {
@@ -466,7 +522,7 @@ function wpac_admin_menu() {
 }
 
 if (!is_admin() && !wpac_is_login_page()) {
-	if (get_option(WPAC_OPTION_PREFIX.'enable')) {
+	if (wpac_get_option('enable')) {
 		add_action('wp_head', 'wpac_initialize');
 		add_action('init', 'wpac_enqueue_scripts');
 	}
