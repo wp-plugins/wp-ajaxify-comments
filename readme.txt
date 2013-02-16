@@ -4,7 +4,7 @@ Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.4
-Stable tag: 0.8.0
+Stable tag: 0.9.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,8 +94,10 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 = 0.9.0 =
 
 * Added JavaScript method wpac_init() to enable manual client side initialization
-* Optimized SQL queries
+* Optimized SQL queries (thanks to Geleosan)
 * Added validation for "scrollSpeed" option
+* Fixed debug alert message in IE 9 
+* Added localization for sk-SK (thanks to Branco, Slovak translation (<a href="http://webhostinggeeks.com/user-reviews/">WebHostingGeeks.com</a>))
 
 = 0.8.0 =
 
@@ -221,7 +223,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 == Upgrade Notice ==
 
 = 0.9.0 =
-Added JavaScript method wpac_init()
+Added JavaScript method wpac_init(), optimzed SQL queries, fixed debug alert in IE 9, added localization for sk-SK
 
 = 0.8.0 =
 Added option to customize the font size, i18n support for admin frontend

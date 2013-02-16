@@ -64,7 +64,7 @@ function wpac_debug(level, message) {
 	}
 
 	if (typeof window["console"] === "undefined" || typeof window["console"][level] === "undefined" || typeof window["console"][level].apply === "undefined") {
-		if (!wpac_debug_errorShown) alert("Unfortunately console object is undefined or is not supported in your browser, debugging wp-ajaxify-comments is disabled! Please use Firebug, Google Chrome or Internet Explorer 9 or above with enabled Developer Tools (F12) for debugging wp-ajaxify-comments.");
+		if (!wpac_debug_errorShown) alert("Unfortunately the console object is undefined or is not supported in your browser, debugging wp-ajaxify-comments is disabled! Please use Firebug, Google Chrome or Internet Explorer 9 or above with enabled Developer Tools (F12) for debugging wp-ajaxify-comments.");
 		wpac_debug_errorShown = true;
 		return;
 	}
