@@ -182,20 +182,20 @@ function wpac_get_config() {
 				'callbackOnBeforeSelectElements' => array(
 					'type' => 'multiline',
 					'default' => '',
-					'label' => 'Before select elements',
+					'label' => sprintf(__("'%s' callback", WPAC_DOMAIN), 'OnBeforeSelectElements'),
 					'specialOption' => true,
 					'description' => __('Parameter: dom (jQuery DOM element)', WPAC_DOMAIN)
 				),
 				'callbackOnBeforeUpdateComments' => array(
 					'type' => 'multiline',
 					'default' => '',
-					'label' => 'Before update comments',
+					'label' => sprintf(__("'%s' callback", WPAC_DOMAIN), 'OnBeforeUpdateComments'),
 					'specialOption' => true,
 				),
 				'callbackOnAfterUpdateComments' => array(
 					'type' => 'multiline',
 					'default' => '',
-					'label' => 'After update comments',
+					'label' => sprintf(__("'%s' callback", WPAC_DOMAIN), 'OnAfterUpdateComments'),
 					'specialOption' => true,
 				),
 			)
