@@ -20,10 +20,11 @@ Summarized the WP-Ajaxify-Comments plugin hooks into your theme and improves the
 
 Some features of the plugin:
 
+* Actively developped and supported
 * Validating and adding comments without (complete) page reloads
 * Seamless integration in almost every theme (default options should work with most themes)
 * i18n support
-* Included localizations for ar, ca, de-DE, es-ES, fa-IR, fr-FR, nl-NL, pl-PL, pt-BR, ru-RU, tr-TR, uk, vi-VN, zh-CN (thanks to all contributors)
+* Included localizations for ar, ca, de-DE, es-ES, fa-IR, fr-FR, he-IL, nl-NL, pl-PL, pt-BR, ru-RU, sk-SK, tr-TR, uk, vi-VN, zh-CN (thanks to all contributors)
 * Support for threaded comments
 * Support for comments that await moderation
 * Compatibility with comment spam protection plugins and other plugins that extend/manipulate the comment form
@@ -90,6 +91,10 @@ The debug mode can be enabled on the plugin's settings page (Settings > WP-Ajaxi
 Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to block the UI while the comment is sent to the server and to show popup overlays containing the error and info messages.
 
 == Changelog ==
+
+= 0.9.1 =
+
+* Added localization for he-LI (thanks to Siman-Tov Yechiel (<a href="http://www.wpstore.co.il">www.wpstore.co.il</a>))
 
 = 0.9.0 =
 
@@ -221,6 +226,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.9.1 =
+Added localization for he-LI
 
 = 0.9.0 =
 Added JavaScript method wpac_init(), optimzed SQL queries, fixed debug alert in IE 9, added localization for sk-SK
