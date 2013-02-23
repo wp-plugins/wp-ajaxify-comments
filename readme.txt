@@ -3,7 +3,7 @@ Contributors: janjonas
 Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
-Tested up to: 3.4
+Tested up to: 3.5.1
 Stable tag: 0.9.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
