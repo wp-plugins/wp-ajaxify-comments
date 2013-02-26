@@ -169,7 +169,9 @@ function wpac_init() {
 	
 		// Show loading info
 		wpac_showMessage(wpac_options["textLoading"], "loading");
-	  
+
+		wpac_callbacks["onBeforeSubmitComment"]();
+		
 		var request = jQuery.ajax({
 			url: submitUrl,
 			type: "POST",

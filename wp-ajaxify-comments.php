@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.9.1
+Version: 0.10.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -186,6 +186,12 @@ function wpac_get_config() {
 					'specialOption' => true,
 					'description' => __('Parameter: dom (jQuery DOM element)', WPAC_DOMAIN)
 				),
+				'callbackOnBeforeSubmitComment' => array(
+					'type' => 'multiline',
+					'default' => '',
+					'label' => sprintf(__("'%s' callback", WPAC_DOMAIN), 'OnBeforeSubmitComment'),
+					'specialOption' => true,
+				),
 				'callbackOnBeforeUpdateComments' => array(
 					'type' => 'multiline',
 					'default' => '',
@@ -310,6 +316,7 @@ function wpac_initialize() {
 		echo 'wpac_callbacks["onBeforeSelectElements"] = function(dom) {'.wpac_get_option('callbackOnBeforeSelectElements').'};';
 		echo 'wpac_callbacks["onBeforeUpdateComments"] = function() {'.wpac_get_option('callbackOnBeforeUpdateComments').'};';
 		echo 'wpac_callbacks["onAfterUpdateComments"] = function() {'.wpac_get_option('callbackOnAfterUpdateComments').'};';
+		echo 'wpac_callbacks["onBeforeSubmitComment"] = function() {'.wpac_get_option('callbackOnBeforeSubmitComment').'};';
 		
 		echo '</script>';
 		

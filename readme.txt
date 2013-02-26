@@ -92,9 +92,11 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Changelog ==
 
-= 0.9.1 =
+= 0.10.0 =
 
 * Added localization for he-LI (thanks to Siman-Tov Yechiel (<a href="http://www.wpstore.co.il">www.wpstore.co.il</a>))
+* Added JavaScript callback ("Before submit comment")
+* Updated jQuery blockUI to 2.57
 
 = 0.9.0 =
 
@@ -227,8 +229,8 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Upgrade Notice ==
 
-= 0.9.1 =
-Added localization for he-LI
+= 0.10.0 =
+Added localization for he-LI, added JavaScript callback ("Before submit comment"), Updated jQuery blockUI to 2.57
 
 = 0.9.0 =
 Added JavaScript method wpac_init(), optimzed SQL queries, fixed debug alert in IE 9, added localization for sk-SK
