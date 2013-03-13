@@ -20,7 +20,7 @@ Summarized the WP-Ajaxify-Comments plugin hooks into your theme and improves the
 
 Some features of the plugin:
 
-* Actively developped and supported
+* Actively developed and supported
 * Validating and adding comments without (complete) page reloads
 * Seamless integration in almost every theme (default options should work with most themes)
 * i18n support
