@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.10.0
+Version: 0.11.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -90,6 +90,18 @@ function wpac_get_config() {
 					'type' => 'int',
 					'default' => '10',
 					'label' => __('Margin top (px)', WPAC_DOMAIN),
+					'pattern' => '/^[0-9]*$/',
+				),
+				'popupWidth' => array(
+					'type' => 'int',
+					'default' => '30',
+					'label' => __('Width (%)', WPAC_DOMAIN),
+					'pattern' => '/^(100|[1-9][0-9]|[1-9])$/',
+				),
+				'popupPadding' => array(
+					'type' => 'int',
+					'default' => '5',
+					'label' => __('Padding (px)', WPAC_DOMAIN),
 					'pattern' => '/^[0-9]*$/',
 				),
 				'popupFadeIn' => array(
@@ -509,10 +521,10 @@ function wpac_option_page() {
 				<div class="postbox">
 					<h3 id="plugin-settings"><?php _e('Contact & Donation', WPAC_DOMAIN); ?></h3>
 					<div class="inside">	
-						<p>If you have trouble using the plugin or you miss a feature please do not hesitate to use the plugin's support forum (<a target="_blank" href="http://wordpress.org/support/plugin/wp-ajaxify-comments">Link</a>).
+						<p>Thanks for using <?php echo WPAC_PLUGIN_NAME; ?>. If you have trouble using the plugin or you miss a feature please do not hesitate to ask a question in the <a target="_blank" href="http://wordpress.org/support/plugin/wp-ajaxify-comments">plugin's support forum</a> or <a href="http://blog.janjonas.net/contact" target="_blank">send me a private message</a>.
 						</p>
 						<p>
-							If you would like to support future development, please consider making a small donation. Thank you!
+							If you would like to support future development, please consider <a href="http://wordpress.org/support/view/plugin-reviews/wp-ajaxify-comments#postform" target="_blank">writing a short review</a> or making a small donation. Thank you!
 							<br/>
 							<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 						</p>

@@ -4,7 +4,7 @@ Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.5.1
-Stable tag: 0.10.0
+Stable tag: 0.11.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,9 +14,11 @@ WP-Ajaxify-Comments hooks into your comment form and adds AJAX functionality - n
 
 When submitting the comment form, WordPress by default reloads the complete page. In case of an error (e.g. an invalid e-mail address or an empty comment field) the error message is shown on top of a new (blank) screen and the user has to use the browser's back button to correct the comment form and post the comment again. The WP-Ajaxify-Comments WordPress plugin hooks into any WordPress theme and adds AJAX functionality to the comment form: When the comment form is submitted, the plugin sends the data to the WordPress backend without reloading the entire page. In case of an error, the plugin shows a popup overlay containing the error message. If the comment was posted successfully, the plugin adds the (new) comment to the list of existing comments without leaving the page and shows an info overlay popup.
 
-Since the plugin hooks (on client-side) into the theme to intercept the submit of the comment form and to add new comments without reloading the page, the plugin needs to access the DOM nodes using (jQuery) selectors. The plugin comes with default values for these selectors that were successfully tested with WordPress' default themes "Twenty Ten" or "Twenty Eleven". If the plugin does not work out of the box with your theme, custom selectors could be defined in the WordPress admin frontend (see FAQ).
+Since the plugin hooks (on client-side) into the theme to intercept the submit of the comment form and to add new comments without reloading the page, the plugin needs to access the DOM nodes using (jQuery) selectors. The plugin comes with default values for these selectors that were successfully tested with WordPress' default themes "Twenty Ten", "Twenty Eleven" or "Twenty Twelve". 
 
 Summarized the WP-Ajaxify-Comments plugin hooks into your theme and improves the usability of the comment form by validating and adding comments without the need of complete page reloads.
+
+**Important:** If the plugin does not work out of the box with your theme, custom selectors could be defined in the plugin's admin frontend. If you don't succeed in configuring the proper selectors please don't hesitate to ask a question the <a target="_blank" href="http://wordpress.org/support/plugin/wp-ajaxify-comments">plugin's support forum</a> or <a href="http://blog.janjonas.net/contact" target="_blank">send me a private message</a>. The plugin is highly customizable and *I'm not aware of conflicts to any themes or other plugins that cannot be resolved*. I would kindly ask you make a <a href="http://blog.janjonas.net/donate" tagret="_blank">small (PayPal) donation</a> when I'm able to find a working configuration for your customized WordPress site. All donations save future development and support of the plugin. Thanks in advance! You can find more troubleshooting information on the <a href="http://wordpress.org/extend/plugins/wp-ajaxify-comments/faq/">FAQ page</a>.
 
 Some features of the plugin:
 
@@ -24,7 +26,7 @@ Some features of the plugin:
 * Validating and adding comments without (complete) page reloads
 * Seamless integration in almost every theme (default options should work with most themes)
 * i18n support
-* Included localizations for ar, ca, de-DE, es-ES, fa-IR, fr-FR, he-IL, nl-NL, pl-PL, pt-BR, ru-RU, sk-SK, tr-TR, uk, vi-VN, zh-CN (thanks to all contributors)
+* Included localizations for ar, ca, de-DE, es-ES, fa-IR, fr-FR, he-IL, hu-HU, nl-NL, pl-PL, pt-BR, ru-RU, sk-SK, tr-TR, uk, vi-VN, zh-CN (thanks to all contributors)
 * Support for threaded comments
 * Support for comments that await moderation
 * Compatibility with comment spam protection plugins and other plugins that extend/manipulate the comment form
@@ -51,11 +53,11 @@ Some features of the plugin:
 It is recommended to use the plugin's debug mode that could be enabled on the plugin's settings page ("Settings > WP-Ajaxify-Comments"). After enabling the debug mode use a browser that supports console.log(...), e.g., Firefox with the Firebug extension or Google Chrome and open a page that contains a comment form. If the plugin is not working you most likley find an error message in the console saying that one of the selectors does not match any element.
 If your theme does not use the default IDs for the comment form (`#commentform`), the comment container (`#comments`) or the respond container (`#respond`) you need to go to the plugins settings page and provide the proper selectors.
 
-Last but not least: The plugin is still in a prototype state, so there could be some bugs. Please do not hesitate to <a href="http://blog.janjonas.net/contact">contact me</a> or to use the <a href="http://wordpress.org/support/plugin/wp-ajaxify-comments">support forum</a>, if you have problems to get the plugin working.
+**Please note:** If you don't succeed in configuring the proper selectors please don't hesitate to ask a question the <a target="_blank" href="http://wordpress.org/support/plugin/wp-ajaxify-comments">plugin's support forum</a> or <a href="http://blog.janjonas.net/contact" target="_blank">send me a private message</a>. The plugin is highly customizable and *I'm not aware of conflicts to any themes or other plugins that cannot be resolved*. I would kindly ask you make a <a href="http://blog.janjonas.net/donate" tagret="_blank">small (PayPal) donation</a> when I'm able to find a working configuration for your customized WordPress site. All donations save future development and support of the plugin. Thanks in advance!
 
 = Can I suggest new features? =
 
-If you miss a feature or if you have any other suggestions, please <a href="http://blog.janjonas.net/contact">contact me</a> or to use the <a href="http://wordpress.org/support/plugin/wp-ajaxify-comments">support forum</a>.
+If you miss a feature or if you have any other suggestions, please <a href="http://blog.janjonas.net/contact">contact me</a> or use the <a href="http://wordpress.org/support/plugin/wp-ajaxify-comments">support forum</a>.
 
 = Are there any known problems? =
 
@@ -67,6 +69,8 @@ The debugging mode does not work in Internet Explorer 8 (and older versions); pl
 
 Since the plugin hooks into the DOM that is generated by the theme, there is no guarantee that the plugin works with every theme.
 Basically the theme needs to support a container element that wraps all comments and a comment form and these two elements need to be selectable by a (jQuery) selector. Please go to the plugin's settings page to customize these selectors if the default selectors do not match the elements in your theme.
+
+There is no guarantee, but (as written above) the plugin is highly customizable and I'm not aware of conflicts to any themes or other plugins that cannot be resolved.
 
 = Can I add or update translations? =
 
@@ -91,6 +95,12 @@ The debug mode can be enabled on the plugin's settings page (Settings > WP-Ajaxi
 Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to block the UI while the comment is sent to the server and to show popup overlays containing the error and info messages.
 
 == Changelog ==
+
+= 0.11.0 =
+
+* Added localization for hu-HU (thanks to Patrik Bagi)
+* Added option to customize the popup overlay's width 
+* Added option to customize the popup overlay's padding
 
 = 0.10.0 =
 
@@ -229,8 +239,11 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Upgrade Notice ==
 
+= 0.11.0 =
+Added localization for hu-HU, added more options to customize the popup overlays 
+
 = 0.10.0 =
-Added localization for he-LI, added JavaScript callback ("Before submit comment"), Updated jQuery blockUI to 2.57
+Added localization for he-LI, added JavaScript callback ("Before submit comment"), updated jQuery blockUI to 2.57
 
 = 0.9.0 =
 Added JavaScript method wpac_init(), optimzed SQL queries, fixed debug alert in IE 9, added localization for sk-SK

@@ -30,9 +30,11 @@ function wpac_showMessage(message, type) {
 		centerX: true,
 		showOverlay: (type == "loading"),
 		css: { 
+			width: wpac_options.popupWidth + "%",
+			left: ((100-wpac_options.popupWidth)/2) + "%",
 			top: top + "px",
 			border: "none", 
-			padding: "5px", 
+			padding: wpac_options.popupPadding + "px", 
 			backgroundColor: backgroundColor, 
 			"-webkit-border-radius": wpac_options.popupCornerRadius + "px",
 			"-moz-border-radius": wpac_options.popupCornerRadius + "px",
