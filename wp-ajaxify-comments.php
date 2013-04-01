@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.11.0
+Version: 0.12.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -186,10 +186,10 @@ function wpac_get_config() {
 					'label' => __('Scroll speed (ms)', WPAC_DOMAIN),
 					'pattern' => '/^[0-9]*$/',
 				),
-			)
+			),
 		)
 		,array(
-			'section' => __('Expert settings (JavaScript callbacks)', WPAC_DOMAIN),
+			'section' => __('Expert settings', WPAC_DOMAIN),
 			'options' => array(
 				'callbackOnBeforeSelectElements' => array(
 					'type' => 'multiline',
@@ -214,6 +214,13 @@ function wpac_get_config() {
 					'type' => 'multiline',
 					'default' => '',
 					'label' => sprintf(__("'%s' callback", WPAC_DOMAIN), 'OnAfterUpdateComments'),
+					'specialOption' => true,
+				),
+				'asyncCommentsThreshold' => array(
+					'type' => 'int',
+					'label' => __('Load comments async threshold', WPAC_DOMAIN),
+					'pattern' => '/^[0-9]*$/',
+					'description' => __('Load comments asynchronously with secondary AJAX request if more than the specified number of comments exist. Leave empty to disable this feature.', WPAC_DOMAIN),
 					'specialOption' => true,
 				),
 			)
@@ -299,12 +306,17 @@ function wpac_initialize() {
 
 	if (wpac_get_option('enable')) {
 
+		// Skip JAvaScript options output if request is a WPAC-AJAX request
+		if (wpac_is_ajax_request()) return;
+		
 		global $post;
-
+		
 		echo '<script type="text/javascript">';
+
+		echo 'if (!window["WPAC"]) var WPAC = {};';
 		
 		// Options
-		echo 'var wpac_options = {';
+		echo 'WPAC._Options = {';
 		$wpac_config = wpac_get_config();
 		foreach($wpac_config as $config) {
 			foreach($config['options'] as $optionName => $option) {
@@ -314,7 +326,8 @@ function wpac_initialize() {
 				echo $optionName.':'.($option['type'] == 'int' ? $value :'"'.wpac_js_escape($value).'"').',';
 			}
 		}
-		echo 'textLoading:"'.wpac_js_escape(__('Posting your comment. Please wait&hellip;', WPAC_DOMAIN)).'",';
+		echo 'textPostComment:"'.wpac_js_escape(__('Posting your comment. Please wait&hellip;', WPAC_DOMAIN)).'",';
+		echo 'textRefreshComments:"'.wpac_js_escape(__('Loading comments. Please wait&hellip;', WPAC_DOMAIN)).'",';
 		echo 'textUnknownError:"'.wpac_js_escape(__('Something went wrong, your comment has not been posted.', WPAC_DOMAIN)).'",';
 		echo 'textPosted:"'.wpac_js_escape(__('Your comment has been posted. Thank you!', WPAC_DOMAIN)).'",';
 		echo 'textPostedUnapproved:"'.wpac_js_escape(__('Your comment has been posted and is awaiting moderation. Thank you!', WPAC_DOMAIN)).'",';
@@ -324,11 +337,12 @@ function wpac_initialize() {
 		echo 'version:"'.wpac_get_version().'"};';
 
 		// Callbacks
-		echo 'var wpac_callbacks = {};';
-		echo 'wpac_callbacks["onBeforeSelectElements"] = function(dom) {'.wpac_get_option('callbackOnBeforeSelectElements').'};';
-		echo 'wpac_callbacks["onBeforeUpdateComments"] = function() {'.wpac_get_option('callbackOnBeforeUpdateComments').'};';
-		echo 'wpac_callbacks["onAfterUpdateComments"] = function() {'.wpac_get_option('callbackOnAfterUpdateComments').'};';
-		echo 'wpac_callbacks["onBeforeSubmitComment"] = function() {'.wpac_get_option('callbackOnBeforeSubmitComment').'};';
+		echo 'WPAC._Callbacks = {';
+		echo '"onBeforeSelectElements": function(dom) {'.wpac_get_option('callbackOnBeforeSelectElements').'},';
+		echo '"onBeforeUpdateComments": function() {'.wpac_get_option('callbackOnBeforeUpdateComments').'},';
+		echo '"onAfterUpdateComments": function() {'.wpac_get_option('callbackOnAfterUpdateComments').'},';
+		echo '"onBeforeSubmitComment": function() {'.wpac_get_option('callbackOnBeforeSubmitComment').'},';
+		echo '};';
 		
 		echo '</script>';
 		
@@ -421,12 +435,14 @@ function wpac_option_page() {
 			
 				$value = trim(stripslashes($value));
 				$pattern = isset($wpac_config[$section]['options'][$optionName]['pattern']) ? $wpac_config[$section]['options'][$optionName]['pattern'] : null;
+				$type = $wpac_config[$section]['options'][$optionName]['type'];
 				
 				if (strlen($value) > 0) {
 					$error = $pattern ? (preg_match($pattern, $value) !== 1) : null;
 					if ($error) {
 						$errors[] = $optionName;
 					} else {
+						if ($type == 'int') $value = intval($value);
 						wpac_update_option($optionName, $value);
 					}
 				} else {
@@ -437,9 +453,8 @@ function wpac_option_page() {
 		
 		}
 		
-		wpac_save_options();
-		
 		if (count($errors) == 0) {
+			wpac_save_options();
 			echo '<div class="updated"><p><strong>'.__('Settings saved successfully.', WPAC_DOMAIN).'</strong></p></div>';
 		} else {
 			echo '<div class="error"><p><strong>'.__('Settings not saved! Please correct the red marked input fields.', WPAC_DOMAIN).'</strong></p></div>';
@@ -487,7 +502,7 @@ function wpac_option_page() {
 						echo '<input type="input" name="'.$name.'" id="'.$optionName.'" value="'.htmlentities($value).'" style="width: 300px; color: '.$color.'"/>';
 					} 
 					if ($option['default']) echo '<br/>'.sprintf(__('Leave empty for default value %s', WPAC_DOMAIN), '<em>'.$option['default'].'</em>');
-					if ($option['description']) echo '<br/><em>'.$option['description'].'</em>';
+					if ($option['description']) echo '<br/><em style="width:300px; display: inline-block">'.$option['description'].'</em>';
 				}
 				echo '</td></tr>';
 			}
@@ -536,12 +551,41 @@ function wpac_option_page() {
 		
 <?php }
 
+$is_ajax_request = null;;
+function wpac_is_ajax_request() {
+	global $is_ajax_request;
+	if ($is_ajax_request !== null) return $is_ajax_request;
+	$is_ajax_request = false;
+	foreach (getallheaders() as $name => $value) {
+		if ($name == 'X-WPAC-REQUEST' && $value) {
+			$is_ajax_request = true;
+			break;
+		}
+	}
+	return $is_ajax_request;
+}
+
 function wpac_admin_menu() {
 	add_options_page(WPAC_PLUGIN_NAME, WPAC_PLUGIN_NAME, 'manage_options', WPAC_PLUGIN_NAME, 'wpac_option_page');
 }
 
+function comments_query_filter($query) {
+	// No comment filtering if request is a fallback or WPAC-AJAX request  
+	if ($_REQUEST['WPACFallback'] || wpac_is_ajax_request()) return $query;
+	
+	// Test asyncCommentsThreshold 
+	$asyncCommentsThreshold = wpac_get_option('asyncCommentsThreshold');
+	$commentsCount = count($query);
+	if (strlen($asyncCommentsThreshold) == 0 || $commentsCount == 0 || $asyncCommentsThreshold > $commentsCount) return $query;
+	
+	// Filter/remove comments and set options to load comments with secondary AJAX request 
+	echo '<script type="text/javascript">WPAC._Options["loadCommentsAsync"] = true;</script>';
+	return array();
+}
+	
 if (!is_admin() && !wpac_is_login_page()) {
 	if (wpac_get_option('enable')) {
+		add_filter('comments_array', 'comments_query_filter');
 		add_action('wp_head', 'wpac_initialize');
 		add_action('init', 'wpac_enqueue_scripts');
 	}

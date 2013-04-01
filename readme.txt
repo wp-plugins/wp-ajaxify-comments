@@ -32,6 +32,7 @@ Some features of the plugin:
 * Compatibility with comment spam protection plugins and other plugins that extend/manipulate the comment form
 * Admin frontend to customize the look and feel
 * (Automatic) fallback mode uses complete page reloads if the plugin is not configured properly or any incompatibility is detected
+* Client-side JavaScript API (see FAQ for more details)
 * Debug mode to support troubleshooting
 
 == Screenshots ==
@@ -95,6 +96,12 @@ The debug mode can be enabled on the plugin's settings page (Settings > WP-Ajaxi
 Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to block the UI while the comment is sent to the server and to show popup overlays containing the error and info messages.
 
 == Changelog ==
+
+= 0.12.0 =
+
+* Bug-fix: Options are no longer saved if validation failes
+* Refactored and extended client-side JavaScript API
+* Added option to load comments asynchronously with secondary AJAX request
 
 = 0.11.0 =
 
@@ -239,6 +246,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Upgrade Notice ==
 
+= 0.12.0 =
+Bug-fixes, refactored and extended client-side JavaScript API
+
 = 0.11.0 =
 Added localization for hu-HU, added more options to customize the popup overlays 
 
@@ -258,7 +268,7 @@ Added JavaScript callback ("Before select elements")
 Added localization for ar
 
 = 0.6.2 =
-Some bug fixes
+Some bug-fixes
 
 = 0.6.1 =
 Added localization for ru-RU and uk
