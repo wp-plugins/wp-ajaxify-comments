@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the WP-Ajaxify-Comments package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP-Ajaxify-Comments 0.8.0\n"
+"Project-Id-Version: WP-Ajaxify-Comments 0.12.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-ajaxify-comments\n"
-"POT-Creation-Date: 2013-02-05 22:06:21+00:00\n"
+"POT-Creation-Date: 2013-04-01 15:01:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,179 +12,206 @@ msgstr ""
 "Last-Translator: Jan Jonas <mail@janjnas.net>\n"
 "Language-Team: Jan Jonas <mail@janjnas.net>\n"
 
-#: wp-ajaxify-comments.php:38
+#: wp-ajaxify-comments.php:41
 msgid "General"
 msgstr "Allgemein"
 
-#: wp-ajaxify-comments.php:43
+#: wp-ajaxify-comments.php:46
 msgid "Enabled plugin"
 msgstr "Plugin aktiviert"
 
-#: wp-ajaxify-comments.php:48
+#: wp-ajaxify-comments.php:51
 msgid "Debug mode"
 msgstr "Debug-Modus"
 
-#: wp-ajaxify-comments.php:53
+#: wp-ajaxify-comments.php:56
 msgid "Selectors"
 msgstr "Selektoren"
 
-#: wp-ajaxify-comments.php:58
+#: wp-ajaxify-comments.php:61
 msgid "Comment form selector"
 msgstr "Kommentar-Form Selektor"
 
-#: wp-ajaxify-comments.php:63
+#: wp-ajaxify-comments.php:66
 msgid "Comments container selector"
 msgstr "Kommentar-Container Selektor"
 
-#: wp-ajaxify-comments.php:68
+#: wp-ajaxify-comments.php:71
 msgid "Respond container selector"
 msgstr "Respond-Container Selektor"
 
-#: wp-ajaxify-comments.php:73
+#: wp-ajaxify-comments.php:76
 msgid "Error container selector"
 msgstr "Fehler-Comtainer Selektor"
 
-#: wp-ajaxify-comments.php:78
+#: wp-ajaxify-comments.php:81
 msgid "Popup overlay"
 msgstr "Popup Overlay"
 
-#: wp-ajaxify-comments.php:83
+#: wp-ajaxify-comments.php:86
 msgid "Corner radius (px)"
 msgstr "Eckenradius (px)"
 
-#: wp-ajaxify-comments.php:89
+#: wp-ajaxify-comments.php:92
 msgid "Margin top (px)"
 msgstr "Abstand nach oben (px)"
 
-#: wp-ajaxify-comments.php:95
+#: wp-ajaxify-comments.php:98
+msgid "Width (%)"
+msgstr "Breite (%)"
+
+#: wp-ajaxify-comments.php:104
+msgid "Padding (px)"
+msgstr "Innenabstand (px)"
+
+#: wp-ajaxify-comments.php:110
 msgid "Fade in time (ms)"
 msgstr "Einblendzeit (ms)"
 
-#: wp-ajaxify-comments.php:101
+#: wp-ajaxify-comments.php:116
 msgid "Fade out time (ms)"
 msgstr "Ausblendzeit (ms)"
 
-#: wp-ajaxify-comments.php:107
+#: wp-ajaxify-comments.php:122
 msgid "Timeout (ms)"
 msgstr ""
 
-#: wp-ajaxify-comments.php:113
+#: wp-ajaxify-comments.php:128
 msgid "Loading background color"
 msgstr "Hintergrundfarbe (laden)"
 
-#: wp-ajaxify-comments.php:118
+#: wp-ajaxify-comments.php:133
 msgid "Loading text color"
 msgstr "Textfarbe (laden)"
 
-#: wp-ajaxify-comments.php:123
+#: wp-ajaxify-comments.php:138
 msgid "Success background color"
 msgstr "Hintergrundfarbe (Erfolg)"
 
-#: wp-ajaxify-comments.php:128
+#: wp-ajaxify-comments.php:143
 msgid "Success text color"
 msgstr "Textfarbe (Erfolg)"
 
-#: wp-ajaxify-comments.php:133
+#: wp-ajaxify-comments.php:148
 msgid "Error background color"
 msgstr "Hintergrundfarbe (Fehler)"
 
-#: wp-ajaxify-comments.php:138
+#: wp-ajaxify-comments.php:153
 msgid "Error text color"
 msgstr "Textfarbe (Fehler)"
 
-#: wp-ajaxify-comments.php:143
+#: wp-ajaxify-comments.php:158
 msgid "Opacity (%)"
 msgstr "Deckkraft (%)"
 
-#: wp-ajaxify-comments.php:149
+#: wp-ajaxify-comments.php:164
 msgid "Text align (left|center|right)"
 msgstr "Textausrichtung (left|center|right)"
 
-#: wp-ajaxify-comments.php:154
+#: wp-ajaxify-comments.php:169
 msgid "Default font size"
 msgstr "Standard Schriftgröße"
 
-#: wp-ajaxify-comments.php:155
+#: wp-ajaxify-comments.php:170
 msgid "Font size (e.g. \"14px\", \"1.1em\", &hellip;)"
 msgstr "Schriftgröße (z.B. \"14px\", \"1.1em\", &hellip;)"
 
-#: wp-ajaxify-comments.php:160
+#: wp-ajaxify-comments.php:175
 msgid "Z-Index"
 msgstr ""
 
-#: wp-ajaxify-comments.php:166
+#: wp-ajaxify-comments.php:181
 msgid "Miscellaneous"
 msgstr "Verschiedenes"
 
-#: wp-ajaxify-comments.php:171
+#: wp-ajaxify-comments.php:186
 msgid "Scroll speed (ms)"
 msgstr "Scrollzeit (ms)"
 
-#: wp-ajaxify-comments.php:176
-msgid "Expert settings (JavaScript callbacks)"
-msgstr "Experteneinstellungen (JavaScript)"
+#: wp-ajaxify-comments.php:192
+msgid "Expert settings"
+msgstr "Experteneinstellungen"
 
-#: wp-ajaxify-comments.php:183
+#: wp-ajaxify-comments.php:197 wp-ajaxify-comments.php:204
+#: wp-ajaxify-comments.php:210 wp-ajaxify-comments.php:216
+msgid "'%s' callback"
+msgstr ""
+
+#: wp-ajaxify-comments.php:199
 msgid "Parameter: dom (jQuery DOM element)"
 msgstr "Parameter: dom (jQuery DOM Element)"
 
-#: wp-ajaxify-comments.php:242
+#: wp-ajaxify-comments.php:221
+msgid "Load comments async threshold"
+msgstr "Kommentare asychron laden (Grenzwert)"
+
+#: wp-ajaxify-comments.php:223
+msgid ""
+"Load comments asynchronously with secondary AJAX request if more than the "
+"specified number of comments exist. Leave empty to disable this feature."
+msgstr "Lade Kommentare mit einem zusätzlichen (asynchronen) AJAX request, wenn die angegebene Anzahl an Kommentaren existiert. Leerlassen, um diese Funktion zu deaktivieren."
+
+#: wp-ajaxify-comments.php:329
 msgid "Posting your comment. Please wait&hellip;"
 msgstr "Kommentar wird gespeichert. Bitte warten&hellip;"
 
-#: wp-ajaxify-comments.php:243
+#: wp-ajaxify-comments.php:330
+msgid "Loading comments. Please wait&hellip;"
+msgstr "Lade Kommentare, bitte warten&hellip;"
+
+#: wp-ajaxify-comments.php:331
 msgid "Something went wrong, your comment has not been posted."
 msgstr "Etwas ist schiefgelaufen, der Kommentar wurde nicht gespeichert."
 
-#: wp-ajaxify-comments.php:244
+#: wp-ajaxify-comments.php:332
 msgid "Your comment has been posted. Thank you!"
 msgstr "Der Kommentar wurde gespeichert. Vielen Dank!"
 
-#: wp-ajaxify-comments.php:245
+#: wp-ajaxify-comments.php:333
 msgid "Your comment has been posted and is awaiting moderation. Thank you!"
 msgstr "Der Kommentar wurde gespeichert und wartet auf die Moderation. Vielen Dank!"
 
-#: wp-ajaxify-comments.php:246
+#: wp-ajaxify-comments.php:334
 msgid "Reloading page. Please wait&hellip;"
 msgstr "Seite wird neugeladen. Bitte warten&hellip;"
 
-#: wp-ajaxify-comments.php:281
+#: wp-ajaxify-comments.php:371
 msgid "%s is not enabled!"
 msgstr "%s is nicht aktiviert!"
 
-#: wp-ajaxify-comments.php:281 wp-ajaxify-comments.php:284
+#: wp-ajaxify-comments.php:371 wp-ajaxify-comments.php:374
 msgid "Click here to configure the plugin."
 msgstr "Klick hier um das Plugin zu konfigurieren."
 
-#: wp-ajaxify-comments.php:284
+#: wp-ajaxify-comments.php:374
 msgid "%s is running in debug mode!"
 msgstr "%s läuft i, -Modus"
 
-#: wp-ajaxify-comments.php:365
+#: wp-ajaxify-comments.php:458
 msgid "Settings saved successfully."
 msgstr "Einstellungen erfolgreich gespeichert."
 
-#: wp-ajaxify-comments.php:367
+#: wp-ajaxify-comments.php:460
 msgid "Settings not saved! Please correct the red marked input fields."
 msgstr "Einstellungen nicht gespeichert! Bitte korrigiere die rot markierten Eingabefelder."
 
-#: wp-ajaxify-comments.php:373
+#: wp-ajaxify-comments.php:466
 msgid "Plugin Settings: %s"
 msgstr "Plugin Einstellungen: %s"
 
-#: wp-ajaxify-comments.php:383
+#: wp-ajaxify-comments.php:476
 msgid "Plugin Settings"
 msgstr "Plugin Einstellungen"
 
-#: wp-ajaxify-comments.php:411
+#: wp-ajaxify-comments.php:504
 msgid "Leave empty for default value %s"
 msgstr "Leer für Standardwert %s"
 
-#: wp-ajaxify-comments.php:424
+#: wp-ajaxify-comments.php:517
 msgid "Save Changes"
 msgstr "Einstellungen speichern"
 
-#: wp-ajaxify-comments.php:444
+#: wp-ajaxify-comments.php:537
 msgid "Contact & Donation"
 msgstr "Kontakt & Spende"
 
@@ -199,7 +226,7 @@ msgstr ""
 #. Description of the plugin/theme
 msgid ""
 "WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form."
-msgstr "WP-Ajaxify-Comments erweitert das Kommentar-Formular ihres aktuelles Themes um AJAX-Funktionalität."
+msgstr "WP-Ajaxify-Comments erweitert das Kommentar-Formular Ihres aktuelles Themes um AJAX-Funktionalität."
 
 #. Author of the plugin/theme
 msgid "Jan Jonas"
