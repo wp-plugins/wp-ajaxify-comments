@@ -271,7 +271,7 @@ WPAC.Init = function() {
 			data: form.serialize(),
 			beforeSend: function(xhr){ xhr.setRequestHeader('X-WPAC-REQUEST', '1'); },
 			success: function (data) {
-
+ 
 				WPAC._Debug("info", "Comment has been posted");
 
 				// Get info from response header
@@ -337,12 +337,6 @@ WPAC.Init = function() {
 
 WPAC.RefreshComments = function(scrollToAnchor) {
 	
-	// Test if plugin already has been initialized
-	if (!WPAC._Initialized) {
-		WPAC._Debug("info", "Abort loading comments (plugin has not been initialized)");
-		return false;
-	}
-	
 	// Save form data
 	var formData = jQuery(WPAC._Options["selectorCommentForm"]).serializeArray();
 	
@@ -360,7 +354,7 @@ WPAC.RefreshComments = function(scrollToAnchor) {
 			// Replace comments
 			WPAC._ReplaceComments(data, WPAC._AddQueryParamStringToUrl(window.location.href, "WPACFallback", 1));
 			
-			// Re-inject form data
+			// Re-inject saved form data
 			jQuery.each(formData, function(key, value) {
 				var formElement = jQuery("[name='"+value.name+"']", WPAC._Options["selectorCommentForm"]);
 				if (formElement.length != 1 || formElement.val()) return;
@@ -389,8 +383,12 @@ WPAC.RefreshComments = function(scrollToAnchor) {
 }
 
 jQuery(function() {
-	WPAC.Init();
+	var initSuccesful = WPAC.Init();
 	if (WPAC._Options['loadCommentsAsync']) {
+		if (!initSuccesful) {
+			WPAC._LoadFallbackUrl(WPAC._AddQueryParamStringToUrl(window.location.href, "WPACFallback", "1"))
+			return;
+		} 
 		WPAC._Debug("info", "Loading comments asynchronously with secondary AJAX request");
 		WPAC.RefreshComments();
 	} 
@@ -398,5 +396,5 @@ jQuery(function() {
 
 function wpac_init() {
 	WPAC._Debug("info", "wpac_init() is deprecated, please use WPAC.Init()");
-	WPAC.Init
+	WPAC.Init();
 }
