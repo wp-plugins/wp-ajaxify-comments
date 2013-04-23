@@ -104,6 +104,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 * Bug-fix: Options are no longer saved if validation failes
 * Refactored and extended client-side JavaScript API
+* Updated localization for de-DE
 * Added option to load comments asynchronously with secondary AJAX request
 
 = 0.11.0 =

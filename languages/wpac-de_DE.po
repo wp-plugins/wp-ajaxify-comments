@@ -185,7 +185,7 @@ msgstr "Klick hier um das Plugin zu konfigurieren."
 
 #: wp-ajaxify-comments.php:374
 msgid "%s is running in debug mode!"
-msgstr "%s läuft i, -Modus"
+msgstr "%s läuft im Debug-Modus!"
 
 #: wp-ajaxify-comments.php:458
 msgid "Settings saved successfully."
