@@ -246,7 +246,7 @@ WPAC.Init = function() {
 	
 	// Intercept comment form submit
 	var formSubmitHandler = function (event) {
-
+		
 		var form = jQuery(this);
 
 		var submitUrl = form.attr("action");
@@ -254,7 +254,13 @@ WPAC.Init = function() {
 		// Cancel AJAX request if cross-domain scripting is detected
 		var domain = window.location.protocol + "//" + window.location.host;
 		if (submitUrl.indexOf(domain) != 0) {
-			WPAC._Debug("error", "Cross-domain scripting detected (domain: '%s', submit url: '%s'), cancel AJAX request", domain, submitUrl);
+			if (WPAC._Options.debug && !form.data("submitCrossDomain")) {
+				WPAC._Debug("error", "Cross-domain scripting detected (domain: '%s', submit url: '%s'), cancel AJAX request", domain, submitUrl);
+				WPAC._Debug("info", "Sleep for 5s to enable analyzing debug messages...");
+				event.preventDefault();
+				form.data("submitCrossDomain", true)
+				window.setTimeout(function() { jQuery('#submit', form).remove(); form.submit(); }, 5000);
+			}
 			return;
 		}
 		
