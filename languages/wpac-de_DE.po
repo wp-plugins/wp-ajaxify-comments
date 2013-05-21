@@ -36,6 +36,10 @@ msgstr "Kommentar-Form Selektor"
 msgid "Comments container selector"
 msgstr "Kommentar-Container Selektor"
 
+#: wp-ajaxify-comments.php:66
+msgid "Comment paging links selector"
+msgstr "Kommentar-Seitenwechsel-Link Selektor"
+
 #: wp-ajaxify-comments.php:71
 msgid "Respond container selector"
 msgstr "Respond-Container Selektor"

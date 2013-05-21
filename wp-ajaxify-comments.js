@@ -78,12 +78,12 @@ WPAC._Debug = function(level, message) {
 	console[level].apply(console, args);
 }
 
-WPAC._DebugSelector = function(elementType, selector) {
+WPAC._DebugSelector = function(elementType, selector, optional) {
 	if (!WPAC._Options.debug) return;
 
 	var element = jQuery(selector);
 	if (!element.length) {
-		WPAC._Debug("error", "Search %s (selector: '%s')... Not found", elementType, selector);
+		WPAC._Debug(optional ? "info" : "error", "Search %s (selector: '%s')... Not found", elementType, selector);
 	} else {
 		WPAC._Debug("info", "Search %s (selector: '%s')... Found: %o", elementType, selector, element);
 	}
@@ -103,7 +103,7 @@ WPAC._AddQueryParamStringToUrl = function(url, param, value) {
 
 WPAC._LoadFallbackUrl = function(fallbackUrl) {
 
-	WPAC._ShowMessage(WPAC._Options["textReloadPage"], "loading");
+	WPAC._ShowMessage(WPAC._Options.textReloadPage, "loading");
 	
 	var url = WPAC._AddQueryParamStringToUrl(fallbackUrl, "WPACRandom", (new Date()).getTime());
 	WPAC._Debug("info", "Something went wrong. Reloading page (URL: '%s')...", url);
@@ -240,11 +240,12 @@ WPAC.Init = function() {
 		WPAC._DebugSelector("comment form", WPAC._Options.selectorCommentForm);
 		WPAC._DebugSelector("comments container", WPAC._Options.selectorCommentsContainer);
 		WPAC._DebugSelector("respond container", WPAC._Options.selectorRespondContainer);
+		WPAC._DebugSelector("comment paging links", WPAC._Options.selectorCommentPagingLinks, true);
 		WPAC._Debug("info", "Initialization completed");
 	}
 	
 	// Intercept comment form submit
-	var submitHandler = function (event) {
+	var formSubmitHandler = function (event) {
 
 		var form = jQuery(this);
 
@@ -261,7 +262,7 @@ WPAC.Init = function() {
 		event.preventDefault();
 	
 		// Show loading info
-		WPAC._ShowMessage(WPAC._Options["textPostComment"], "loading");
+		WPAC._ShowMessage(WPAC._Options.textPostComment, "loading");
 
 		WPAC._Callbacks["onBeforeSubmitComment"]();
 		
@@ -281,14 +282,14 @@ WPAC.Init = function() {
 				WPAC._Debug("info", "Found unapproved state '%s' in X-WPAC-UNAPPROVED", unapproved);
 				
 				// Show success message
-				WPAC._ShowMessage(unapproved == '1' ? WPAC._Options["textPostedUnapproved"] : WPAC._Options["textPosted"], "success");
+				WPAC._ShowMessage(unapproved == '1' ? WPAC._Options.textPostedUnapproved : WPAC._Options.textPosted, "success");
 
 				// Replace comments
 				WPAC._ReplaceComments(data, commentUrl);
 				
 				// Smooth scroll to comment url and update browser url
 				if (commentUrl) {
-					var anchor = commentUrl.substr(commentUrl.indexOf("#"));
+					var anchor = commentUrl.indexOf("#") >= 0 ? commentUrl.substr(commentUrl.indexOf("#")) : null;
 					if (anchor) {
 						WPAC._Debug("info", "Anchor '%s' extracted from comment URL '%s'", anchor, commentUrl);
 						WPAC._ScrollToAnchor(anchor);
@@ -320,30 +321,50 @@ WPAC.Init = function() {
 	  
 	};
 
-	// Add submit handler
+	var pagingSubmitHandler = function(event) {
+		var href = jQuery(this).attr("href");
+		if (href) {
+			event.preventDefault();
+			WPAC.LoadComments(href, true);
+		}
+	}
+	
+	// Get addHandler method
 	if (jQuery(document).on) {
 		// jQuery 1.7+
-		jQuery(document).on("submit", WPAC._Options["selectorCommentForm"], submitHandler);
+		var addHandler = function(event, selector, handler) {
+			jQuery(document).on(event, selector, handler)
+		}
 	} else if (jQuery(document).delegate) {
 		// jQuery 1.4.3+
-		jQuery(document).delegate(WPAC._Options["selectorCommentForm"], "submit", submitHandler);
+		var addHandler = function(event, selector, handler) {
+			jQuery(document).delegate(selector, event, handler)
+		}
 	} else {
 		// jQuery 1.3+
-		jQuery(WPAC._Options["selectorCommentForm"]).live("submit", submitHandler);
+		var addHandler = function(event, selector, handler) {
+			jQuery(selector).live(event, handler)
+		}
 	}
+	
+	// Add handlers
+	addHandler("submit", WPAC._Options.selectorCommentForm, formSubmitHandler)
+	addHandler("click", WPAC._Options.selectorCommentPagingLinks, pagingSubmitHandler);
 	
 	return true;
 }
 
 WPAC.RefreshComments = function(scrollToAnchor) {
+	return WPAC.LoadComments(location.href, scrollToAnchor)
+}
+
+WPAC.LoadComments = function(url, scrollToAnchor) {
 	
 	// Save form data
-	var formData = jQuery(WPAC._Options["selectorCommentForm"]).serializeArray();
+	var formData = jQuery(WPAC._Options.selectorCommentForm).serializeArray();
 	
 	// Show loading info
-	WPAC._ShowMessage(WPAC._Options["textRefreshComments"], "loading");
-	
-	var url = location.href;
+	WPAC._ShowMessage(WPAC._Options.textRefreshComments, "loading");
 	
 	var request = jQuery.ajax({
 		url: url,
@@ -352,18 +373,18 @@ WPAC.RefreshComments = function(scrollToAnchor) {
 		success: function (data) {
 
 			// Replace comments
-			WPAC._ReplaceComments(data, WPAC._AddQueryParamStringToUrl(window.location.href, "WPACFallback", 1));
+			WPAC._ReplaceComments(data, WPAC._AddQueryParamStringToUrl(url, "WPACFallback", 1));
 			
 			// Re-inject saved form data
 			jQuery.each(formData, function(key, value) {
-				var formElement = jQuery("[name='"+value.name+"']", WPAC._Options["selectorCommentForm"]);
+				var formElement = jQuery("[name='"+value.name+"']", WPAC._Options.selectorCommentForm);
 				if (formElement.length != 1 || formElement.val()) return;
 				formElement.val(value.value);
 			})
 
 			// Scroll to anchor
 			if (scrollToAnchor !== false) {
-				var anchor = window.location.hash;
+				var anchor = url.indexOf("#") >= 0 ? url.substr(url.indexOf("#")) : null;
 				if (anchor) {
 					WPAC._Debug("info", "Anchor '%s' extracted from current URL", anchor);
 					WPAC._ScrollToAnchor(anchor);
@@ -384,7 +405,7 @@ WPAC.RefreshComments = function(scrollToAnchor) {
 
 jQuery(function() {
 	var initSuccesful = WPAC.Init();
-	if (WPAC._Options['loadCommentsAsync']) {
+	if (WPAC._Options.loadCommentsAsync) {
 		if (!initSuccesful) {
 			WPAC._LoadFallbackUrl(WPAC._AddQueryParamStringToUrl(window.location.href, "WPACFallback", "1"))
 			return;

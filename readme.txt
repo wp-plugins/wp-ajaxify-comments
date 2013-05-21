@@ -101,6 +101,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Changelog ==
 
+= 0.13.0 =
+* Ajaxified comment paging
+
 = 0.12.1 =
 * Hotfix for environments where PHP is not installed as an Apache module
 
@@ -253,6 +256,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.13.0 =
+Ajaxified comment paging
 
 = 0.12.1 =
 Hotfix for environments where PHP is not installed as an Apache module
