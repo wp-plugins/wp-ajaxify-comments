@@ -103,6 +103,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 = 0.13.0 =
 * Ajaxified comment paging
+* Improved debug support for cross-domain scripting problems
 
 = 0.12.1 =
 * Hotfix for environments where PHP is not installed as an Apache module

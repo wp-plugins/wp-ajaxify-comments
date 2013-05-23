@@ -198,6 +198,11 @@ WPAC._ReplaceComments = function(data, fallbackUrl) {
 	WPAC._Callbacks["onAfterUpdateComments"]();		
 }
 
+WPAC._TestCrossDomainScripting = function(url) {
+	var domain = window.location.protocol + "//" + window.location.host;
+	return (url.indexOf(domain) != 0);
+}
+
 WPAC._Initialized = false;
 WPAC.Init = function() {
 
@@ -252,10 +257,9 @@ WPAC.Init = function() {
 		var submitUrl = form.attr("action");
 
 		// Cancel AJAX request if cross-domain scripting is detected
-		var domain = window.location.protocol + "//" + window.location.host;
-		if (submitUrl.indexOf(domain) != 0) {
+		if (WPAC._TestCrossDomainScripting(submitUrl)) {
 			if (WPAC._Options.debug && !form.data("submitCrossDomain")) {
-				WPAC._Debug("error", "Cross-domain scripting detected (domain: '%s', submit url: '%s'), cancel AJAX request", domain, submitUrl);
+				WPAC._Debug("error", "Cross-domain scripting detected (submit url: '%s'), cancel AJAX request", submitUrl);
 				WPAC._Debug("info", "Sleep for 5s to enable analyzing debug messages...");
 				event.preventDefault();
 				form.data("submitCrossDomain", true)
@@ -365,6 +369,14 @@ WPAC.RefreshComments = function(scrollToAnchor) {
 }
 
 WPAC.LoadComments = function(url, scrollToAnchor) {
+	
+	// Cancel AJAX request if cross-domain scripting is detected
+	if (WPAC._TestCrossDomainScripting(url)) {
+		if (WPAC._Options.debug) {
+			WPAC._Debug("error", "Cross-domain scripting detected (url: '%s'), cancel AJAX request", url);
+		}
+		return false;
+	}
 	
 	// Save form data
 	var formData = jQuery(WPAC._Options.selectorCommentForm).serializeArray();
