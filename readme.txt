@@ -101,6 +101,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Changelog ==
 
+= 0.13.1 =
+* Comment paging now updates browser URL
+
 = 0.13.0 =
 * Ajaxified comment paging
 * Improved debug support for cross-domain scripting problems

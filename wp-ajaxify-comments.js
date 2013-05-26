@@ -132,6 +132,17 @@ WPAC._ScrollToAnchor = function(anchor) {
 	}
 }
 
+WPAC._UpdateUrl= function(url) {
+	if (url.split("#")[0] == window.location.href.split("#")[0]) {
+		return;
+	}
+	if (window.history.replaceState) {
+		window.history.replaceState({}, window.document.title, url);
+	} else {
+		WPAC._Debug("info", "Browser does not support window.history.replaceState() to update the URL without reloading the page", anchor);
+	}
+}
+
 WPAC._ReplaceComments = function(data, fallbackUrl) {
 	
 	var oldCommentsContainer = jQuery(WPAC._Options.selectorCommentsContainer);
@@ -299,6 +310,9 @@ WPAC.Init = function() {
 				
 				// Smooth scroll to comment url and update browser url
 				if (commentUrl) {
+					
+					WPAC._UpdateUrl(commentUrl);
+					
 					var anchor = commentUrl.indexOf("#") >= 0 ? commentUrl.substr(commentUrl.indexOf("#")) : null;
 					if (anchor) {
 						WPAC._Debug("info", "Anchor '%s' extracted from comment URL '%s'", anchor, commentUrl);
@@ -399,6 +413,8 @@ WPAC.LoadComments = function(url, scrollToAnchor) {
 				if (formElement.length != 1 || formElement.val()) return;
 				formElement.val(value.value);
 			})
+			
+			WPAC._UpdateUrl(url);
 
 			// Scroll to anchor
 			if (scrollToAnchor !== false) {
