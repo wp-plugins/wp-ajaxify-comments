@@ -468,92 +468,92 @@ function wpac_option_page() {
   
   ?>
 	<div class="wrap">
-	<h2><?php printf(__('Plugin Settings: %s', WPAC_DOMAIN), WPAC_PLUGIN_NAME.' '.wpac_get_version()); ?></h2>
-
-	<div class="postbox-container" style="width: 100%;" >
-
-		<form name="wp-ajaxify-comments-settings-update" method="post" action="">
-			<?php if (function_exists('wp_nonce_field') === true) wp_nonce_field('wpac_update_settings','wpac_nonce_field'); ?>	 
-
-			<div id="poststuff">
-				<div class="postbox">
-			
-					<h3 id="plugin-settings"><?php _e('Plugin Settings', WPAC_DOMAIN); ?></h3>
-					<div class="inside">
-
-						<table class="form-table">
-
-	<?php
+		<h2><?php printf(__('Plugin Settings: %s', WPAC_DOMAIN), WPAC_PLUGIN_NAME.' '.wpac_get_version()); ?></h2>
 	
-		$section = 0;
-		foreach($wpac_config as $config) {
-			echo '<tr><th colspan="2" style="white-space: nowrap;"><h4>'.$config['section'].'</h4></th></tr>';
-			foreach($config['options'] as $optionName => $option) {
-
-				$color = in_array($optionName, $errors) ? 'red' : '';
-
-				echo '<tr><th scope="row" style="white-space: nowrap;"><label for="'.$optionName.'" style="color: '.$color.'">'.$option['label'].'</label></th><td>';
+		<div class="postbox-container" style="width: 100%;" >
+	
+			<form name="wp-ajaxify-comments-settings-update" method="post" action="">
+				<?php if (function_exists('wp_nonce_field') === true) wp_nonce_field('wpac_update_settings','wpac_nonce_field'); ?>	 
+	
+				<div id="poststuff">
+					<div class="postbox">
 				
-				$value = (isset($_POST['wpac']) && $_POST['wpac'][$section][$optionName]) ? stripslashes($_POST['wpac'][$section][$optionName]) : wpac_get_option($optionName);
-				$name = 'wpac['.$section.']['.$optionName.']';
-				
-				if ($option['type'] == 'boolean') {
-					echo '<input type="hidden" name="'.$name.'" value="">';
-					echo '<input type="checkbox" name="'.$name.'" id="'.$optionName.'" '.($value ? 'checked="checked"' : '').' value="1"/>';
-				} else {
-					if ($option['type'] == 'multiline') {
-						echo '<textarea name="'.$name.'" id="'.$optionName.'" style="width: 300px; color: '.$color.'">'.htmlentities($value).'</textarea>';
-					} else {
-						echo '<input type="input" name="'.$name.'" id="'.$optionName.'" value="'.htmlentities($value).'" style="width: 300px; color: '.$color.'"/>';
-					} 
-					if ($option['default']) echo '<br/>'.sprintf(__('Leave empty for default value %s', WPAC_DOMAIN), '<em>'.$option['default'].'</em>');
-					if ($option['description']) echo '<br/><em style="width:300px; display: inline-block">'.$option['description'].'</em>';
-				}
-				echo '</td></tr>';
-			}
-			$section++;
-		}
+						<h3 id="plugin-settings"><?php _e('Plugin Settings', WPAC_DOMAIN); ?></h3>
+						<div class="inside">
 	
-	?>
+							<table class="form-table">
 	
-						</table>
-						<p class="submit">
-						  <input type="hidden" name="action" value="wpac_update_settings"/>
-						  <input type="submit" name="wpac_update_settings" class="button-primary" value="<?php _e('Save Changes', WPAC_DOMAIN); ?>"/>
-						</p>
-					</div>
-				</div>
-			</div>
-
-		</form>	
-	
-	</div>
-
-	<div class="postbox-container" style="width: 100%;" >
-
-		<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-			
-			<input type="hidden" name="cmd" value="_s-xclick">
-			<input type="hidden" name="hosted_button_id" value="MLKQ3VNZUBEQQ">
-			<img alt="" border="0" src="https://www.paypalobjects.com/de_DE/i/scr/pixel.gif" width="1" height="1">
-
-			<div id="poststuff">
-				<div class="postbox">
-					<h3 id="plugin-settings"><?php _e('Contact & Donation', WPAC_DOMAIN); ?></h3>
-					<div class="inside">	
-						<p>Thanks for using <?php echo WPAC_PLUGIN_NAME; ?>. If you have trouble using the plugin or you miss a feature please do not hesitate to ask a question in the <a target="_blank" href="http://wordpress.org/support/plugin/wp-ajaxify-comments">plugin's support forum</a> or <a href="http://blog.janjonas.net/contact" target="_blank">send me a private message</a>.
-						</p>
-						<p>
-							If you would like to support future development, please consider <a href="http://wordpress.org/support/view/plugin-reviews/wp-ajaxify-comments#postform" target="_blank">writing a short review</a> or making a small donation. Thank you!
-							<br/>
-							<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-						</p>
-					</div>
-				</div>
-			</div>
-		</form>		
-	</div>
+		<?php
 		
+			$section = 0;
+			foreach($wpac_config as $config) {
+				echo '<tr><th colspan="2" style="white-space: nowrap;"><h4>'.$config['section'].'</h4></th></tr>';
+				foreach($config['options'] as $optionName => $option) {
+	
+					$color = in_array($optionName, $errors) ? 'red' : '';
+	
+					echo '<tr><th scope="row" style="white-space: nowrap;"><label for="'.$optionName.'" style="color: '.$color.'">'.$option['label'].'</label></th><td>';
+					
+					$value = (isset($_POST['wpac']) && $_POST['wpac'][$section][$optionName]) ? stripslashes($_POST['wpac'][$section][$optionName]) : wpac_get_option($optionName);
+					$name = 'wpac['.$section.']['.$optionName.']';
+					
+					if ($option['type'] == 'boolean') {
+						echo '<input type="hidden" name="'.$name.'" value="">';
+						echo '<input type="checkbox" name="'.$name.'" id="'.$optionName.'" '.($value ? 'checked="checked"' : '').' value="1"/>';
+					} else {
+						if ($option['type'] == 'multiline') {
+							echo '<textarea name="'.$name.'" id="'.$optionName.'" rows="5" cols="40" style="width: 300px; color: '.$color.'">'.htmlentities($value).'</textarea>';
+						} else {
+							echo '<input type="text" name="'.$name.'" id="'.$optionName.'" value="'.htmlentities($value).'" style="width: 300px; color: '.$color.'"/>';
+						} 
+						if ($option['default']) echo '<br/>'.sprintf(__('Leave empty for default value %s', WPAC_DOMAIN), '<em>'.$option['default'].'</em>');
+						if ($option['description']) echo '<br/><em style="width:300px; display: inline-block">'.$option['description'].'</em>';
+					}
+					echo '</td></tr>';
+				}
+				$section++;
+			}
+		
+		?>
+		
+							</table>
+							<p class="submit">
+							  <input type="hidden" name="action" value="wpac_update_settings"/>
+							  <input type="submit" name="wpac_update_settings" class="button-primary" value="<?php _e('Save Changes', WPAC_DOMAIN); ?>"/>
+							</p>
+						</div>
+					</div>
+				</div>
+	
+			</form>	
+		
+		</div>
+	
+		<div class="postbox-container" style="width: 100%;" >
+	
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+				
+				<input type="hidden" name="cmd" value="_s-xclick">
+				<input type="hidden" name="hosted_button_id" value="MLKQ3VNZUBEQQ">
+				<img alt="" border="0" src="https://www.paypalobjects.com/de_DE/i/scr/pixel.gif" width="1" height="1">
+	
+				<div id="poststuff">
+					<div class="postbox">
+						<h3 id="plugin-settings"><?php _e('Contact & Donation', WPAC_DOMAIN); ?></h3>
+						<div class="inside">	
+							<p>Thanks for using <?php echo WPAC_PLUGIN_NAME; ?>. If you have trouble using the plugin or you miss a feature please do not hesitate to ask a question in the <a target="_blank" href="http://wordpress.org/support/plugin/wp-ajaxify-comments">plugin's support forum</a> or <a href="http://blog.janjonas.net/contact" target="_blank">send me a private message</a>.
+							</p>
+							<p>
+								If you would like to support future development, please consider <a href="http://wordpress.org/support/view/plugin-reviews/wp-ajaxify-comments#postform" target="_blank">writing a short review</a> or making a small donation. Thank you!
+								<br/>
+								<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+							</p>
+						</div>
+					</div>
+				</div>
+			</form>		
+		</div>
+	</div>
 <?php }
 
 function wpac_is_ajax_request() {
