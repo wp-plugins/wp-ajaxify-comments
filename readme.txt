@@ -29,7 +29,7 @@ Some features of the plugin:
 * Validating and adding comments without (complete) page reloads
 * Seamless integration in almost every theme (default options should work with most themes)
 * i18n support
-* Included localizations for ar, ca, de-DE, es-ES, fa-IR, fr-FR, he-IL, hu-HU, nl-NL, pl-PL, pt-BR, ru-RU, sk-SK, tr-TR, uk, vi-VN, zh-CN (thanks to all contributors)
+* Included localizations for ar, ca, da-DK, de-DE, es-ES, fa-IR, fr-FR, he-IL, hu-HU, nl-NL, pl-PL, pt-BR, ru-RU, sk-SK, tr-TR, uk, vi-VN, zh-CN (thanks to all contributors)
 * Support for threaded comments
 * Support for comments that await moderation
 * Compatibility with comment spam protection plugins and other plugins that extend/manipulate the comment form
@@ -103,6 +103,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 = 0.13.1 =
 * Comment paging now updates browser URL
+* Added localization for da-DK (thanks to Bjarne Maschoreck)
 
 = 0.13.0 =
 * Ajaxified comment paging
@@ -262,7 +263,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 == Upgrade Notice ==
 
 = 0.13.0 =
-Ajaxified comment paging
+Ajaxified comment paging, added localization for da-DK
 
 = 0.12.1 =
 Hotfix for environments where PHP is not installed as an Apache module
