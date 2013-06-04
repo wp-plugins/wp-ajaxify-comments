@@ -170,7 +170,8 @@ WPAC._ReplaceComments = function(data, fallbackUrl) {
 	// Update comments container
 	oldCommentsContainer.replaceWith(newCommentsContainer);
 	
-	if (jQuery(WPAC._Options.selectorCommentForm).length) {
+	var form = jQuery(WPAC._Options.selectorCommentForm);
+	if (form.length) {
 
 		// Replace comment form (for spam protection plugin compatibility) if comment form is not nested in comments container
 		// If comment form is nested in comments container comment form has already been replaced
