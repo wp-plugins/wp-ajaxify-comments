@@ -260,8 +260,8 @@ function wpac_load_options() {
 
 	global $wpac_options;
 	
-	// Options already loaded
-	if ($wpac_options) return;
+	// Test if options have already been loaded
+	if ($wpac_options !== null) return;
 
 	$wpac_options = get_option(WPAC_OPTION_KEY);
 	if (is_array($wpac_options)) return;

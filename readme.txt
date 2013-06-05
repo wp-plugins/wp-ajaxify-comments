@@ -105,6 +105,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Comment paging now updates browser URL
 * Added localization for da-DK (thanks to Bjarne Maschoreck)
 * Bugfix for themes where comment form is not nested in comment container
+* Bugfix for clearing all settings (thanks to HarroH) 
 
 = 0.13.0 =
 * Ajaxified comment paging
