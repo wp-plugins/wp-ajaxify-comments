@@ -101,6 +101,11 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Changelog ==
 
+= 0.14. =
+* Added options to customize texts
+* Updated jQuery blockUI to 2.61
+* WPAC.RefreshComments() and WPAC.LoadComments() now accept option object (and added option "showLoadingInfo" to suppress loading popup overlay)
+
 = 0.13.1 =
 * Comment paging now updates browser URL
 * Added localization for da-DK (thanks to Bjarne Maschoreck)
@@ -263,6 +268,9 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.14.0 =
+Added options to customize texts, Updated jQuery blockUI to 2.61, Improved client-side API
 
 = 0.13.1 =
 Bug-fixes, improved URL updating, added localization for da-DK

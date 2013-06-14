@@ -379,11 +379,22 @@ WPAC.Init = function() {
 	return true;
 }
 
-WPAC.RefreshComments = function(scrollToAnchor) {
-	return WPAC.LoadComments(location.href, scrollToAnchor)
+WPAC.RefreshComments = function(options) {
+	return WPAC.LoadComments(location.href, options)
 }
 
-WPAC.LoadComments = function(url, scrollToAnchor) {
+WPAC.LoadComments = function(url, options) {
+	
+	// Convert boolean parameter (used in version <0.14.0
+	if (typeof(options) == "boolean") {
+		options = {scrollToAnchor: options}
+	}
+
+	// Set default options
+	options = $.extend({
+		scrollToAnchor: true,
+		showLoadingInfo: true
+	}, options || {});	
 	
 	// Cancel AJAX request if cross-domain scripting is detected
 	if (WPAC._TestCrossDomainScripting(url)) {
@@ -397,7 +408,8 @@ WPAC.LoadComments = function(url, scrollToAnchor) {
 	var formData = jQuery(WPAC._Options.selectorCommentForm).serializeArray();
 	
 	// Show loading info
-	WPAC._ShowMessage(WPAC._Options.textRefreshComments, "loading");
+	if (options.showLoadingInfo)
+		WPAC._ShowMessage(WPAC._Options.textRefreshComments, "loading");
 	
 	var request = jQuery.ajax({
 		url: url,
@@ -418,7 +430,7 @@ WPAC.LoadComments = function(url, scrollToAnchor) {
 			WPAC._UpdateUrl(url);
 
 			// Scroll to anchor
-			if (scrollToAnchor !== false) {
+			if (options.scrollToAnchor) {
 				var anchor = url.indexOf("#") >= 0 ? url.substr(url.indexOf("#")) : null;
 				if (anchor) {
 					WPAC._Debug("info", "Anchor '%s' extracted from current URL", anchor);

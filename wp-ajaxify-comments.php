@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.13.1
+Version: 0.14.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -192,8 +192,43 @@ function wpac_get_config() {
 					'pattern' => '/^[0-9]*$/',
 				),
 			),
-		)
-		,array(
+		),
+		array(
+			'section' => __('Texts', WPAC_DOMAIN),
+			'options' => array(
+				'textPostComment' => array(
+						'type' => 'string',
+						'default' => __('Posting your comment. Please wait&hellip;', WPAC_DOMAIN),
+						'label' => __('Post comment', WPAC_DOMAIN),
+				),
+				'textRefreshComments' => array(
+						'type' => 'string',
+						'default' => __('Loading comments. Please wait&hellip;', WPAC_DOMAIN),
+						'label' => __('Refresh comments', WPAC_DOMAIN),
+				),
+				'textUnknownError' => array(
+						'type' => 'string',
+						'default' => __('Something went wrong, your comment has not been posted.', WPAC_DOMAIN),
+						'label' => __('Unknown error occured', WPAC_DOMAIN),
+				),
+				'textPosted' => array(
+						'type' => 'string',
+						'default' => __('Your comment has been posted. Thank you!', WPAC_DOMAIN),
+						'label' => __('Comment posted', WPAC_DOMAIN),
+				),
+				'textPostedUnapproved' => array(
+						'type' => 'string',
+						'default' => __('Your comment has been posted and is awaiting moderation. Thank you!', WPAC_DOMAIN),
+						'label' => __('Comment posted unapproved', WPAC_DOMAIN),
+				),
+				'textReloadPage' => array(
+						'type' => 'string',
+						'default' => __('Reloading page. Please wait&hellip;', WPAC_DOMAIN),
+						'label' => __('Reloading page', WPAC_DOMAIN),
+				),
+			),
+		),
+		array(
 			'section' => __('Expert settings', WPAC_DOMAIN),
 			'options' => array(
 				'callbackOnBeforeSelectElements' => array(
@@ -331,12 +366,6 @@ function wpac_initialize() {
 				echo $optionName.':'.($option['type'] == 'int' ? $value :'"'.wpac_js_escape($value).'"').',';
 			}
 		}
-		echo 'textPostComment:"'.wpac_js_escape(__('Posting your comment. Please wait&hellip;', WPAC_DOMAIN)).'",';
-		echo 'textRefreshComments:"'.wpac_js_escape(__('Loading comments. Please wait&hellip;', WPAC_DOMAIN)).'",';
-		echo 'textUnknownError:"'.wpac_js_escape(__('Something went wrong, your comment has not been posted.', WPAC_DOMAIN)).'",';
-		echo 'textPosted:"'.wpac_js_escape(__('Your comment has been posted. Thank you!', WPAC_DOMAIN)).'",';
-		echo 'textPostedUnapproved:"'.wpac_js_escape(__('Your comment has been posted and is awaiting moderation. Thank you!', WPAC_DOMAIN)).'",';
-		echo 'textReloadPage:"'.wpac_js_escape(__('Reloading page. Please wait&hellip;', WPAC_DOMAIN)).'",';
 		echo 'commentsEnabled:'.((is_page() || is_single()) && comments_open($post->ID) ? 'true' : 'false').',';
 		echo 'debug:'.(wpac_get_option('debug') ? 'true' : 'false').',';
 		echo 'version:"'.wpac_get_version().'"};';
