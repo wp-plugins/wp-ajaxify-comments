@@ -4,7 +4,7 @@ Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.6-beta1
-Stable tag: 0.13.1
+Stable tag: 0.14.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -271,7 +271,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 == Upgrade Notice ==
 
 = 0.14.0 =
-Added options to customize texts, Updated jQuery blockUI to 2.61, Improved client-side API
+Added options to customize texts, Updated jQuery blockUI to 2.61, Improved client-side API, Added jsuri 1.1.1 to optimize query string sin fallback URLs
 
 = 0.13.1 =
 Bug-fixes, improved URL updating, added localization for da-DK
