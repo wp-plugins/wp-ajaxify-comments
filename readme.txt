@@ -97,14 +97,15 @@ The debug mode can be enabled on the plugin's settings page (Settings > WP-Ajaxi
 
 = Does the plugin use any external libraries? =
 
-Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to block the UI while the comment is sent to the server and to show popup overlays containing the error and info messages.
+Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to block the UI while the comment is sent to the server and to show popup overlays containing the error and info messages and jsuri (http://code.google.com/p/jsuri/) for query string manipulation.
 
 == Changelog ==
 
 = 0.14. =
 * Added options to customize texts
-* Updated jQuery blockUI to 2.61
 * WPAC.RefreshComments() and WPAC.LoadComments() now accept option object (and added option "showLoadingInfo" to suppress loading popup overlay)
+* Updated jQuery blockUI to 2.61
+* Added jsuri 1.1.1 to avoid query strings with duplicated WPAC fallback parameters
 
 = 0.13.1 =
 * Comment paging now updates browser URL

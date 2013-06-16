@@ -90,15 +90,7 @@ WPAC._DebugSelector = function(elementType, selector, optional) {
 }
 
 WPAC._AddQueryParamStringToUrl = function(url, param, value) {
-	
-	var query = param + "=" + value; 
-	if (url.indexOf("?") >= 0) {
-		return url.replace("?", "?" + query + "&");
-	}
-	if (url.indexOf("#") >= 0) {
-		return url.replace("#", "?" + query + "#");
-	}
-	return url += "?" + query;
+	return new Uri(url).replaceQueryParam(param, value).toString();
 }
 
 WPAC._LoadFallbackUrl = function(fallbackUrl) {

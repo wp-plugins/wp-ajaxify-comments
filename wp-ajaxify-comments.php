@@ -271,7 +271,8 @@ function wpac_get_config() {
 function wpac_enqueue_scripts() {
 	$version = wpac_get_version();
 	wp_enqueue_script('jQueryBlockUi', WP_PLUGIN_URL.'/wp-ajaxify-comments/jquery.blockUI.js', array('jquery'), $version);
-	wp_enqueue_script('ajaxifyComments', WP_PLUGIN_URL.'/wp-ajaxify-comments/wp-ajaxify-comments.js', array('jquery', 'jQueryBlockUi'), $version);
+	wp_enqueue_script('jsuri', WP_PLUGIN_URL.'/wp-ajaxify-comments/jsuri-1.1.1.js', array(), $version);
+	wp_enqueue_script('ajaxifyComments', WP_PLUGIN_URL.'/wp-ajaxify-comments/wp-ajaxify-comments.js', array('jquery', 'jQueryBlockUi', 'jsuri'), $version);
 }
 
 function wpac_get_version() {
