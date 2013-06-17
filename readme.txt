@@ -101,7 +101,7 @@ Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to 
 
 == Changelog ==
 
-= 0.14. =
+= 0.14.0 =
 * Added options to customize texts
 * WPAC.RefreshComments() and WPAC.LoadComments() now accept option object (and added option "showLoadingInfo" to suppress loading popup overlay)
 * Updated jQuery blockUI to 2.61
