@@ -383,7 +383,7 @@ WPAC.LoadComments = function(url, options) {
 	}
 
 	// Set default options
-	options = $.extend({
+	options = jQuery.extend({
 		scrollToAnchor: true,
 		showLoadingInfo: true
 	}, options || {});	
