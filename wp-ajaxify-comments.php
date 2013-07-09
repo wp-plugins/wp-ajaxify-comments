@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.14.1
+Version: 0.14.2
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -531,10 +531,11 @@ function wpac_option_page() {
 						echo '<input type="hidden" name="'.$name.'" value="">';
 						echo '<input type="checkbox" name="'.$name.'" id="'.$optionName.'" '.($value ? 'checked="checked"' : '').' value="1"/>';
 					} else {
+						$escapedValue = htmlentities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
 						if ($option['type'] == 'multiline') {
-							echo '<textarea name="'.$name.'" id="'.$optionName.'" rows="5" cols="40" style="width: 300px; color: '.$color.'">'.htmlentities($value).'</textarea>';
+							echo '<textarea name="'.$name.'" id="'.$optionName.'" rows="5" cols="40" style="width: 300px; color: '.$color.'">'.$escapedValue.'</textarea>';
 						} else {
-							echo '<input type="text" name="'.$name.'" id="'.$optionName.'" value="'.htmlentities($value).'" style="width: 300px; color: '.$color.'"/>';
+							echo '<input type="text" name="'.$name.'" id="'.$optionName.'" value="'.$escapedValue.'" style="width: 300px; color: '.$color.'"/>';
 						} 
 						if ($option['default']) echo '<br/>'.sprintf(__('Leave empty for default value %s', WPAC_DOMAIN), '<em>'.$option['default'].'</em>');
 						if ($option['description']) echo '<br/><em style="width:300px; display: inline-block">'.$option['description'].'</em>';
