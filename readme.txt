@@ -106,6 +106,9 @@ There are known incompatibilities to the following plugins:
 
 == Changelog ==
 
+= 0.14.3 =
+* Fixed some PHP strict warnings
+
 = 0.14.2 =
 * Fixed compatibility to PHP < 5.4.0
 
@@ -280,6 +283,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.14.3 =
+Fixed some PHP strict warnings
 
 = 0.14.2 =
 Fixed compatibility to PHP < 5.4.0

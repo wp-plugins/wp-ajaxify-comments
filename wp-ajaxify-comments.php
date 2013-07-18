@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.14.2
+Version: 0.14.3
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -322,7 +322,7 @@ function wpac_load_options() {
 function wpac_get_option($option) {
 	global $wpac_options;
 	wpac_load_options();
-	return $wpac_options[$option];
+	return (isset($wpac_options[$option])) ? $wpac_options[$option] : null;
 }
 
 function wpac_update_option($option, $value) {
@@ -361,7 +361,7 @@ function wpac_initialize() {
 		$wpac_config = wpac_get_config();
 		foreach($wpac_config as $config) {
 			foreach($config['options'] as $optionName => $option) {
-				if ($option['specialOption']) continue;
+				if (isset($option['specialOption']) && $option['specialOption']) continue;
 				$value = trim(wpac_get_option($optionName));
 				if (strlen($value) == 0) $value = $option['default'];
 				echo $optionName.':'.($option['type'] == 'int' ? $value :'"'.wpac_js_escape($value).'"').',';
@@ -537,8 +537,8 @@ function wpac_option_page() {
 						} else {
 							echo '<input type="text" name="'.$name.'" id="'.$optionName.'" value="'.$escapedValue.'" style="width: 300px; color: '.$color.'"/>';
 						} 
-						if ($option['default']) echo '<br/>'.sprintf(__('Leave empty for default value %s', WPAC_DOMAIN), '<em>'.$option['default'].'</em>');
-						if ($option['description']) echo '<br/><em style="width:300px; display: inline-block">'.$option['description'].'</em>';
+						if (isset($option['default']) && $option['default']) echo '<br/>'.sprintf(__('Leave empty for default value %s', WPAC_DOMAIN), '<em>'.$option['default'].'</em>');
+						if (isset($option['description']) && $option['description']) echo '<br/><em style="width:300px; display: inline-block">'.$option['description'].'</em>';
 					}
 					echo '</td></tr>';
 				}
