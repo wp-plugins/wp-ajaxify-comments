@@ -201,6 +201,10 @@ msgstr "Parameter: dom (jQuery DOM Element)"
 msgid "Load comments async threshold"
 msgstr "Kommentare asychron laden (Grenzwert)"
 
+#: wp-ajaxify-comments.php:261
+msgid "Disable URL updating"
+msgstr "URL Aktualisierung unterbinden"
+
 #: wp-ajaxify-comments.php:263
 msgid ""
 "Load comments asynchronously with secondary AJAX request if more than the "

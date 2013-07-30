@@ -106,6 +106,9 @@ There are known incompatibilities to the following plugins:
 
 == Changelog ==
 
+= 0.15.0 =
+* Added option to disable URL updating
+
 = 0.14.3 =
 * Fixed some PHP strict warnings
 
@@ -135,26 +138,22 @@ There are known incompatibilities to the following plugins:
 * Hotfix for environments where PHP is not installed as an Apache module
 
 = 0.12.0 =
-
 * Bug-fix: Options are no longer saved if validation fails
 * Refactored and extended client-side JavaScript API
 * Updated localization for de-DE
 * Added option to load comments asynchronously with secondary AJAX request
 
 = 0.11.0 =
-
 * Added localization for hu-HU (thanks to Patrik Bagi)
 * Added option to customize the popup overlay's width 
 * Added option to customize the popup overlay's padding
 
 = 0.10.0 =
-
 * Added localization for he-LI (thanks to Siman-Tov Yechiel (<a href="http://www.wpstore.co.il" target="_blank">www.wpstore.co.il</a>))
 * Added JavaScript callback ("Before submit comment")
 * Updated jQuery blockUI to 2.57
 
 = 0.9.0 =
-
 * Added JavaScript method wpac_init() to enable manual client side initialization
 * Optimized SQL queries (thanks to Geleosan)
 * Added validation for "scrollSpeed" option
@@ -162,64 +161,50 @@ There are known incompatibilities to the following plugins:
 * Added localization for sk-SK (thanks to Branco, Slovak translation (<a href="http://webhostinggeeks.com/user-reviews/" target="_blank">WebHostingGeeks.com</a>))
 
 = 0.8.0 =
-
 * Added option to customize the font size
 * Added i18n support for admin frontend
 
 = 0.7.0 =
-
 * Added JavaScript callback ("Before select elements")
 
 = 0.6.3 =
-
 * Added localization for ar (thanks to sha3ira)
 
 = 0.6.2 =
-
 * Fixed some PHP warnings (thanks to petersb)
 * Fixed HTTPS check for ISAPI under IIS
 * Added support for non-standard HTTP port
 * Fixed handling of unexpected/unsupported server responses
 
 = 0.6.1 =
-
 * Added localization for ru-RU and uk (thanks to Валерий Сиволап)
 
 = 0.6.0 =
-
 * Added JavaScript callbacks ("Before update comments" and "After update comments")
 
 = 0.5.4 =
-
 * jQuery 1.7+ compatibility: Use on() or delegate() if available instead of deprecated live() (thanks to tzdk)
 
 = 0.5.3 =
-
 * Added localization for tr-TR (thanks to Erdinç Aladağ)
 * Added localization for pt-BR (thanks to Leandro Martins Guimarães)
 
 = 0.5.2 =
-
 * Added localization for fa-IR (thanks to rezach4)
-
 = 0.5.1 =
-
 * Updated localization for zh-CN (thanks to Liberty Pi)
 * Updated jQuery blockUI to 2.42 (thanks to Mexalim)
 
 = 0.5.0 =
-
 * Success popup overlay now supports comments that are awaiting moderation
 * Add "?" when commentUrl has no query string to reload page in case of partial page update fails
 * More detailed debug messages and debug support for Internet Explorer 9
 * Added localization for ca (thanks to guzmanfg)
 
 = 0.4.1 =
-
 * Added localization for nl-NL (thanks to Daniël Tulp)
 
 = 0.4.0 =
-
 * Success and error popup overlays now show default cursor instead of loading cursor
 * Fixed problems for translations containing double quotes
 * Cancel AJAX request if cross-domain scripting is detected
@@ -229,44 +214,35 @@ There are known incompatibilities to the following plugins:
 * Updated localization for de-DE
 
 = 0.3.4 =
-
 * Added localization for pl-PL (thanks to Jacek Tomaszewski)
 
 = 0.3.3 =
-
 * Bugfix for Internet Explorer
 
 = 0.3.2 =
-
 * Added localization for fr-FR (thanks to saymonz)
 
 = 0.3.1 =
-
 * Added localization for zh-CN (thanks to Liberty Pi)
 
 = 0.3.0 =
-
 * Added i18n support
 * Added localization for de-DE
 
 = 0.2.1 =
-
 * Fallback mode reloads page with comment anchor
 * Bug-fix for themes where comment form is nested in comments container (thanks to saymonz)
 
 = 0.2.0 =
-
 * Added Option "Error Container Selector" to customize the error message extraction
 * Added compatibility with comment spam protection plugins like "NoSpamNX" (thanks to Liberty Pi)
 * Removed timeout for loading popup overlay (thanks to saymonz)
 
 = 0.1.2 =
-
 * Fixed compatibility with setting pages of other plugins (thanks to saymonz)
 * Reactivated warning and info notices on admin page "Plugins"
 
 = 0.1.1 =
-
 * Fixed updating of browser address bar
 
 = 0.1.0 =
@@ -283,6 +259,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.15.0 =
+Added option to disable URL updating
 
 = 0.14.3 =
 Fixed some PHP strict warnings

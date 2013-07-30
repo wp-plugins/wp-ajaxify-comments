@@ -109,13 +109,13 @@ WPAC._LoadFallbackUrl = function(fallbackUrl) {
 	}
 }
 
-WPAC._ScrollToAnchor = function(anchor) {
+WPAC._ScrollToAnchor = function(anchor, updateHash) {
 	var anchorElement = jQuery(anchor)
 	if (anchorElement.length) {
 		WPAC._Debug("info", "Scroll to anchor element %o (scroll sped: %s ms)...", anchorElement, WPAC._Options.scrollSpeed);
 		jQuery("html,body").animate({scrollTop: anchorElement.offset().top}, {
 			duration: WPAC._Options.scrollSpeed,
-			complete: function() { window.location.hash = anchor; }
+			complete: function() { if (updateHash) window.location.hash = anchor; }
 		});
 		return true;
 	} else {
@@ -303,13 +303,14 @@ WPAC.Init = function() {
 				
 				// Smooth scroll to comment url and update browser url
 				if (commentUrl) {
-					
-					WPAC._UpdateUrl(commentUrl);
+						
+					if (!WPAC._Options.disableUrlUpdate)
+						WPAC._UpdateUrl(commentUrl);
 					
 					var anchor = commentUrl.indexOf("#") >= 0 ? commentUrl.substr(commentUrl.indexOf("#")) : null;
 					if (anchor) {
 						WPAC._Debug("info", "Anchor '%s' extracted from comment URL '%s'", anchor, commentUrl);
-						WPAC._ScrollToAnchor(anchor);
+						WPAC._ScrollToAnchor(anchor, !WPAC._Options.disableUrlUpdate);
 					}
 				}
 				
@@ -342,7 +343,7 @@ WPAC.Init = function() {
 		var href = jQuery(this).attr("href");
 		if (href) {
 			event.preventDefault();
-			WPAC.LoadComments(href, true);
+			WPAC.LoadComments(href);
 		}
 	}
 	
@@ -378,14 +379,14 @@ WPAC.RefreshComments = function(options) {
 WPAC.LoadComments = function(url, options) {
 	
 	// Convert boolean parameter (used in version <0.14.0
-	if (typeof(options) == "boolean") {
+	if (typeof(options) == "boolean")
 		options = {scrollToAnchor: options}
-	}
 
 	// Set default options
 	options = jQuery.extend({
 		scrollToAnchor: true,
-		showLoadingInfo: true
+		showLoadingInfo: true,
+		updateUrl: !WPAC._Options.disableUrlUpdate,
 	}, options || {});	
 	
 	// Cancel AJAX request if cross-domain scripting is detected
@@ -419,14 +420,14 @@ WPAC.LoadComments = function(url, options) {
 				formElement.val(value.value);
 			})
 			
-			WPAC._UpdateUrl(url);
+			if (options.updateUrl) WPAC._UpdateUrl(url);
 
 			// Scroll to anchor
 			if (options.scrollToAnchor) {
 				var anchor = url.indexOf("#") >= 0 ? url.substr(url.indexOf("#")) : null;
 				if (anchor) {
 					WPAC._Debug("info", "Anchor '%s' extracted from current URL", anchor);
-					WPAC._ScrollToAnchor(anchor);
+					WPAC._ScrollToAnchor(anchor, options.updateUrl);
 				}
 			}
 			

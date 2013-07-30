@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.14.3
+Version: 0.15.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -263,6 +263,11 @@ function wpac_get_config() {
 					'description' => __('Load comments asynchronously with secondary AJAX request if more than the specified number of comments exist. Leave empty to disable this feature.', WPAC_DOMAIN),
 					'specialOption' => true,
 				),
+				'disableUrlUpdate' => array(
+					'type' => 'boolean',
+					'default' => '0',
+					'label' => __('Disable URL updating', WPAC_DOMAIN),
+				),
 			)
 		)
 	);
@@ -364,11 +369,15 @@ function wpac_initialize() {
 				if (isset($option['specialOption']) && $option['specialOption']) continue;
 				$value = trim(wpac_get_option($optionName));
 				if (strlen($value) == 0) $value = $option['default'];
-				echo $optionName.':'.($option['type'] == 'int' ? $value :'"'.wpac_js_escape($value).'"').',';
+				echo $optionName.':';
+				switch ($option['type']) {
+					case 'int': echo $value.','; break;
+					case 'boolean': echo $value ? 'true,' : 'false,'; break;
+					default: echo '"'.wpac_js_escape($value).'",';
+				}
 			}
 		}
 		echo 'commentsEnabled:'.((is_page() || is_single()) && comments_open($post->ID) ? 'true' : 'false').',';
-		echo 'debug:'.(wpac_get_option('debug') ? 'true' : 'false').',';
 		echo 'version:"'.wpac_get_version().'"};';
 
 		// Callbacks
