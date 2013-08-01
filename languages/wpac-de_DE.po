@@ -132,6 +132,12 @@ msgstr "Verschiedenes"
 msgid "Scroll speed (ms)"
 msgstr "Scrollzeit (ms)"
 
+msgid "Auto update idle time (ms)"
+msgstr "Inaktivität für automatische Aktualisierung (ms)"
+
+msgid "Leave empty or set to 0 to disable the auto update feature."
+msgstr "Leerlassen oder auf 0 setzen um die Funktion zu deaktivieren."
+
 #: wp-ajaxify-comments.php:197
 msgid "Texts"
 msgstr "Texte"
