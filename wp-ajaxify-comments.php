@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.15.0
+Version: 0.16.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -191,6 +191,12 @@ function wpac_get_config() {
 					'label' => __('Scroll speed (ms)', WPAC_DOMAIN),
 					'pattern' => '/^[0-9]*$/',
 				),
+				'autoUpdateIdleTime' => array(
+					'type' => 'int',
+					'default' => '0',
+					'label' => __('Auto update idle time (ms)', WPAC_DOMAIN),
+					'description' => __('Leave empty or set to 0 to disable the auto update feature.', WPAC_DOMAIN),
+				),
 			),
 		),
 		array(
@@ -275,9 +281,10 @@ function wpac_get_config() {
 	
 function wpac_enqueue_scripts() {
 	$version = wpac_get_version();
-	wp_enqueue_script('jQueryBlockUi', WP_PLUGIN_URL.'/wp-ajaxify-comments/jquery.blockUI.js', array('jquery'), $version);
 	wp_enqueue_script('jsuri', WP_PLUGIN_URL.'/wp-ajaxify-comments/jsuri-1.1.1.js', array(), $version);
-	wp_enqueue_script('ajaxifyComments', WP_PLUGIN_URL.'/wp-ajaxify-comments/wp-ajaxify-comments.js', array('jquery', 'jQueryBlockUi', 'jsuri'), $version);
+	wp_enqueue_script('jQueryBlockUi', WP_PLUGIN_URL.'/wp-ajaxify-comments/jquery.blockUI.js', array('jquery'), $version);
+	wp_enqueue_script('jQueryIdleTimer', WP_PLUGIN_URL.'/wp-ajaxify-comments/idle-timer.js', array('jquery'), $version);
+	wp_enqueue_script('wpAjaxifyComments', WP_PLUGIN_URL.'/wp-ajaxify-comments/wp-ajaxify-comments.js', array('jquery', 'jQueryBlockUi', 'jsuri', 'jQueryIdleTimer'), $version);
 }
 
 function wpac_get_version() {

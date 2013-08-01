@@ -35,6 +35,7 @@ Some features of the plugin:
 * Admin frontend to customize the look and feel
 * (Automatic) fallback mode uses complete page reloads if the plugin is not configured properly or any incompatibility is detected
 * Client-side JavaScript API (see FAQ for more details)
+* Auto updating comments if user is "idle"
 * Option to load comments asynchronously with secondary AJAX request if page contains more than a specified number of comments
 * Debug mode to support troubleshooting
 
@@ -96,7 +97,10 @@ The debug mode can be enabled on the plugin's settings page (Settings > WP-Ajaxi
 
 = Does the plugin use any external libraries? =
 
-Yes, the plugin uses jQuery blockUI plugin (http://malsup.com/jquery/block/) to block the UI while the comment is sent to the server and to show popup overlays containing the error and info messages and jsuri (http://code.google.com/p/jsuri/) for query string manipulation.
+Yes, the plugin uses the following libraries:
+* jQuery blockUI plugin (http://malsup.com/jquery/block/) to block the UI while the comment is sent to the server and to show popup overlays containing the error and info messages 
+* jsuri (http://code.google.com/p/jsuri/) for query string manipulation
+* jQuery Idle Timer plugin (https://github.com/mikesherov/jquery-idletimer) to detect when the user is "idle"
 
 = Known incompatibilities =
 
@@ -105,6 +109,10 @@ There are known incompatibilities to the following plugins:
 * WP-reCAPTCHA (tested with WP-reCAPTCHA 3.1.6)
 
 == Changelog ==
+
+= 0.16.0 =
+* Added option "Auto update idle time" to automatically update comments if user is "idle"
+* Updated jQuery blockUI to 2.64
 
 = 0.15.0 =
 * Added option to disable URL updating
@@ -259,6 +267,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.16.0 =
+Added option to automatically update comments if user is "idle", Updated jQuery blockUI to 2.64
 
 = 0.15.0 =
 Added option to disable URL updating

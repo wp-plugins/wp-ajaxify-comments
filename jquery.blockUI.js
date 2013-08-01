@@ -1,6 +1,6 @@
 /*!
  * jQuery blockUI plugin
- * Version 2.61.0-2013.06.06
+ * Version 2.64.0-2013.07.18
  * @requires jQuery v1.7 or later
  *
  * Examples at: http://malsup.com/jquery/block/
@@ -22,7 +22,7 @@
 		var noOp = $.noop || function() {};
 
 		// this bit is to ensure we don't call setExpression when we shouldn't (with extra muscle to handle
-		// retarded userAgent strings on Vista)
+		// confusing userAgent strings on Vista)
 		var msie = /MSIE/.test(navigator.userAgent);
 		var ie6  = /MSIE 6.0/.test(navigator.userAgent) && ! /MSIE 8.0/.test(navigator.userAgent);
 		var mode = document.documentMode || 0;
@@ -38,11 +38,11 @@
 			if (title) $m.append('<h1>'+title+'</h1>');
 			if (message) $m.append('<h2>'+message+'</h2>');
 			if (timeout === undefined) timeout = 3000;
-			
+
 			// Added by konapun: Set timeout to 30 seconds if this growl is moused over, like normal toast notifications
 			var callBlock = function(opts) {
 				opts = opts || {};
-				
+
 				$.blockUI({
 					message: $m,
 					fadeIn : typeof opts.fadeIn  !== 'undefined' ? opts.fadeIn  : 700,
@@ -54,7 +54,7 @@
 					css: $.blockUI.defaults.growlCSS
 				});
 			};
-			
+
 			callBlock();
 			var nonmousedOpacity = $m.css('opacity');
 			$m.mouseover(function() {
@@ -62,7 +62,7 @@
 					fadeIn: 0,
 					timeout: 30000
 				});
-				
+
 				var displayBlock = $('.blockMsg');
 				displayBlock.stop(); // cancel fadeout if it has started
 				displayBlock.fadeTo(300, 1); // make it easier to read the message by removing transparency
@@ -71,7 +71,7 @@
 			});
 			// End konapun additions
 		};
-		
+
 		// plugin method for blocking element content
 		$.fn.block = function(opts) {
 			if ( this[0] === window ) {
@@ -211,7 +211,7 @@
 			// if true, focus will be placed in the first available input field when
 			// page blocking
 			focusInput: true,
-            
+
             // elements that can receive focus
             focusableElements: ':input:enabled:visible',
 
@@ -313,7 +313,7 @@
 				s = '<div class="blockUI ' + opts.blockMsgClass + ' blockElement ui-dialog ui-widget ui-corner-all" style="z-index:'+(z+10)+';display:none;position:absolute">';
 				if ( opts.title ) {
 					s += '<div class="ui-widget-header ui-dialog-titlebar ui-corner-all blockTitle">'+(opts.title || '&nbsp;')+'</div>';
-				}  
+				}
 				s += '<div class="ui-widget-content ui-dialog-content"></div>';
 				s += '</div>';
 			}
@@ -491,7 +491,7 @@
 
 			if (opts.fadeOut) {
 				count = els.length;
-				els.fadeOut(opts.fadeOut, function() { 
+				els.stop().fadeOut(opts.fadeOut, function() {
 					if ( --count === 0)
 						reset(els,data,opts,el);
 				});
@@ -503,6 +503,9 @@
 		// move blocking element back into the DOM where it started
 		function reset(els,data,opts,el) {
 			var $el = $(el);
+			if ( $el.data('blockUI.isBlocked') )
+				return;
+
 			els.each(function(i,o) {
 				// remove via DOM calls so we don't lose event handlers
 				if (this.parentNode)
@@ -559,7 +562,7 @@
 		// event handler to suppress keyboard/mouse events when blocking
 		function handler(e) {
 			// allow tab navigation (conditionally)
-			if (e.keyCode && e.keyCode == 9) {
+			if (e.type === 'keydown' && e.keyCode && e.keyCode == 9) {
 				if (pageBlock && e.data.constrainTabKey) {
 					var els = pageBlockEls;
 					var fwd = !e.shiftKey && e.target === els[els.length-1];

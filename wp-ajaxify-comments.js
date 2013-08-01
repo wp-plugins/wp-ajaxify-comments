@@ -112,7 +112,7 @@ WPAC._LoadFallbackUrl = function(fallbackUrl) {
 WPAC._ScrollToAnchor = function(anchor, updateHash) {
 	var anchorElement = jQuery(anchor)
 	if (anchorElement.length) {
-		WPAC._Debug("info", "Scroll to anchor element %o (scroll sped: %s ms)...", anchorElement, WPAC._Options.scrollSpeed);
+		WPAC._Debug("info", "Scroll to anchor element %o (scroll speed: %s ms)...", anchorElement, WPAC._Options.scrollSpeed);
 		jQuery("html,body").animate({scrollTop: anchorElement.offset().top}, {
 			duration: WPAC._Options.scrollSpeed,
 			complete: function() { if (updateHash) window.location.hash = anchor; }
@@ -140,13 +140,15 @@ WPAC._ReplaceComments = function(data, fallbackUrl) {
 	var oldCommentsContainer = jQuery(WPAC._Options.selectorCommentsContainer);
 	if (!oldCommentsContainer.length) {
 		WPAC._Debug("error", "Comment container on current page not found (selector: '%s')", WPAC._Options.selectorCommentsContainer);
-		return WPAC._LoadFallbackUrl(fallbackUrl);
+		WPAC._LoadFallbackUrl(fallbackUrl);
+		return false;
 	}
 	
 	var extractedBody = WPAC._ExtractBody(data);
 	if (extractedBody === false) {
 		WPAC._Debug("error", "Unsupported server response, unable to extract body (data: '%s')", data);
-		return WPAC._LoadFallbackUrl(fallbackUrl);
+		WPAC._LoadFallbackUrl(fallbackUrl);
+		return false;
 	}
 	
 	WPAC._Callbacks["onBeforeSelectElements"](extractedBody);
@@ -154,7 +156,8 @@ WPAC._ReplaceComments = function(data, fallbackUrl) {
 	var newCommentsContainer = extractedBody.find(WPAC._Options.selectorCommentsContainer);
 	if (!newCommentsContainer.length) {
 		WPAC._Debug("error", "Comment container on requested page not found (selector: '%s')", WPAC._Options.selectorCommentsContainer);
-		return WPAC._LoadFallbackUrl(fallbackUrl);
+		WPAC._LoadFallbackUrl(fallbackUrl);
+		return false;
 	}
 
 	WPAC._Callbacks["onBeforeUpdateComments"]();
@@ -173,7 +176,8 @@ WPAC._ReplaceComments = function(data, fallbackUrl) {
 			var newCommentForm = extractedBody.find(WPAC._Options.selectorCommentForm);
 			if (newCommentForm.length == 0) {
 				WPAC._Debug("error", "Comment form on requested page not found (selector: '%s')", WPAC._Options.selectorCommentForm);
-				return WPAC._LoadFallbackUrl(fallbackUrl);
+				WPAC._LoadFallbackUrl(fallbackUrl);
+				return false;
 			}
 			form.replaceWith(newCommentForm);
 		}
@@ -188,23 +192,32 @@ WPAC._ReplaceComments = function(data, fallbackUrl) {
 		var wpTempFormDiv = jQuery("#wp-temp-form-div");
 		if (!wpTempFormDiv.length) {
 			WPAC._Debug("error", "WordPress' #wp-temp-form-div container not found", WPAC._Options.selectorRespondContainer);
-			return WPAC._LoadFallbackUrl(fallbackUrl);
+			WPAC._LoadFallbackUrl(fallbackUrl);
+			return false;
 		}
 		var newRespondContainer = extractedBody.find(WPAC._Options.selectorRespondContainer);
 		if (!newRespondContainer.length) {
 			WPAC._Debug("error", "Respond container on requested page not found (selector: '%s')", WPAC._Options.selectorRespondContainer);
-			return WPAC._LoadFallbackUrl(fallbackUrl);
+			WPAC._LoadFallbackUrl(fallbackUrl);
+			return false;
 		}
 		wpTempFormDiv.replaceWith(newRespondContainer);
 
 	}
 
-	WPAC._Callbacks["onAfterUpdateComments"]();		
+	WPAC._Callbacks["onAfterUpdateComments"]();
+	
+	return true;
 }
 
 WPAC._TestCrossDomainScripting = function(url) {
 	var domain = window.location.protocol + "//" + window.location.host;
 	return (url.indexOf(domain) != 0);
+}
+
+WPAC._TestFallbackUrl = function(url) {
+	var url = new Uri(location.href); 
+	return (url.getQueryParamValue('WPACFallback') && url.getQueryParamValue('WPACRandom'));
 }
 
 WPAC._Initialized = false;
@@ -241,15 +254,21 @@ WPAC.Init = function() {
 			return false;
 		}
 		WPAC._Debug("info", "Found jQuery %s", jQuery.fn.jquery);
-		if (!jQuery || !jQuery.blockUI || !jQuery.blockUI.version) {
+		if (!jQuery.blockUI || !jQuery.blockUI.version) {
 			WPAC._Debug("error", "jQuery blockUI not found, abort initialization. Please try to reinstall the plugin.");
 			return false;
 		}
 		WPAC._Debug("info", "Found jQuery blockUI %s", jQuery.blockUI.version);
+		if (!jQuery.idleTimer) {
+			WPAC._Debug("error", "jQuery Idle Timer plugin not found, abort initialization. Please try to reinstall the plugin.");
+			return false;
+		}
+		WPAC._Debug("info", "Found jQuery Idle Timer plugin");
 		WPAC._DebugSelector("comment form", WPAC._Options.selectorCommentForm);
 		WPAC._DebugSelector("comments container", WPAC._Options.selectorCommentsContainer);
 		WPAC._DebugSelector("respond container", WPAC._Options.selectorRespondContainer);
 		WPAC._DebugSelector("comment paging links", WPAC._Options.selectorCommentPagingLinks, true);
+		if (WPAC._Options.autoUpdateIdleTime > 0) WPAC._Debug("info", "Auto updating comments enabled (idle time: %s)", WPAC._Options.autoUpdateIdleTime);
 		WPAC._Debug("info", "Initialization completed");
 	}
 	
@@ -298,8 +317,8 @@ WPAC.Init = function() {
 				// Show success message
 				WPAC._ShowMessage(unapproved == '1' ? WPAC._Options.textPostedUnapproved : WPAC._Options.textPosted, "success");
 
-				// Replace comments
-				WPAC._ReplaceComments(data, commentUrl);
+				// Replace comments (and return if replacing failed)
+				if (!WPAC._ReplaceComments(data, commentUrl)) return;
 				
 				// Smooth scroll to comment url and update browser url
 				if (commentUrl) {
@@ -369,15 +388,48 @@ WPAC.Init = function() {
 	addHandler("submit", WPAC._Options.selectorCommentForm, formSubmitHandler)
 	addHandler("click", WPAC._Options.selectorCommentPagingLinks, pagingSubmitHandler);
 	
+	// Set up idle timer
+	WPAC._InitIdleTimer();
+	
 	return true;
 }
 
+WPAC._OnIdle = function() {
+	WPAC.RefreshComments({ success: WPAC._InitIdleTimer	});
+};
+
+WPAC._InitIdleTimer = function() {
+	if (WPAC._Options.autoUpdateIdleTime <= 0) return;
+
+	if (WPAC._TestFallbackUrl(location.href)) {
+		WPAC._Debug("error", "Fallback URL was detected (url: '%s'), cancel init idle timer", location.href);
+		return;
+	}
+	
+	jQuery(document).idleTimer("destroy");
+	jQuery(document).idleTimer(WPAC._Options.autoUpdateIdleTime);
+	$(document).on("idle.idleTimer", WPAC._OnIdle);
+}
+
 WPAC.RefreshComments = function(options) {
-	return WPAC.LoadComments(location.href, options)
+	var url = location.href;
+	
+	if (WPAC._TestFallbackUrl(location.href)) {
+		WPAC._Debug("error", "Fallback URL was detected (url: '%s'), cancel AJAX request", url);
+		return false;   
+	}
+	
+	return WPAC.LoadComments(url, options)
 }
 
 WPAC.LoadComments = function(url, options) {
-	
+
+	// Cancel AJAX request if cross-domain scripting is detected
+	if (WPAC._TestCrossDomainScripting(url)) {
+		WPAC._Debug("error", "Cross-domain scripting detected (url: '%s'), cancel AJAX request", url);
+		return false;
+	}
+
 	// Convert boolean parameter (used in version <0.14.0
 	if (typeof(options) == "boolean")
 		options = {scrollToAnchor: options}
@@ -387,15 +439,8 @@ WPAC.LoadComments = function(url, options) {
 		scrollToAnchor: true,
 		showLoadingInfo: true,
 		updateUrl: !WPAC._Options.disableUrlUpdate,
+		success: function() {}
 	}, options || {});	
-	
-	// Cancel AJAX request if cross-domain scripting is detected
-	if (WPAC._TestCrossDomainScripting(url)) {
-		if (WPAC._Options.debug) {
-			WPAC._Debug("error", "Cross-domain scripting detected (url: '%s'), cancel AJAX request", url);
-		}
-		return false;
-	}
 	
 	// Save form data
 	var formData = jQuery(WPAC._Options.selectorCommentForm).serializeArray();
@@ -410,8 +455,8 @@ WPAC.LoadComments = function(url, options) {
 		beforeSend: function(xhr){ xhr.setRequestHeader('X-WPAC-REQUEST', '1'); },
 		success: function (data) {
 
-			// Replace comments
-			WPAC._ReplaceComments(data, WPAC._AddQueryParamStringToUrl(url, "WPACFallback", 1));
+			// Replace comments (and return if replacing failed)
+			if (!WPAC._ReplaceComments(data, WPAC._AddQueryParamStringToUrl(url, "WPACFallback", 1))) return;
 			
 			// Re-inject saved form data
 			jQuery.each(formData, function(key, value) {
@@ -432,7 +477,9 @@ WPAC.LoadComments = function(url, options) {
 			}
 			
 			// Unblock UI
-			jQuery.unblockUI();			
+			jQuery.unblockUI();
+			
+			options.success();
 		},
 		error: function() {
 			WPAC._LoadFallbackUrl(WPAC._AddQueryParamStringToUrl(window.location.href, "WPACFallback", "1"))
