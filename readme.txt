@@ -8,7 +8,7 @@ Stable tag: 0.16.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WP-Ajaxify-Comments hooks into your comment form and adds AJAX functionality - no more page reloads required when validating, posting or updating comments
+WP-Ajaxify-Comments hooks into your comment form and adds AJAX functionality - no page reloads required when validating, posting or updating comments
 
 == Description ==
 
