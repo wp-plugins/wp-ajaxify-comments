@@ -142,6 +142,9 @@ There are known incompatibilities to the following plugins:
 
 == Changelog ==
 
+= 0.16.1 =
+* Bugfix for cross-domain scripting detection
+
 = 0.16.0 =
 * Added option "Auto update idle time" to automatically update comments if user is "idle"
 * Updated jQuery blockUI to 2.64
@@ -299,6 +302,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.16.1 =
+Bugfix for cross-domain scripting detection
 
 = 0.16.0 =
 Added option to automatically update comments if user is "idle", Updated jQuery blockUI to 2.64

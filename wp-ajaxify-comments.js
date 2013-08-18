@@ -221,13 +221,14 @@ WPAC._ReplaceComments = function(data, fallbackUrl) {
 }
 
 WPAC._TestCrossDomainScripting = function(url) {
+	if (url.indexOf("http") != 0) return false;
 	var domain = window.location.protocol + "//" + window.location.host;
 	return (url.indexOf(domain) != 0);
 }
 
 WPAC._TestFallbackUrl = function(url) {
 	var url = new Uri(location.href); 
-	return (url.getQueryParamValue('WPACFallback') && url.getQueryParamValue('WPACRandom'));
+	return (url.getQueryParamValue("WPACFallback") && url.getQueryParamValue("WPACRandom"));
 }
 
 WPAC._Initialized = false;
