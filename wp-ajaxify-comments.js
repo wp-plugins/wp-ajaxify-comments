@@ -109,14 +109,24 @@ WPAC._LoadFallbackUrl = function(fallbackUrl) {
 	}
 }
 
-WPAC._ScrollToAnchor = function(anchor, updateHash) {
+WPAC._ScrollToAnchor = function(anchor, updateHash, scrollComplete) {
+	scrollComplete = scrollComplete || function() {};
 	var anchorElement = jQuery(anchor)
 	if (anchorElement.length) {
 		WPAC._Debug("info", "Scroll to anchor element %o (scroll speed: %s ms)...", anchorElement, WPAC._Options.scrollSpeed);
-		jQuery("html,body").animate({scrollTop: anchorElement.offset().top}, {
-			duration: WPAC._Options.scrollSpeed,
-			complete: function() { if (updateHash) window.location.hash = anchor; }
-		});
+		var animateComplete = function() {
+			if (updateHash) window.location.hash = anchor; 
+			scrollComplete();
+		}
+		var scrollTargetTopOffset = anchorElement.offset().top
+		if (jQuery(window).scrollTop() == scrollTargetTopOffset) {
+			animateComplete();
+		} else {
+			jQuery("html,body").animate({scrollTop: scrollTargetTopOffset}, {
+				duration: WPAC._Options.scrollSpeed,
+				complete: animateComplete
+			});
+		}
 		return true;
 	} else {
 		WPAC._Debug("error", "Anchor element not found (selector: '%s')", anchor);
@@ -468,18 +478,21 @@ WPAC.LoadComments = function(url, options) {
 			if (options.updateUrl) WPAC._UpdateUrl(url);
 
 			// Scroll to anchor
+			var waitForScrollToAnchor = false;
 			if (options.scrollToAnchor) {
 				var anchor = url.indexOf("#") >= 0 ? url.substr(url.indexOf("#")) : null;
 				if (anchor) {
 					WPAC._Debug("info", "Anchor '%s' extracted from current URL", anchor);
-					WPAC._ScrollToAnchor(anchor, options.updateUrl);
+					if (WPAC._ScrollToAnchor(anchor, options.updateUrl, function() { options.success(); } )) {
+						waitForScrollToAnchor = true;
+					}
 				}
 			}
 			
 			// Unblock UI
 			jQuery.unblockUI();
 			
-			options.success();
+			if (!waitForScrollToAnchor) options.success();
 		},
 		error: function() {
 			WPAC._LoadFallbackUrl(WPAC._AddQueryParamStringToUrl(window.location.href, "WPACFallback", "1"))
