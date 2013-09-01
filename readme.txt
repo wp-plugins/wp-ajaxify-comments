@@ -28,8 +28,8 @@ Some features of the plugin:
 * Actively developed and supported
 * Validating and adding comments without (complete) page reloads
 * Seamless integration in almost every theme (default options should work with most themes)
-* i18n support
-* Included localizations for ar, ca, da-DK, de-DE, es-ES, fa-IR, fr-FR, he-IL, hu-HU, nl-NL, pl-PL, pt-BR, ru-RU, sk-SK, tr-TR, uk, vi-VN, zh-CN (thanks to all contributors)
+* i18n support (included localizations for ar, ca, da-DK, de-DE, es-ES, fa-IR, fr-FR, he-IL, hu-HU, nl-NL, pl-PL, pt-BR, ru-RU, sk-SK, tr-TR, uk, vi-VN, zh-CN)
+* Support for customizing (default) WordPress messages
 * Support for threaded comments
 * Support for comments that await moderation
 * Compatibility with comment spam protection plugins and other plugins that extend/manipulate the comment form
@@ -144,6 +144,7 @@ There are known incompatibilities to the following plugins:
 == Changelog ==
 
 = 0.17.0 =
+* Added options to customize (default) WordPress messages
 * Disabled (auto) scrolling when comments are updated by "Auto update idle time"
 
 = 0.16.1 =
@@ -309,7 +310,7 @@ There are known incompatibilities to the following plugins:
 == Upgrade Notice ==
 
 = 0.17.0 =
-Disabled (auto) scrolling when comments are updated by "Auto update idle time"
+Options to customize (default) WordPress messages, Disabled (auto) scrolling when comments are updated by "Auto update idle time"
 
 = 0.16.1 =
 Bugfix for cross-domain scripting detection

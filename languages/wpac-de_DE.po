@@ -166,6 +166,27 @@ msgstr "Etwas ist schiefgelaufen, der Kommentar wurde nicht gespeichert."
 msgid "Unknown error occured"
 msgstr "Unbekannter Fehler aufgetreten"
 
+msgid "Error 'Please type a comment'"
+msgstr "Fehler 'Bitte Kommentar eingeben'"
+
+msgid "Error 'Comments closed'"
+msgstr "Fehler 'Kommentarfunktion geschlossen'"
+
+msgid "Error 'Must be logged in'"
+msgstr "Fehler 'Login erforderlich'"
+
+msgid "Error 'Fill in required fields'"
+msgstr "Fehler 'Pflichtfelder ausfüllen'"
+
+msgid "Error 'Invalid email address'"
+msgstr "Fehler 'Ungültige E-Mail-Adresse'"
+
+msgid "Error 'Post too quickly'"
+msgstr "Fehler 'Zu Schnell abgeschickt'"
+
+msgid "Error 'Duplicate comment'"
+msgstr "Fehler 'Doppelter Kommentar'"
+
 #: wp-ajaxify-comments.php:216
 msgid "Your comment has been posted. Thank you!"
 msgstr "Der Kommentar wurde gespeichert. Vielen Dank!"

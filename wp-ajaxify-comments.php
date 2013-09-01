@@ -34,6 +34,14 @@ define('WPAC_SESSION_VAR', WPAC_DOMAIN.'_session');
 define('WPAC_OPTION_PREFIX', WPAC_DOMAIN.'_'); // used to save options in version <=0.8.0
 define('WPAC_OPTION_KEY', WPAC_DOMAIN); // used to save options in version >= 0.9.0
 
+define('WPAC_WP_ERROR_PLEASE_TYPE_COMMENT', '<strong>ERROR</strong>: please type a comment.');
+define('WPAC_WP_ERROR_COMMENTS_CLOSED', 'Sorry, comments are closed for this item.');
+define('WPAC_WP_ERROR_MUST_BE_LOGGED_IN', 'Sorry, you must be logged in to post a comment.');
+define('WPAC_WP_ERROR_FILL_REQUIRED_FIELDS', '<strong>ERROR</strong>: please fill the required fields (name, email).');
+define('WPAC_WP_ERROR_INVALID_EMAIL_ADDRESS', '<strong>ERROR</strong>: please enter a valid email address.');
+define('WPAC_WP_ERROR_POST_TOO_QUICKLY', 'You are posting comments too quickly. Slow down.');
+define('WPAC_WP_ERROR_DUPLICATE_COMMENT', 'Duplicate comment detected; it looks as though you&#8217;ve already said that!');
+
 function wpac_get_config() {
 
 	return array(
@@ -202,6 +210,21 @@ function wpac_get_config() {
 		array(
 			'section' => __('Texts', WPAC_DOMAIN),
 			'options' => array(
+				'textPosted' => array(
+						'type' => 'string',
+						'default' => __('Your comment has been posted. Thank you!', WPAC_DOMAIN),
+						'label' => __('Comment posted', WPAC_DOMAIN),
+				),
+				'textPostedUnapproved' => array(
+						'type' => 'string',
+						'default' => __('Your comment has been posted and is awaiting moderation. Thank you!', WPAC_DOMAIN),
+						'label' => __('Comment posted unapproved', WPAC_DOMAIN),
+				),
+				'textReloadPage' => array(
+						'type' => 'string',
+						'default' => __('Reloading page. Please wait&hellip;', WPAC_DOMAIN),
+						'label' => __('Reloading page', WPAC_DOMAIN),
+				),
 				'textPostComment' => array(
 						'type' => 'string',
 						'default' => __('Posting your comment. Please wait&hellip;', WPAC_DOMAIN),
@@ -217,20 +240,48 @@ function wpac_get_config() {
 						'default' => __('Something went wrong, your comment has not been posted.', WPAC_DOMAIN),
 						'label' => __('Unknown error occured', WPAC_DOMAIN),
 				),
-				'textPosted' => array(
+				'textErrorTypeComment' => array(
 						'type' => 'string',
-						'default' => __('Your comment has been posted. Thank you!', WPAC_DOMAIN),
-						'label' => __('Comment posted', WPAC_DOMAIN),
+						'default' => __(WPAC_WP_ERROR_PLEASE_TYPE_COMMENT),
+						'label' => __('Error "Please type a comment"', WPAC_DOMAIN),
+						'specialOption' => true,
 				),
-				'textPostedUnapproved' => array(
+				'textErrorCommentsClosed' => array(
 						'type' => 'string',
-						'default' => __('Your comment has been posted and is awaiting moderation. Thank you!', WPAC_DOMAIN),
-						'label' => __('Comment posted unapproved', WPAC_DOMAIN),
+						'default' => __(WPAC_WP_ERROR_COMMENTS_CLOSED),
+						'label' => __("Error 'Comments closed'", WPAC_DOMAIN),
+						'specialOption' => true,
 				),
-				'textReloadPage' => array(
+				'textErrorMustBeLoggedIn' => array(
 						'type' => 'string',
-						'default' => __('Reloading page. Please wait&hellip;', WPAC_DOMAIN),
-						'label' => __('Reloading page', WPAC_DOMAIN),
+						'default' => __(WPAC_WP_ERROR_MUST_BE_LOGGED_IN),
+						'label' => __("Error 'Must be logged in'", WPAC_DOMAIN),
+						'specialOption' => true,
+				),
+				'textErrorFillRequiredFields' => array(
+						'type' => 'string',
+						'default' => __(WPAC_WP_ERROR_FILL_REQUIRED_FIELDS),
+						'label' => __("Error 'Fill in required fields'", WPAC_DOMAIN),
+						'specialOption' => true,
+				),
+				'textErrorInvalidEmailAddress' => array(
+						'type' => 'string',
+						'default' => __(WPAC_WP_ERROR_INVALID_EMAIL_ADDRESS),
+						'label' => __("Error 'Invalid email address'", WPAC_DOMAIN),
+						'specialOption' => true,
+				),
+				'textErrorPostTooQuickly' => array(
+						'type' => 'string',
+						'default' => __(WPAC_WP_ERROR_POST_TOO_QUICKLY),
+						'label' => __("Error 'Post too quickly'", WPAC_DOMAIN),
+						'specialOption' => true,
+				),
+					
+				'textErrorDuplicateComment' => array(
+						'type' => 'string',
+						'default' => __(WPAC_WP_ERROR_DUPLICATE_COMMENT),
+						'label' => __("Error 'Duplicate comment'", WPAC_DOMAIN),
+						'specialOption' => true,
 				),
 			),
 		),
@@ -624,12 +675,33 @@ function comments_query_filter($query) {
 	echo '<script type="text/javascript">WPAC._Options["loadCommentsAsync"] = true;</script>';
 	return array();
 }
+
+function wpac_filter_gettext($translation, $text, $domain) {
+	if ($domain != 'default') return $translation;
 	
+	$customWordpressTexts = array(
+		WPAC_WP_ERROR_PLEASE_TYPE_COMMENT => 'textErrorTypeComment',
+		WPAC_WP_ERROR_COMMENTS_CLOSED => 'textErrorCommentsClosed',
+		WPAC_WP_ERROR_MUST_BE_LOGGED_IN => 'textErrorMustBeLoggedIn',
+		WPAC_WP_ERROR_FILL_REQUIRED_FIELDS => 'textErrorFillRequiredFields',
+		WPAC_WP_ERROR_INVALID_EMAIL_ADDRESS => 'textErrorInvalidEmailAddress',
+		WPAC_WP_ERROR_POST_TOO_QUICKLY => 'textErrorPostTooQuickly',
+		WPAC_WP_ERROR_DUPLICATE_COMMENT => 'textErrorDuplicateComment',
+	);
+
+ 	if (array_key_exists($text, $customWordpressTexts)) {
+		$customText = wpac_get_option($customWordpressTexts[$text]);
+		if ($customText) return $customText;
+	}
+	return $translation;
+}
+
 if (!is_admin() && !wpac_is_login_page()) {
 	if (wpac_get_option('enable')) {
 		add_filter('comments_array', 'comments_query_filter');
 		add_action('wp_head', 'wpac_initialize');
 		add_action('init', 'wpac_enqueue_scripts');
+		add_filter('gettext', 'wpac_filter_gettext', 20, 3);
 	}
 } else {
 	require_once(ABSPATH.'/wp-admin/includes/plugin.php');
