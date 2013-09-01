@@ -406,7 +406,7 @@ WPAC.Init = function() {
 }
 
 WPAC._OnIdle = function() {
-	WPAC.RefreshComments({ success: WPAC._InitIdleTimer	});
+	WPAC.RefreshComments({ success: WPAC._InitIdleTimer, scrollToAnchor: false	});
 };
 
 WPAC._InitIdleTimer = function() {

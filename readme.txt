@@ -107,6 +107,7 @@ The debug mode can be enabled on the plugin's settings page (Settings > WP-Ajaxi
 The plugin provides some JavaScript callback options that can be used to add custom JavaScript code that is executed on client-side when certain (wp-ajaxify-comments related) events occure. Please note, that these callbacks client-side callbacks, i.e. you cannot execute any PHP code using this callback options.
 
 In detail, the following callbacks are supported:
+
 * OnBeforeSelectElements: Called before the plugin selects any DOM elements. The DOM tree the plugin is currently working on is passed as parameter `dom`.
 * OnBeforeSubmitComment: Called before a (new) comment is submitted.
 * OnBeforeUpdateComments: Called before the plugin replaces the comments.
@@ -141,6 +142,9 @@ There are known incompatibilities to the following plugins:
 * WP-reCAPTCHA (tested with WP-reCAPTCHA 3.1.6)
 
 == Changelog ==
+
+= 0.17.0 =
+* Disabled (auto) scrolling when comments are updated by "Auto update idle time"
 
 = 0.16.1 =
 * Bugfix for cross-domain scripting detection
@@ -234,6 +238,7 @@ There are known incompatibilities to the following plugins:
 
 = 0.5.2 =
 * Added localization for fa-IR (thanks to rezach4)
+
 = 0.5.1 =
 * Updated localization for zh-CN (thanks to Liberty Pi)
 * Updated jQuery blockUI to 2.42 (thanks to Mexalim)
@@ -302,6 +307,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.17.0 =
+Disabled (auto) scrolling when comments are updated by "Auto update idle time"
 
 = 0.16.1 =
 Bugfix for cross-domain scripting detection
