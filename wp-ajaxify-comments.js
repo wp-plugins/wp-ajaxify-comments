@@ -419,7 +419,7 @@ WPAC._InitIdleTimer = function() {
 	
 	jQuery(document).idleTimer("destroy");
 	jQuery(document).idleTimer(WPAC._Options.autoUpdateIdleTime);
-	$(document).on("idle.idleTimer", WPAC._OnIdle);
+	jQuery(document).on("idle.idleTimer", WPAC._OnIdle);
 }
 
 WPAC.RefreshComments = function(options) {

@@ -146,6 +146,7 @@ There are known incompatibilities to the following plugins:
 = 0.17.0 =
 * Added options to customize (default) WordPress messages
 * Disabled (auto) scrolling when comments are updated by "Auto update idle time"
+* Fixed compatibility to jQuery "no conflict mode"
 
 = 0.16.1 =
 * Bugfix for cross-domain scripting detection
@@ -310,7 +311,7 @@ There are known incompatibilities to the following plugins:
 == Upgrade Notice ==
 
 = 0.17.0 =
-Options to customize (default) WordPress messages, Disabled (auto) scrolling when comments are updated by "Auto update idle time"
+Options to customize (default) WordPress messages, Disabled (auto) scrolling when comments are updated by "Auto update idle time", Fixed compatibility to jQuery "no conflict mode"
 
 = 0.16.1 =
 Bugfix for cross-domain scripting detection
