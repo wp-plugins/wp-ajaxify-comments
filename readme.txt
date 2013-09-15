@@ -12,21 +12,21 @@ WP-Ajaxify-Comments hooks into your comment form and adds AJAX functionality - n
 
 == Description ==
 
-When submitting the comment form, WordPress by default reloads the complete page. In case of an error (e.g. an invalid e-mail address or an empty comment field) the error message is shown on top of a new (blank) screen and the user has to use the browser's back button to correct the comment form and post the comment again. The WP-Ajaxify-Comments WordPress plugin hooks into any WordPress theme and adds AJAX functionality to the comment form: When the comment form is submitted, the plugin sends the data to the WordPress backend without reloading the entire page. In case of an error, the plugin shows a popup overlay containing the error message and the user can correct the comment form without navigating back. If the comment was posted successfully, the plugin adds the (new) comment to the list of existing comments without leaving the page and shows an information overlay popup. 
+When submitting the comment form, WordPress by default reloads the complete page. In the case of an error (e.g. an invalid e-mail address or an empty comment field) the error message is shown on top of a new (blank) screen and the user has to use the browser's back button to correct the comment form and post the comment again. The WP-Ajaxify-Comments WordPress plugin hooks into any WordPress theme and adds AJAX functionality to the comment form: When the comment form is submitted, the plugin sends the data to the WordPress backend without reloading the entire page. In the case of an error, the plugin shows a popup overlay containing the error message and the user can correct the comment form without navigating back. If the comment was posted successfully, the plugin adds the (new) comment to the list of existing comments without leaving the page and shows an information overlay popup. 
 Moreover this plugin includes an option to automatically refresh the comments on the current page (if the user is "idle") without a page reload. 
 
-**Live demo:** You can try out a live demo in <a target="_blank" href="http://blog.janjonas.net/2012-06-08/wordpress-ajax-comment-wp-ajaxify-comments-plugin">the blog post i've written for the initial release of the plugin</a>. 
+**Live demo:** You can try out a live demo in <a target="_blank" href="http://blog.janjonas.net/2012-06-08/wordpress-ajax-comment-wp-ajaxify-comments-plugin">the blog post I've written for the initial release of the plugin</a>. 
 
-Since the plugin hooks (on client-side) into the theme to intercept the comment form submit process and to add new comments without reloading the page, the plugin needs to access the DOM nodes using (jQuery) selectors. The plugin comes with default values for these selectors that were successfully tested with WordPress' default themes "Twenty Ten", "Twenty Eleven", "Twenty Twelve". 
+Since the plugin hooks (on client-side) into the theme to intercept the comment form submit process, and to add new comments without reloading the page, the plugin needs to access the DOM nodes using (jQuery) selectors. The plugin comes with default values for these selectors that were successfully tested with WordPress' default themes "Twenty Ten", "Twenty Eleven", "Twenty Twelve". 
 
-Summarized the WP-Ajaxify-Comments plugin hooks into your theme and improves the usability of the comment form by validating and adding comments without the need of complete page reloads.
+Summarized, the WP-Ajaxify-Comments plugin hooks into your theme and improves the usability of the comment form by validating and adding comments without the need of complete page reloads.
 
-**Important:** If the plugin does not work out of the box with your theme, custom selectors could be defined in the plugin's admin frontend. If you don't succeed in configuring the proper selectors please don't hesitate to ask a question in the <a href="http://wordpress.org/support/plugin/wp-ajaxify-comments">plugin's support forum</a> or <a href="http://blog.janjonas.net/contact" target="_blank">send me a private message</a>. The plugin is highly customizable and *I'm aware of only few conflicts to any themes or other plugins that cannot be resolved* (see "Known incompatibilities" in the FAQ section). I would kindly ask you make a <a href="http://blog.janjonas.net/donate" target="_blank">small (PayPal) donation</a> when I'm able to find a working configuration for your customized WordPress page. All donations save future development and support of the plugin. Thanks in advance! You can find more troubleshooting information on the <a href="http://wordpress.org/extend/plugins/wp-ajaxify-comments/faq/">FAQ page</a>.
+**Important:** If the plugin does not work out of the box with your theme, custom selectors could be defined in the plugin's admin frontend. If you don't succeed in configuring the proper selectors please don't hesitate to ask a question in the <a href="http://wordpress.org/support/plugin/wp-ajaxify-comments">plugin's support forum</a> or <a href="http://blog.janjonas.net/contact" target="_blank">send me a private message</a>. The plugin is highly customizable and *I'm aware of only a few conflicts with any themes or other plugins that cannot be resolved* (see "Known incompatibilities" in the FAQ section). I would kindly ask you make a <a href="http://blog.janjonas.net/donate" target="_blank">small (PayPal) donation</a> when I'm able to find a working configuration for your customized WordPress page. All donations will secure future development and support of the plugin. Thanks in advance! You can find more troubleshooting information on the <a href="http://wordpress.org/extend/plugins/wp-ajaxify-comments/faq/">FAQ page</a>.
 
 Some features of the plugin:
 
 * Actively developed and supported
-* Validating and adding comments without (complete) page reloads
+* Validating and adding comments without page reloads
 * Seamless integration in almost every theme (default options should work with most themes)
 * i18n support (included localizations for ar, ca, da-DK, de-DE, es-ES, fa-IR, fr-FR, he-IL, hu-HU, nl-NL, pl-PL, pt-BR, ru-RU, sk-SK, tr-TR, uk, vi-VN, zh-CN)
 * Support for customizing (default) WordPress messages
@@ -56,27 +56,27 @@ Some features of the plugin:
 
 = The plugin is not working, what can I do? =
 
-It is recommended to use the plugin's debug mode that could be enabled on the plugin's settings page ("Settings > WP-Ajaxify-Comments"). After enabling the debug mode use a browser that supports console.log(&hellip;), e.g., Firefox with the Firebug extension or Google Chrome and open a page that contains a comment form. If the plugin is not working you most likely find an error message in the console saying that one of the selectors does not match any element.
+It is recommended to use the plugin's debug mode that can be enabled on the plugin's settings page ("Settings > WP-Ajaxify-Comments"). After enabling the debug mode use a browser that supports console.log(&hellip;) e.g. Firefox with the Firebug extension or Google Chrome and open a page that contains a comment form. If the plugin is not working you will most likely find an error message in the console saying that one of the selectors does not match any element.
 If your theme does not use the default IDs for the comment form (`#commentform`), the comment container (`#comments`) or the respond container (`#respond`) you need to go to the plugins settings page and provide the proper selectors.
 
-**Please note:** If you don't succeed in configuring the proper selectors please don't hesitate to ask a question the <a target="_blank" href="http://wordpress.org/support/plugin/wp-ajaxify-comments">plugin's support forum</a> or <a href="http://blog.janjonas.net/contact" target="_blank">send me a private message</a>. The plugin is highly customizable and *I'm not aware of conflicts to any themes or other plugins that cannot be resolved*. I would kindly ask you make a <a href="http://blog.janjonas.net/donate" target="_blank">small (PayPal) donation</a> when I'm able to find a working configuration for your customized WordPress site. All donations save future development and support of the plugin. Thanks in advance!
+**Please note:** If you don't succeed in configuring the proper selectors, please don't hesitate to ask a question the <a target="_blank" href="http://wordpress.org/support/plugin/wp-ajaxify-comments">plugin's support forum</a> or <a href="http://blog.janjonas.net/contact" target="_blank">send me a private message</a>. The plugin is highly customizable and *I'm not aware of conflicts to any themes or other plugins that cannot be resolved*. I would kindly ask you make a <a href="http://blog.janjonas.net/donate" target="_blank">small (PayPal) donation</a> when I'm able to find a working configuration for your customized WordPress site. All donations save future development and support of the plugin. Thanks in advance!
 
 = Can I suggest new features? =
 
-If you miss a feature or if you have any other suggestions, please <a href="http://blog.janjonas.net/contact" target="_blank" >contact me</a> or use the <a href="http://wordpress.org/support/plugin/wp-ajaxify-comments">support forum</a>.
+If you feel something is missing, or if you have any other suggestions, please <a href="http://blog.janjonas.net/contact" target="_blank" >contact me</a> or use the <a href="http://wordpress.org/support/plugin/wp-ajaxify-comments">support forum</a>.
 
 = Are there any known problems? =
 
 There are problems when using an old jQuery version. The plugin was successfully tested with jQuery 1.4.4 and above.
 
-The debugging mode does not work in Internet Explorer 8 (and older versions); please use Firebug, Google Chrome or Internet Explorer 9 or above for debugging wp-ajaxify-comments.
+The debugging mode does not work in Internet Explorer 8 (and older versions); please use Firebug, Google Chrome or Internet Explorer 9 or above for debugging WP-Ajaxify-Comments.
 
 Please see also the "Known incompatibilities" section.
 
 = Does this plugin work with every WordPress theme? =
 
-Since the plugin hooks into the DOM that is generated by the theme, there is no guarantee that the plugin works with every theme.
-Basically the theme needs to support a container element that wraps all comments and a comment form and these two elements need to be selectable by a (jQuery) selector. Please go to the plugin's settings page to customize these selectors if the default selectors do not match the elements in your theme.
+Since the plugin hooks into the DOM that is generated by the theme, there is no guarantee that the plugin will work with every theme.
+Basically, the plugin uses (jQuery) selectors to find the elements like the comment form and the list of comments. Please go to the plugin's settings page to customize these selectors if the default selectors don't match the elements in your theme.
 
 There is no guarantee, but (as written above) the plugin is highly customizable and I'm only aware of a few conflicts to any themes or other plugins that cannot be resolved (see section "Known incompatibilities" below).
 
@@ -93,7 +93,6 @@ Most likely yes, but it has not been tested yet. Please leave me a message if yo
 Yes, there are some features I would like to add in future versions:
 
 * Client-side validation
-* Option to customize/override WordPress default error messages
 * Option to enable vertical alignment of popup overlays
 * Option to customize popup overlays with user-defined CSS
 * File upload support
@@ -104,9 +103,9 @@ The debug mode can be enabled on the plugin's settings page (Settings > WP-Ajaxi
 
 = Which callback options are supported and how do I use them? =
 
-The plugin provides some JavaScript callback options that can be used to add custom JavaScript code that is executed on client-side when certain (wp-ajaxify-comments related) events occure. Please note, that these callbacks client-side callbacks, i.e. you cannot execute any PHP code using this callback options.
+The plugin provides some JavaScript callback options that can be used to add custom JavaScript code that is executed on client-side when certain (wp-ajaxify-comments related) events occure. Please note that these callbacks are client-side callbacks, i.e. you cannot execute any PHP code using this callback options.
 
-In detail, the following callbacks are supported:
+In detail the following callbacks are supported:
 
 * OnBeforeSelectElements: Called before the plugin selects any DOM elements. The DOM tree the plugin is currently working on is passed as parameter `dom`.
 * OnBeforeSubmitComment: Called before a (new) comment is submitted.
