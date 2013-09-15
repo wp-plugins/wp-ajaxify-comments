@@ -46,7 +46,7 @@ msgstr "Respond-Container Selektor"
 
 #: wp-ajaxify-comments.php:81
 msgid "Error container selector"
-msgstr "Fehler-Comtainer Selektor"
+msgstr "Fehler-Container Selektor"
 
 #: wp-ajaxify-comments.php:86
 msgid "Popup overlay"
