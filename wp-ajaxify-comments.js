@@ -145,7 +145,7 @@ WPAC._UpdateUrl= function(url) {
 	}
 }
 
-WPAC._ReplaceComments = function(data, fallbackUrl) {
+WPAC._ReplaceComments = function(data, fallbackUrl, formData) {
 	
 	var oldCommentsContainer = jQuery(WPAC._Options.selectorCommentsContainer);
 	if (!oldCommentsContainer.length) {
@@ -215,8 +215,17 @@ WPAC._ReplaceComments = function(data, fallbackUrl) {
 
 	}
 
+	if (formData) {
+		// Re-inject saved form data
+		jQuery.each(formData, function(key, value) {
+			var formElement = jQuery("[name='"+value.name+"']", WPAC._Options.selectorCommentForm);
+			if (formElement.length != 1 || formElement.val()) return;
+			formElement.val(value.value);
+		});
+	}
+
 	WPAC._Callbacks["onAfterUpdateComments"]();
-	
+
 	return true;
 }
 
@@ -467,14 +476,7 @@ WPAC.LoadComments = function(url, options) {
 		success: function (data) {
 
 			// Replace comments (and return if replacing failed)
-			if (!WPAC._ReplaceComments(data, WPAC._AddQueryParamStringToUrl(url, "WPACFallback", 1))) return;
-			
-			// Re-inject saved form data
-			jQuery.each(formData, function(key, value) {
-				var formElement = jQuery("[name='"+value.name+"']", WPAC._Options.selectorCommentForm);
-				if (formElement.length != 1 || formElement.val()) return;
-				formElement.val(value.value);
-			})
+			if (!WPAC._ReplaceComments(data, WPAC._AddQueryParamStringToUrl(url, "WPACFallback", 1), formData)) return;
 			
 			if (options.updateUrl) WPAC._UpdateUrl(url);
 

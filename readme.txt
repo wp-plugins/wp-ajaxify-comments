@@ -143,6 +143,9 @@ There are known incompatibilities to the following plugins:
 
 == Changelog ==
 
+= 0.17.1 =
+* 'OnAfterUpdateComments' callback is now called after form data has been reset
+
 = 0.17.0 =
 * Added options to customize (default) WordPress messages
 * Disabled (auto) scrolling when comments are updated by "Auto update idle time"
@@ -309,6 +312,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.17.1 =
+'OnAfterUpdateComments' callback is now called after form data has been reset
 
 = 0.17.0 =
 Options to customize (default) WordPress messages, Disabled (auto) scrolling when comments are updated by "Auto update idle time", Fixed compatibility to jQuery "no conflict mode"
