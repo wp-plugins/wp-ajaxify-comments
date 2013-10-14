@@ -142,6 +142,9 @@ There are known incompatibilities to the following plugins:
 
 == Changelog ==
 
+= 0.17.2 =
+* Fixed compatibility to wpMandrill (thanks to paddywagon)
+
 = 0.17.1 =
 * 'OnAfterUpdateComments' callback is now called after form data has been reset
 
@@ -311,6 +314,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.17.2 =
+* Fixed compatibility to wpMandrill
 
 = 0.17.1 =
 'OnAfterUpdateComments' callback is now called after form data has been reset

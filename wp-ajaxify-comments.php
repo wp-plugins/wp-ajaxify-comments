@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.17.1
+Version: 0.17.2
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -704,9 +704,6 @@ if (!is_admin() && !wpac_is_login_page()) {
 		add_filter('gettext', 'wpac_filter_gettext', 20, 3);
 	}
 } else {
-	require_once(ABSPATH.'/wp-admin/includes/plugin.php');
-	require_once(ABSPATH.'/wp-admin/includes/template.php');
-	require_once(ABSPATH.WPINC.'/pluggable.php');
 	add_action('admin_menu', 'wpac_admin_menu');
 }
 
