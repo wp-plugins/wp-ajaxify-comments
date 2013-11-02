@@ -143,6 +143,9 @@ There are known incompatibilities to the following plugins:
 
 == Changelog ==
 
+= 0.18.0 =
+* Optimized JavaScript includes (only include files if they are needed)
+
 = 0.17.3 =
 * Fixed "Undefined index" PHP notice (thanks to fergomez)
 
@@ -318,6 +321,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.18.0 =
+* Optimized JavaScript includes
 
 = 0.17.3 =
 * Fixed "Undefined index" PHP notice

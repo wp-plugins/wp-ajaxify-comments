@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.17.3
+Version: 0.18.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -331,6 +331,10 @@ function wpac_get_config() {
 }
 	
 function wpac_enqueue_scripts() {
+
+	// Skip if comments and debug mode are disabled
+	if (!wpac_comments_enabled() && !wpac_get_option('debug')) return;
+	
 	$version = wpac_get_version();
 	wp_enqueue_script('jsuri', WP_PLUGIN_URL.'/wp-ajaxify-comments/jsuri-1.1.1.js', array(), $version);
 	wp_enqueue_script('jQueryBlockUi', WP_PLUGIN_URL.'/wp-ajaxify-comments/jquery.blockUI.js', array('jquery'), $version);
@@ -406,14 +410,22 @@ function wpac_save_options() {
 	update_option(WPAC_OPTION_KEY, $wpac_options);
 }
 
+function wpac_comments_enabled() {
+	global $post;
+	return (is_page() || is_single()) && comments_open($post->ID) /*&& (!get_option('comment_registration') || is_user_logged_in())*/;
+}
+
 function wpac_initialize() {
 
 	if (wpac_get_option('enable')) {
 
-		// Skip JavaScript options output if request is a WPAC-AJAX request
-		if (wpac_is_ajax_request()) return;
+		$commentsEnabled = wpac_comments_enabled();
 		
-		global $post;
+		// Skip JavaScript options output if 
+		// - comments and debug mode are disabled, or
+		// - request is a WPAC-AJAX request
+		if (!$commentsEnabled && !wpac_get_option('debug')) return;
+		if (wpac_is_ajax_request()) return;
 		
 		echo '<script type="text/javascript">';
 
@@ -435,7 +447,7 @@ function wpac_initialize() {
 				}
 			}
 		}
-		echo 'commentsEnabled:'.((is_page() || is_single()) && comments_open($post->ID) ? 'true' : 'false').',';
+		echo 'commentsEnabled:'.($commentsEnabled ? 'true' : 'false').',';
 		echo 'version:"'.wpac_get_version().'"};';
 
 		// Callbacks

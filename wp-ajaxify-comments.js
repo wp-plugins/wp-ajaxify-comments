@@ -256,16 +256,16 @@ WPAC.Init = function() {
 		return false;
 	}
 
+	// Skip initialization if comments are not enabled
+	if (!WPAC._Options.commentsEnabled) {
+		WPAC._Debug("info", "Abort initialization version %s (comments are not enabled on current page)",  WPAC._Options.version);
+		return false;
+	}
+
 	// Debug infos
 	WPAC._Debug("info", "Initializing version %s", WPAC._Options.version);
 
 	WPAC._Callbacks["onBeforeSelectElements"](jQuery(document));
-	
-	// Skip initialization if comments are not enabled
-	if (!WPAC._Options.commentsEnabled) {
-		WPAC._Debug("info", "Abort initialization (comments are not enabled on current page)");
-		return false;
-	}
 	
 	// Debug infos
 	if (WPAC._Options.debug) {
