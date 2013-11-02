@@ -139,6 +139,7 @@ Yes, the plugin uses the following libraries:
 There are known incompatibilities to the following plugins:
 
 * WP-reCAPTCHA (tested with WP-reCAPTCHA 3.1.6)
+* Jetpack with activated "Jetpack Comments" 
 
 == Changelog ==
 
