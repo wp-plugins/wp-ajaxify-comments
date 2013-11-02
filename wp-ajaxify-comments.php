@@ -412,7 +412,7 @@ function wpac_save_options() {
 
 function wpac_comments_enabled() {
 	global $post;
-	return (is_page() || is_single()) && comments_open($post->ID) /*&& (!get_option('comment_registration') || is_user_logged_in())*/;
+	return (is_page() || is_single()) && comments_open($post->ID);
 }
 
 function wpac_initialize() {
