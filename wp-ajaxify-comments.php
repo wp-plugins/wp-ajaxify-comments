@@ -664,7 +664,7 @@ function wpac_admin_menu() {
 
 function comments_query_filter($query) {
 	// No comment filtering if request is a fallback or WPAC-AJAX request  
-	if ($_REQUEST['WPACFallback'] || wpac_is_ajax_request()) return $query;
+	if ((isset($_REQUEST['WPACFallback']) && $_REQUEST['WPACFallback']) || wpac_is_ajax_request()) return $query;
 	
 	// Test asyncCommentsThreshold 
 	$asyncCommentsThreshold = wpac_get_option('asyncCommentsThreshold');

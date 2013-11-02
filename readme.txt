@@ -3,8 +3,8 @@ Contributors: janjonas
 Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
-Tested up to: 3.6
-Stable tag: 0.17.2
+Tested up to: 3.7.1
+Stable tag: 0.17.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -141,6 +141,9 @@ There are known incompatibilities to the following plugins:
 * WP-reCAPTCHA (tested with WP-reCAPTCHA 3.1.6)
 
 == Changelog ==
+
+= 0.17.3 =
+* Fixed "Undefined index" PHP notice (thanks to fergomez)
 
 = 0.17.2 =
 * Fixed compatibility to wpMandrill (thanks to paddywagon)
@@ -314,6 +317,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.17.3 =
+* Fixed "Undefined index" PHP notice
 
 = 0.17.2 =
 * Fixed compatibility to wpMandrill
