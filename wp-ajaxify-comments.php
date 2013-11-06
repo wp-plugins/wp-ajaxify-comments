@@ -317,8 +317,15 @@ function wpac_get_config() {
 					'type' => 'int',
 					'label' => __('Load comments async threshold', WPAC_DOMAIN),
 					'pattern' => '/^[0-9]*$/',
-					'description' => __('Load comments asynchronously with secondary AJAX request if more than the specified number of comments exist. Leave empty to disable this feature.', WPAC_DOMAIN),
+					'description' => __('Load comments asynchronously with secondary AJAX request if more than the specified number of comments exist (0 for always load comments asynchronously). Leave empty to disable this feature.', WPAC_DOMAIN),
 					'specialOption' => true,
+				),
+				'asyncLoadTrigger' => array(
+					'type' => 'select',
+					'label' => __('Trigger to load comments async', WPAC_DOMAIN),
+					'default' => 'DomReady',
+					'pattern' => 'Viewport|None',
+					'description' => __("Trigger to load comments asynchronously ('DomReady': Load comments immediately, 'Viewport': Load comments when comments container is in viewport, 'None': Comment loading is triggered manually).", WPAC_DOMAIN),
 				),
 				'disableUrlUpdate' => array(
 					'type' => 'boolean',
@@ -339,7 +346,8 @@ function wpac_enqueue_scripts() {
 	wp_enqueue_script('jsuri', WP_PLUGIN_URL.'/wp-ajaxify-comments/jsuri-1.1.1.js', array(), $version);
 	wp_enqueue_script('jQueryBlockUi', WP_PLUGIN_URL.'/wp-ajaxify-comments/jquery.blockUI.js', array('jquery'), $version);
 	wp_enqueue_script('jQueryIdleTimer', WP_PLUGIN_URL.'/wp-ajaxify-comments/idle-timer.js', array('jquery'), $version);
-	wp_enqueue_script('wpAjaxifyComments', WP_PLUGIN_URL.'/wp-ajaxify-comments/wp-ajaxify-comments.js', array('jquery', 'jQueryBlockUi', 'jsuri', 'jQueryIdleTimer'), $version);
+	wp_enqueue_script('waypoints', WP_PLUGIN_URL.'/wp-ajaxify-comments/waypoints.js', array('jquery'), $version);
+	wp_enqueue_script('wpAjaxifyComments', WP_PLUGIN_URL.'/wp-ajaxify-comments/wp-ajaxify-comments.js', array('jquery', 'jQueryBlockUi', 'jsuri', 'jQueryIdleTimer', 'waypoints'), $version);
 }
 
 function wpac_get_version() {
@@ -552,7 +560,11 @@ function wpac_option_page() {
 				$type = $wpac_config[$section]['options'][$optionName]['type'];
 				
 				if (strlen($value) > 0) {
-					$error = $pattern ? (preg_match($pattern, $value) !== 1) : null;
+					$error = $pattern ? 
+						(($type == 'select') ? 
+							!in_array($value, explode('|', $pattern)) 
+							: (preg_match($pattern, $value) !== 1)) 
+						: null;
 					if ($error) {
 						$errors[] = $optionName;
 					} else {
@@ -609,6 +621,13 @@ function wpac_option_page() {
 					if ($option['type'] == 'boolean') {
 						echo '<input type="hidden" name="'.$name.'" value="">';
 						echo '<input type="checkbox" name="'.$name.'" id="'.$optionName.'" '.($value ? 'checked="checked"' : '').' value="1"/>';
+					} else if ($option['type'] == 'select') {
+						echo '<select name="'.$name.'">';
+						echo '<option '.($value == $option['default'] ? 'selected="selected"' : '').' value="">'.$option['default'].'</option>';
+						foreach (explode('|', $option['pattern']) as $select) {
+							echo '<option '.($value == $select ? 'selected="selected"' : '').' value="'.$select.'">'.$select.'</option>';
+						}
+						echo '</select>';
 					} else {
 						$escapedValue = htmlentities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
 						if ($option['type'] == 'multiline') {
@@ -617,8 +636,8 @@ function wpac_option_page() {
 							echo '<input type="text" name="'.$name.'" id="'.$optionName.'" value="'.$escapedValue.'" style="width: 300px; color: '.$color.'"/>';
 						} 
 						if (isset($option['default']) && $option['default']) echo '<br/>'.sprintf(__('Leave empty for default value %s', WPAC_DOMAIN), '<em>'.$option['default'].'</em>');
-						if (isset($option['description']) && $option['description']) echo '<br/><em style="width:300px; display: inline-block">'.$option['description'].'</em>';
 					}
+					if (isset($option['description']) && $option['description']) echo '<br/><em style="width:300px; display: inline-block">'.$option['description'].'</em>';
 					echo '</td></tr>';
 				}
 				$section++;

@@ -512,9 +512,18 @@ jQuery(function() {
 		if (!initSuccesful) {
 			WPAC._LoadFallbackUrl(WPAC._AddQueryParamStringToUrl(window.location.href, "WPACFallback", "1"))
 			return;
-		} 
-		WPAC._Debug("info", "Loading comments asynchronously with secondary AJAX request");
-		WPAC.RefreshComments();
+		}
+
+		WPAC._Debug("info", "Loading comments asynchronously with secondary AJAX request (trigger: '%s')", WPAC._Options.asyncLoadTrigger);
+		
+		if (WPAC._Options.asyncLoadTrigger == 'Viewport') {
+			jQuery(WPAC._Options.selectorCommentsContainer).waypoint(function() {
+				jQuery(WPAC._Options.selectorCommentsContainer).waypoint('destroy');
+				WPAC.RefreshComments();
+			}, { offset: '100%' });
+		} else if (WPAC._Options.asyncLoadTrigger == 'DomReady') {
+			WPAC.RefreshComments();
+		}
 	} 
 });
 

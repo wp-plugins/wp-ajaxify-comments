@@ -133,6 +133,7 @@ Yes, the plugin uses the following libraries:
 * jQuery blockUI plugin (http://malsup.com/jquery/block/) to block the UI while the comment is sent to the server and to show popup overlays containing the error and info messages 
 * jsuri (http://code.google.com/p/jsuri/) for query string manipulation
 * jQuery Idle Timer plugin (https://github.com/mikesherov/jquery-idletimer) to detect when the user is "idle"
+* jQuery Waypoints (http://imakewebthings.com/jquery-waypoints/) to detect scrolling to an element
 
 = Known incompatibilities =
 
@@ -144,6 +145,7 @@ There are known incompatibilities to the following plugins:
 == Changelog ==
 
 = 0.18.0 =
+* Added option to define when to load comments asynchronously with secondary AJAX request 
 * Optimized JavaScript includes (only include files if they are needed)
 
 = 0.17.3 =
@@ -323,7 +325,7 @@ There are known incompatibilities to the following plugins:
 == Upgrade Notice ==
 
 = 0.18.0 =
-* Optimized JavaScript includes
+* Optimized JavaScript includes, Added option to customize trigger for asynchronous comment loading
 
 = 0.17.3 =
 * Fixed "Undefined index" PHP notice

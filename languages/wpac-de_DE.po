@@ -226,7 +226,13 @@ msgstr "Parameter: dom (jQuery DOM Element)"
 
 #: wp-ajaxify-comments.php:261
 msgid "Load comments async threshold"
-msgstr "Kommentare asychron laden (Grenzwert)"
+msgstr "Kommentare asynchron laden (Grenzwert)"
+
+msgid "Trigger to load comments async"
+msgstr "Kommentare asynchron laden (Trigger)"
+
+msgid "Trigger to load comments asynchronously ('DomReady': Load comments immediately, 'Viewport': Load comments when comments container is in viewport, 'None': Comment loading is triggered manually)."
+msgstr "Trigger um Kommentare asynchron geladen werden sollen ('DomReady': Kommentare sofort laden, 'Viewport': Kommentare laden sobald Kommentar-Container im Sichtfeld ist, 'None': Kommentare laden erfolgt manuell')."
 
 #: wp-ajaxify-comments.php:261
 msgid "Disable URL updating"
@@ -234,9 +240,8 @@ msgstr "URL Aktualisierung unterbinden"
 
 #: wp-ajaxify-comments.php:263
 msgid ""
-"Load comments asynchronously with secondary AJAX request if more than the "
-"specified number of comments exist. Leave empty to disable this feature."
-msgstr "Lade Kommentare mit einem zusätzlichen (asynchronen) AJAX request, wenn die angegebene Anzahl an Kommentaren existiert. Leerlassen, um diese Funktion zu deaktivieren."
+"Load comments asynchronously with secondary AJAX request if more than the specified number of comments exist (0 for always load comments asynchronously). Leave empty to disable this feature."
+msgstr "Lade Kommentare mit einem zusätzlichen (asynchronen) AJAX request, wenn die angegebene Anzahl an Kommentaren existiert (0 um Kommentare immer asynchron zu laden). Leerlassen, um diese Funktion zu deaktivieren."
 
 #: wp-ajaxify-comments.php:405
 msgid "%s is not enabled!"
