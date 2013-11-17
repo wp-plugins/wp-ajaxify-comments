@@ -238,6 +238,18 @@ msgstr "Trigger um Kommentare asynchron geladen werden sollen ('DomReady': Komme
 msgid "Disable URL updating"
 msgstr "URL Aktualisierung unterbinden"
 
+msgid "Use uncompressed scripts"
+msgstr "Unkomprimierte Skripte nutzen"
+
+msgid "By default a compressed (and merged) JavaScript file is used, check to use uncompressed JavaScript files. Please note: If debug mode is enabled, uncompressed JavaScript files are used."
+msgstr "Standardmäßig wird eine komprimierte (und zusammengefasste) JavaScript Datei genutzt, anhaken um unkomprimierte JavaScript Dateien zu nutzen. Bitte beachten: Wenn der Debug-Modus aktiviert ist, werden unkomprimierte JavaScript Dateien genutzt."
+
+msgid "Always include scripts"
+msgstr "Skripte immer einbinden"
+
+msgid "By default JavaScript files are only included on pages where comments are enabled, check to include JavaScript files on every page. Please note: If debug mode is enabled, JavaScript files are included on every pages."
+msgstr "Standardmäßig werden JavaScript Dateien nur auf Seiten eingebunden, auf denen die Kommentarfunktion aktiviert ist, anhaken um die JavaScript Dateien auf allen Seiten einzubinden. Bitte beachten: Wenn der Debug-Modus aktiviert ist, werden JavaScript Dateien auf allen Seiten eingebunden."
+
 #: wp-ajaxify-comments.php:263
 msgid ""
 "Load comments asynchronously with secondary AJAX request if more than the specified number of comments exist (0 for always load comments asynchronously). Leave empty to disable this feature."

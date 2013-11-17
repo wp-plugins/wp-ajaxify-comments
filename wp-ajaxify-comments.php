@@ -331,6 +331,20 @@ function wpac_get_config() {
 					'default' => '0',
 					'label' => __('Disable URL updating', WPAC_DOMAIN),
 				),
+				'useUncompressedScripts' => array(
+					'type' => 'boolean',
+					'default' => '0',
+					'label' => __('Use uncompressed scripts', WPAC_DOMAIN),
+					'description' => __('By default a compressed (and merged) JavaScript file is used, check to use uncompressed JavaScript files. Please note: If debug mode is enabled, uncompressed JavaScript files are used.', WPAC_DOMAIN),
+					'specialOption' => true,
+				),
+				'alwaysIncludeScripts' => array(
+					'type' => 'boolean',
+					'default' => '0',
+					'label' => __('Always include scripts', WPAC_DOMAIN),
+					'description' => __('By default JavaScript files are only included on pages where comments are enabled, check to include JavaScript files on every page. Please note: If debug mode is enabled, JavaScript files are included on every pages.', WPAC_DOMAIN),
+					'specialOption' => true,
+				),
 			)
 		)
 	);
@@ -338,15 +352,22 @@ function wpac_get_config() {
 	
 function wpac_enqueue_scripts() {
 
-	// Skip if comments and debug mode are disabled
-	if (!wpac_comments_enabled() && !wpac_get_option('debug')) return;
+	// Skip if comments and debug mode are disabled and alwaysIncludeScripts option is false
+	$debug = wpac_get_option('debug');
+	if (!wpac_comments_enabled() && !wpac_get_option('alwaysIncludeScripts') && !$debug) return;
 	
 	$version = wpac_get_version();
-	wp_enqueue_script('jsuri', WP_PLUGIN_URL.'/wp-ajaxify-comments/jsuri-1.1.1.js', array(), $version);
-	wp_enqueue_script('jQueryBlockUi', WP_PLUGIN_URL.'/wp-ajaxify-comments/jquery.blockUI.js', array('jquery'), $version);
-	wp_enqueue_script('jQueryIdleTimer', WP_PLUGIN_URL.'/wp-ajaxify-comments/idle-timer.js', array('jquery'), $version);
-	wp_enqueue_script('waypoints', WP_PLUGIN_URL.'/wp-ajaxify-comments/waypoints.js', array('jquery'), $version);
-	wp_enqueue_script('wpAjaxifyComments', WP_PLUGIN_URL.'/wp-ajaxify-comments/wp-ajaxify-comments.js', array('jquery', 'jQueryBlockUi', 'jsuri', 'jQueryIdleTimer', 'waypoints'), $version);
+	$jsPath = WP_PLUGIN_URL.'/wp-ajaxify-comments/js/';
+	
+	if ($debug || wpac_get_option('useUncompressedScripts')) {
+		wp_enqueue_script('jsuri', $jsPath.'jsuri-1.1.1.js', array(), $version);
+		wp_enqueue_script('jQueryBlockUi', $jsPath.'jquery.blockUI.js', array('jquery'), $version);
+		wp_enqueue_script('jQueryIdleTimer', $jsPath.'idle-timer.js', array('jquery'), $version);
+		wp_enqueue_script('waypoints', $jsPath.'waypoints.js', array('jquery'), $version);
+		wp_enqueue_script('wpAjaxifyComments', $jsPath.'/wp-ajaxify-comments.js', array('jquery', 'jQueryBlockUi', 'jsuri', 'jQueryIdleTimer', 'waypoints'), $version);
+	} else {
+		wp_enqueue_script('wpAjaxifyComments', $jsPath.'/wp-ajaxify-comments.min.js', array('jquery'), $version);
+	}
 }
 
 function wpac_get_version() {
@@ -730,7 +751,7 @@ if (!is_admin() && !wpac_is_login_page()) {
 	if (wpac_get_option('enable')) {
 		add_filter('comments_array', 'comments_query_filter');
 		add_action('wp_head', 'wpac_initialize');
-		add_action('init', 'wpac_enqueue_scripts');
+		add_action('wp_enqueue_scripts', 'wpac_enqueue_scripts');
 		add_filter('gettext', 'wpac_filter_gettext', 20, 3);
 	}
 } else {

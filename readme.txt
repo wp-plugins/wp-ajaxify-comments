@@ -146,7 +146,7 @@ There are known incompatibilities to the following plugins:
 
 = 0.18.0 =
 * Added option to define when to load comments asynchronously with secondary AJAX request 
-* Optimized JavaScript includes (only include files if they are needed)
+* Optimized JavaScript includes (use compressed/merged JavaScript file and only include files if they are needed)
 
 = 0.17.3 =
 * Fixed "Undefined index" PHP notice (thanks to fergomez)
