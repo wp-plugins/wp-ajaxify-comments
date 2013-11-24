@@ -4,7 +4,7 @@ Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.7.1
-Stable tag: 0.18.0
+Stable tag: 0.18.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -143,6 +143,9 @@ There are known incompatibilities to the following plugins:
 * Jetpack with activated "Jetpack Comments" 
 
 == Changelog ==
+
+= 0.18.1 =
+* Fixed double slashes in JavaScript include (thanks to Mr Press) 
 
 = 0.18.0 =
 * Added option to define when to load comments asynchronously with secondary AJAX request 
@@ -323,6 +326,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.18.1 =
+* Fixed double slashes in JavaScript include 
 
 = 0.18.0 =
 * Optimized JavaScript includes, Added option to customize trigger for asynchronous comment loading
