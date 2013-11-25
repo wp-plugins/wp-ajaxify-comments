@@ -1751,7 +1751,7 @@ WPAC._ReplaceComments = function(data, fallbackUrl, formData) {
 		return false;
 	}
 
-	WPAC._Callbacks["onBeforeUpdateComments"]();
+	WPAC._Callbacks["onBeforeUpdateComments"](extractedBody);
 
 	// Update comments container
 	oldCommentsContainer.replaceWith(newCommentsContainer);
@@ -1805,7 +1805,7 @@ WPAC._ReplaceComments = function(data, fallbackUrl, formData) {
 		});
 	}
 
-	WPAC._Callbacks["onAfterUpdateComments"]();
+	WPAC._Callbacks["onAfterUpdateComments"](extractedBody);
 
 	return true;
 }

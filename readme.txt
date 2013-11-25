@@ -144,6 +144,9 @@ There are known incompatibilities to the following plugins:
 
 == Changelog ==
 
+= 0.19.0 =
+* Added parameter newDom to callbacks onBeforeUpdateComments and onAfterUpdateComments
+
 = 0.18.1 =
 * Fixed double slashes in JavaScript include (thanks to Mr Press) 
 
@@ -326,6 +329,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.19.0 =
+* Added parameter newDom to callbacks onBeforeUpdateComments and onAfterUpdateComments
 
 = 0.18.1 =
 * Fixed double slashes in JavaScript include 

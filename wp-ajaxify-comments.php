@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.18.1
+Version: 0.19.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -305,12 +305,14 @@ function wpac_get_config() {
 					'default' => '',
 					'label' => sprintf(__("'%s' callback", WPAC_DOMAIN), 'OnBeforeUpdateComments'),
 					'specialOption' => true,
+					'description' => __('Parameter: newDom (jQuery DOM element)', WPAC_DOMAIN)
 				),
 				'callbackOnAfterUpdateComments' => array(
 					'type' => 'multiline',
 					'default' => '',
 					'label' => sprintf(__("'%s' callback", WPAC_DOMAIN), 'OnAfterUpdateComments'),
 					'specialOption' => true,
+					'description' => __('Parameter: newDom (jQuery DOM element)', WPAC_DOMAIN)
 				),
 				'asyncCommentsThreshold' => array(
 					'type' => 'int',
@@ -481,8 +483,8 @@ function wpac_initialize() {
 		// Callbacks
 		echo 'WPAC._Callbacks = {';
 		echo '"onBeforeSelectElements": function(dom) {'.wpac_get_option('callbackOnBeforeSelectElements').'},';
-		echo '"onBeforeUpdateComments": function() {'.wpac_get_option('callbackOnBeforeUpdateComments').'},';
-		echo '"onAfterUpdateComments": function() {'.wpac_get_option('callbackOnAfterUpdateComments').'},';
+		echo '"onBeforeUpdateComments": function(newDom) {'.wpac_get_option('callbackOnBeforeUpdateComments').'},';
+		echo '"onAfterUpdateComments": function(newDom) {'.wpac_get_option('callbackOnAfterUpdateComments').'},';
 		echo '"onBeforeSubmitComment": function() {'.wpac_get_option('callbackOnBeforeSubmitComment').'},';
 		echo '};';
 		

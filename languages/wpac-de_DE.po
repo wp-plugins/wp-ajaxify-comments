@@ -224,6 +224,9 @@ msgstr ""
 msgid "Parameter: dom (jQuery DOM element)"
 msgstr "Parameter: dom (jQuery DOM Element)"
 
+msgid "Parameter: newDom (jQuery DOM element)"
+msgstr "Parameter: newDom (jQuery DOM element)"
+
 #: wp-ajaxify-comments.php:261
 msgid "Load comments async threshold"
 msgstr "Kommentare asynchron laden (Grenzwert)"
