@@ -146,6 +146,7 @@ There are known incompatibilities to the following plugins:
 
 = 0.19.0 =
 * Added parameter newDom to callbacks onBeforeUpdateComments and onAfterUpdateComments
+* Fixed JavaScript error "TypeError: WPAC._Options is undefined" (thanks to Suzanne Ahjira)
 
 = 0.18.1 =
 * Fixed double slashes in JavaScript include (thanks to Mr Press) 
@@ -331,7 +332,7 @@ There are known incompatibilities to the following plugins:
 == Upgrade Notice ==
 
 = 0.19.0 =
-* Added parameter newDom to callbacks onBeforeUpdateComments and onAfterUpdateComments
+* Added parameter newDom to callbacks onBeforeUpdateComments and onAfterUpdateComments, Fixed JavaScript errors
 
 = 0.18.1 =
 * Fixed double slashes in JavaScript include 

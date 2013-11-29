@@ -452,9 +452,9 @@ function wpac_initialize() {
 		$commentsEnabled = wpac_comments_enabled();
 		
 		// Skip JavaScript options output if 
-		// - comments and debug mode are disabled, or
-		// - request is a WPAC-AJAX request
-		if (!$commentsEnabled && !wpac_get_option('debug')) return;
+		// - comments and debug mode are disabled and alwaysIncludeScripts option is false, or
+		// - request is a WPAC-AJAX request		
+		if (!$commentsEnabled && !wpac_get_option('alwaysIncludeScripts') && !wpac_get_option('debug')) return;
 		if (wpac_is_ajax_request()) return;
 		
 		echo '<script type="text/javascript">';
