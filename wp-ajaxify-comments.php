@@ -485,7 +485,7 @@ function wpac_initialize() {
 		echo '"onBeforeSelectElements": function(dom) {'.wpac_get_option('callbackOnBeforeSelectElements').'},';
 		echo '"onBeforeUpdateComments": function(newDom) {'.wpac_get_option('callbackOnBeforeUpdateComments').'},';
 		echo '"onAfterUpdateComments": function(newDom) {'.wpac_get_option('callbackOnAfterUpdateComments').'},';
-		echo '"onBeforeSubmitComment": function() {'.wpac_get_option('callbackOnBeforeSubmitComment').'},';
+		echo '"onBeforeSubmitComment": function() {'.wpac_get_option('callbackOnBeforeSubmitComment').'}';
 		echo '};';
 		
 		echo '</script>';
