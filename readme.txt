@@ -3,7 +3,7 @@ Contributors: janjonas
 Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
-Tested up to: 3.7.1
+Tested up to: 3.8.0
 Stable tag: 0.19.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -32,6 +32,7 @@ Some features of the plugin:
 * Support for customizing (default) WordPress messages
 * Support for threaded comments
 * Support for comments that await moderation
+* Support for pages with multiple comment forms
 * Compatibility with comment spam protection plugins and other plugins that extend/manipulate the comment form
 * Admin frontend to customize the look and feel
 * (Automatic) fallback mode uses complete page reloads if the plugin is not configured properly or any incompatibility is detected
@@ -143,6 +144,11 @@ There are known incompatibilities to the following plugins:
 * Jetpack with activated "Jetpack Comments" 
 
 == Changelog ==
+
+= 0.20.0 =
+
+* Added option 'Post container' to support for multiple comment forms per page
+* Added option 'Comment pages URL regex' to support none default WordPress comment pages 
 
 = 0.19.0 =
 * Added parameter newDom to callbacks onBeforeUpdateComments and onAfterUpdateComments
@@ -331,6 +337,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.20.0 =
+* Added support for multiple comment forms per page and support for none default WordPress comment pages
 
 = 0.19.0 =
 * Added parameter newDom to callbacks onBeforeUpdateComments and onAfterUpdateComments, Fixed JavaScript errors

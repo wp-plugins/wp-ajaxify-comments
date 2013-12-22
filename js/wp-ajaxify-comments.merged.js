@@ -1726,11 +1726,11 @@ WPAC._UpdateUrl= function(url) {
 	}
 }
 
-WPAC._ReplaceComments = function(data, fallbackUrl, formData) {
+WPAC._ReplaceComments = function(data, fallbackUrl, formData, selectorCommentsContainer, selectorCommentForm, selectorRespondContainer, beforeSelectElements, beforeUpdateComments, afterUpdateComments) {
 	
-	var oldCommentsContainer = jQuery(WPAC._Options.selectorCommentsContainer);
+	var oldCommentsContainer = jQuery(selectorCommentsContainer);
 	if (!oldCommentsContainer.length) {
-		WPAC._Debug("error", "Comment container on current page not found (selector: '%s')", WPAC._Options.selectorCommentsContainer);
+		WPAC._Debug("error", "Comment container on current page not found (selector: '%s')", selectorCommentsContainer);
 		WPAC._LoadFallbackUrl(fallbackUrl);
 		return false;
 	}
@@ -1742,31 +1742,31 @@ WPAC._ReplaceComments = function(data, fallbackUrl, formData) {
 		return false;
 	}
 	
-	WPAC._Callbacks["onBeforeSelectElements"](extractedBody);
+	beforeSelectElements(extractedBody);
 	
-	var newCommentsContainer = extractedBody.find(WPAC._Options.selectorCommentsContainer);
+	var newCommentsContainer = extractedBody.find(selectorCommentsContainer);
 	if (!newCommentsContainer.length) {
-		WPAC._Debug("error", "Comment container on requested page not found (selector: '%s')", WPAC._Options.selectorCommentsContainer);
+		WPAC._Debug("error", "Comment container on requested page not found (selector: '%s')", selectorCommentsContainer);
 		WPAC._LoadFallbackUrl(fallbackUrl);
 		return false;
 	}
 
-	WPAC._Callbacks["onBeforeUpdateComments"](extractedBody);
+	beforeUpdateComments(extractedBody);
 
 	// Update comments container
 	oldCommentsContainer.replaceWith(newCommentsContainer);
 	
-	var form = jQuery(WPAC._Options.selectorCommentForm);
+	var form = jQuery(selectorCommentForm);
 	if (form.length) {
 
 		// Replace comment form (for spam protection plugin compatibility) if comment form is not nested in comments container
 		// If comment form is nested in comments container comment form has already been replaced
-		if (!newCommentsContainer.find(WPAC._Options.selectorCommentForm).length) {
+		if (!form.parents(selectorCommentsContainer).length) {
 
 			WPAC._Debug("info", "Replace comment form...");
-			var newCommentForm = extractedBody.find(WPAC._Options.selectorCommentForm);
+			var newCommentForm = extractedBody.find(selectorCommentForm);
 			if (newCommentForm.length == 0) {
-				WPAC._Debug("error", "Comment form on requested page not found (selector: '%s')", WPAC._Options.selectorCommentForm);
+				WPAC._Debug("error", "Comment form on requested page not found (selector: '%s')", selectorCommentForm);
 				WPAC._LoadFallbackUrl(fallbackUrl);
 				return false;
 			}
@@ -1782,13 +1782,13 @@ WPAC._ReplaceComments = function(data, fallbackUrl, formData) {
 		// -> Replace WordPress placeholder <div> (#wp-temp-form-div) with respond <div>
 		var wpTempFormDiv = jQuery("#wp-temp-form-div");
 		if (!wpTempFormDiv.length) {
-			WPAC._Debug("error", "WordPress' #wp-temp-form-div container not found", WPAC._Options.selectorRespondContainer);
+			WPAC._Debug("error", "WordPress' #wp-temp-form-div container not found", selectorRespondContainer);
 			WPAC._LoadFallbackUrl(fallbackUrl);
 			return false;
 		}
-		var newRespondContainer = extractedBody.find(WPAC._Options.selectorRespondContainer);
+		var newRespondContainer = extractedBody.find(selectorRespondContainer);
 		if (!newRespondContainer.length) {
-			WPAC._Debug("error", "Respond container on requested page not found (selector: '%s')", WPAC._Options.selectorRespondContainer);
+			WPAC._Debug("error", "Respond container on requested page not found (selector: '%s')", selectorRespondContainer);
 			WPAC._LoadFallbackUrl(fallbackUrl);
 			return false;
 		}
@@ -1799,13 +1799,13 @@ WPAC._ReplaceComments = function(data, fallbackUrl, formData) {
 	if (formData) {
 		// Re-inject saved form data
 		jQuery.each(formData, function(key, value) {
-			var formElement = jQuery("[name='"+value.name+"']", WPAC._Options.selectorCommentForm);
+			var formElement = jQuery("[name='"+value.name+"']", selectorCommentForm);
 			if (formElement.length != 1 || formElement.val()) return;
 			formElement.val(value.value);
 		});
 	}
 
-	WPAC._Callbacks["onAfterUpdateComments"](extractedBody);
+	afterUpdateComments(extractedBody);
 
 	return true;
 }
@@ -1821,61 +1821,50 @@ WPAC._TestFallbackUrl = function(url) {
 	return (url.getQueryParamValue("WPACFallback") && url.getQueryParamValue("WPACRandom"));
 }
 
-WPAC._Initialized = false;
-WPAC.Init = function() {
+WPAC.AttachForm = function(options) {
 
-	// Test if plugin already has been initialized
-	if (WPAC._Initialized) {
-		WPAC._Debug("info", "Abort initialization (plugin already initialized)");
-		return false;
-	}
-	WPAC._Initialized = true;
-	
-	// Assert that environment is set up correctly
-	if (!WPAC._Options || !WPAC._Callbacks) {
-		WPAC._Debug("error", "Something unexpected happened, initialization failed. Please try to reinstall the plugin.");
-		return false;
-	}
+	// Set default options
+	options = jQuery.extend({
+		selectorCommentForm: WPAC._Options.selectorCommentForm,
+		selectorCommentPagingLinks: WPAC._Options.selectorCommentPagingLinks,
+		beforeSelectElements: WPAC._Callbacks.beforeSelectElements,
+		beforeSubmitComment: WPAC._Callbacks.beforeSubmitComment,
+		selectorCommentsContainer: WPAC._Options.selectorCommentsContainer,
+		selectorRespondContainer: WPAC._Options.selectorRespondContainer,
+		beforeUpdateComments: WPAC._Callbacks.beforeUpdateComments,
+		afterUpdateComments: WPAC._Callbacks.afterUpdateComments,
+	}, options || {});	
 
-	// Skip initialization if comments are not enabled
-	if (!WPAC._Options.commentsEnabled) {
-		WPAC._Debug("info", "Abort initialization version %s (comments are not enabled on current page)",  WPAC._Options.version);
-		return false;
-	}
-
-	// Debug infos
-	WPAC._Debug("info", "Initializing version %s", WPAC._Options.version);
-
-	WPAC._Callbacks["onBeforeSelectElements"](jQuery(document));
-	
-	// Debug infos
 	if (WPAC._Options.debug) {
-		if (!jQuery || !jQuery.fn || !jQuery.fn.jquery) {
-			WPAC._Debug("error", "jQuery not found, abort initialization. Please try to reinstall the plugin.");
-			return false;
-		}
-		WPAC._Debug("info", "Found jQuery %s", jQuery.fn.jquery);
-		if (!jQuery.blockUI || !jQuery.blockUI.version) {
-			WPAC._Debug("error", "jQuery blockUI not found, abort initialization. Please try to reinstall the plugin.");
-			return false;
-		}
-		WPAC._Debug("info", "Found jQuery blockUI %s", jQuery.blockUI.version);
-		if (!jQuery.idleTimer) {
-			WPAC._Debug("error", "jQuery Idle Timer plugin not found, abort initialization. Please try to reinstall the plugin.");
-			return false;
-		}
-		WPAC._Debug("info", "Found jQuery Idle Timer plugin");
-		WPAC._DebugSelector("comment form", WPAC._Options.selectorCommentForm);
-		WPAC._DebugSelector("comments container", WPAC._Options.selectorCommentsContainer);
-		WPAC._DebugSelector("respond container", WPAC._Options.selectorRespondContainer);
-		WPAC._DebugSelector("comment paging links", WPAC._Options.selectorCommentPagingLinks, true);
-		if (WPAC._Options.autoUpdateIdleTime > 0) WPAC._Debug("info", "Auto updating comments enabled (idle time: %s)", WPAC._Options.autoUpdateIdleTime);
-		WPAC._Debug("info", "Initialization completed");
+		WPAC._Debug("info", "Attach form...")
+		WPAC._DebugSelector("comment form", options.selectorCommentForm);
+		WPAC._DebugSelector("comments container",options.selectorCommentsContainer);
+		WPAC._DebugSelector("respond container", options.selectorRespondContainer);
+		WPAC._DebugSelector("comment paging links", options.selectorCommentPagingLinks, true);
 	}
 	
-	// Intercept comment form submit
+	options.beforeSelectElements(jQuery(document));
+	
+	// Get addHandler method
+	if (jQuery(document).on) {
+		// jQuery 1.7+
+		var addHandler = function(event, selector, handler) {
+			jQuery(document).on(event, selector, handler)
+		}
+	} else if (jQuery(document).delegate) {
+		// jQuery 1.4.3+
+		var addHandler = function(event, selector, handler) {
+			jQuery(document).delegate(selector, event, handler)
+		}
+	} else {
+		// jQuery 1.3+
+		var addHandler = function(event, selector, handler) {
+			jQuery(selector).live(event, handler)
+		}
+	}
+	
+	// Handle form submit
 	var formSubmitHandler = function (event) {
-		
 		var form = jQuery(this);
 
 		var submitUrl = form.attr("action");
@@ -1894,11 +1883,11 @@ WPAC.Init = function() {
 		
 		// Stop default event handling
 		event.preventDefault();
-	
+
 		// Show loading info
 		WPAC._ShowMessage(WPAC._Options.textPostComment, "loading");
 
-		WPAC._Callbacks["onBeforeSubmitComment"]();
+		options.beforeSubmitComment();
 		
 		var request = jQuery.ajax({
 			url: submitUrl,
@@ -1906,7 +1895,7 @@ WPAC.Init = function() {
 			data: form.serialize(),
 			beforeSend: function(xhr){ xhr.setRequestHeader('X-WPAC-REQUEST', '1'); },
 			success: function (data) {
- 
+
 				WPAC._Debug("info", "Comment has been posted");
 
 				// Get info from response header
@@ -1919,7 +1908,8 @@ WPAC.Init = function() {
 				WPAC._ShowMessage(unapproved == '1' ? WPAC._Options.textPostedUnapproved : WPAC._Options.textPosted, "success");
 
 				// Replace comments (and return if replacing failed)
-				if (!WPAC._ReplaceComments(data, commentUrl)) return;
+				if (!WPAC._ReplaceComments(data, commentUrl, {}, options.selectorCommentsContainer, options.selectorCommentForm, options.selectorRespondContainer, 
+					options.beforeSelectElements, options.beforeUpdateComments, options.afterUpdateComments)) return;
 				
 				// Smooth scroll to comment url and update browser url
 				if (commentUrl) {
@@ -1955,43 +1945,98 @@ WPAC.Init = function() {
 				WPAC._Debug("error", "Error message could not be extracted, use error message '%s'.", WPAC._Options.textUnknownError);
 				WPAC._ShowMessage(WPAC._Options.textUnknownError, "error");
 			}
-  	    });
-	  
+		});
 	};
-
+	addHandler("submit", options.selectorCommentForm, formSubmitHandler)
+	
 	var pagingSubmitHandler = function(event) {
 		var href = jQuery(this).attr("href");
 		if (href) {
 			event.preventDefault();
-			WPAC.LoadComments(href);
+			WPAC.LoadComments(href, {
+				selectorCommentForm: options.selectorCommentForm,
+				selectorCommentsContainer: options.selectorCommentsContainer,
+				selectorRespondContainer: options.selectorRespondContainer,
+				beforeSelectElements: options.beforeSelectElements,
+				beforeUpdateComments: options.beforeUpdateComments,
+				afterUpdateComments: options.afterUpdateComments,
+			});
 		}
+	};
+	addHandler("click", options.selectorCommentPagingLinks, pagingSubmitHandler);
+}
+
+WPAC._Initialized = false;
+WPAC.Init = function() {
+
+	// Test if plugin already has been initialized
+	if (WPAC._Initialized) {
+		WPAC._Debug("info", "Abort initialization (plugin already initialized)");
+		return false;
 	}
+	WPAC._Initialized = true;
 	
-	// Get addHandler method
-	if (jQuery(document).on) {
-		// jQuery 1.7+
-		var addHandler = function(event, selector, handler) {
-			jQuery(document).on(event, selector, handler)
+	// Assert that environment is set up correctly
+	if (!WPAC._Options || !WPAC._Callbacks) {
+		WPAC._Debug("error", "Something unexpected happened, initialization failed. Please try to reinstall the plugin.");
+		return false;
+	}
+
+	// Skip initialization if comments are not enabled
+	if (!WPAC._Options.commentsEnabled) {
+		WPAC._Debug("info", "Abort initialization version %s (comments are not enabled on current page)",  WPAC._Options.version);
+		return false;
+	}
+
+	// Debug infos
+	WPAC._Debug("info", "Initializing version %s", WPAC._Options.version);
+
+	// Debug infos
+	if (WPAC._Options.debug) {
+		if (!jQuery || !jQuery.fn || !jQuery.fn.jquery) {
+			WPAC._Debug("error", "jQuery not found, abort initialization. Please try to reinstall the plugin.");
+			return false;
 		}
-	} else if (jQuery(document).delegate) {
-		// jQuery 1.4.3+
-		var addHandler = function(event, selector, handler) {
-			jQuery(document).delegate(selector, event, handler)
+		WPAC._Debug("info", "Found jQuery %s", jQuery.fn.jquery);
+		if (!jQuery.blockUI || !jQuery.blockUI.version) {
+			WPAC._Debug("error", "jQuery blockUI not found, abort initialization. Please try to reinstall the plugin.");
+			return false;
 		}
+		WPAC._Debug("info", "Found jQuery blockUI %s", jQuery.blockUI.version);
+		if (!jQuery.idleTimer) {
+			WPAC._Debug("error", "jQuery Idle Timer plugin not found, abort initialization. Please try to reinstall the plugin.");
+			return false;
+		}
+		WPAC._Debug("info", "Found jQuery Idle Timer plugin");
+	}
+
+	if (WPAC._Options.selectorPostContainer) {
+		WPAC._Debug("info", "Multiple comment form support enabled (selector: '%s')", WPAC._Options.selectorPostContainer);
+		jQuery(WPAC._Options.selectorPostContainer).each(function(i,e) {
+			var id = jQuery(e).attr("id");
+			if (!id) {
+				WPAC._Debug("info", "Skip post container element %o (ID not defined)", e);
+				return
+			}
+			WPAC.AttachForm({
+				selectorCommentForm: "#" + id + " " + WPAC._Options.selectorCommentForm,
+				selectorCommentPagingLinks: "#" + id + " " + WPAC._Options.selectorCommentPagingLinks,
+				selectorCommentsContainer: "#" + id + " " + WPAC._Options.selectorCommentsContainer,
+				selectorRespondContainer: "#" + id + " " + WPAC._Options.selectorRespondContainer
+			});	
+		});
 	} else {
-		// jQuery 1.3+
-		var addHandler = function(event, selector, handler) {
-			jQuery(selector).live(event, handler)
-		}
+		WPAC.AttachForm();
 	}
-	
-	// Add handlers
-	addHandler("submit", WPAC._Options.selectorCommentForm, formSubmitHandler)
-	addHandler("click", WPAC._Options.selectorCommentPagingLinks, pagingSubmitHandler);
 	
 	// Set up idle timer
-	WPAC._InitIdleTimer();
+	if (WPAC._Options.autoUpdateIdleTime > 0) {
+		WPAC._Debug("info", "Auto updating comments enabled (idle time: %s)", WPAC._Options.autoUpdateIdleTime);
+		WPAC._InitIdleTimer();
+	}
 	
+	WPAC._Debug("info", "Initialization completed");
+
 	return true;
 }
 
@@ -2000,8 +2045,6 @@ WPAC._OnIdle = function() {
 };
 
 WPAC._InitIdleTimer = function() {
-	if (WPAC._Options.autoUpdateIdleTime <= 0) return;
-
 	if (WPAC._TestFallbackUrl(location.href)) {
 		WPAC._Debug("error", "Fallback URL was detected (url: '%s'), cancel init idle timer", location.href);
 		return;
@@ -2040,11 +2083,17 @@ WPAC.LoadComments = function(url, options) {
 		scrollToAnchor: true,
 		showLoadingInfo: true,
 		updateUrl: !WPAC._Options.disableUrlUpdate,
-		success: function() {}
+		success: function() {},
+		selectorCommentForm: WPAC._Options.selectorCommentForm,
+		selectorCommentsContainer: WPAC._Options.selectorCommentsContainer,
+		selectorRespondContainer: WPAC._Options.selectorRespondContainer,
+		beforeSelectElements: WPAC._Callbacks.beforeSelectElements, 
+		beforeUpdateComments: WPAC._Callbacks.beforeUpdateComments,
+		afterUpdateComments: WPAC._Callbacks.afterUpdateComments,
 	}, options || {});	
 	
 	// Save form data
-	var formData = jQuery(WPAC._Options.selectorCommentForm).serializeArray();
+	var formData = jQuery(options.selectorCommentForm).serializeArray();
 	
 	// Show loading info
 	if (options.showLoadingInfo)
@@ -2057,7 +2106,8 @@ WPAC.LoadComments = function(url, options) {
 		success: function (data) {
 
 			// Replace comments (and return if replacing failed)
-			if (!WPAC._ReplaceComments(data, WPAC._AddQueryParamStringToUrl(url, "WPACFallback", 1), formData)) return;
+			if (!WPAC._ReplaceComments(data, WPAC._AddQueryParamStringToUrl(url, "WPACFallback", 1), formData, options.selectorCommentsContainer, options.selectorCommentForm, 
+				options.selectorRespondContainer, options.beforeSelectElements, options.beforeUpdateComments, options.afterUpdateComments)) return;
 			
 			if (options.updateUrl) WPAC._UpdateUrl(url);
 

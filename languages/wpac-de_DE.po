@@ -48,6 +48,18 @@ msgstr "Respond-Container Selektor"
 msgid "Error container selector"
 msgstr "Fehler-Container Selektor"
 
+msgid "Post container selector"
+msgstr "Post-Container Selektor"
+
+msgid "Selector that matches post containers to enable support for multiple comment forms per page; leave empty to disable multiple comment form per page support. Please note: Each post container needs to have the ID attribute defined."
+msgstr "Selektor für den Post-Container um mehrere Kommentar-Formulare pro Seite zu unterstützen; leerlassen um die Unterstützung für mehrere Kommentar-Formulare pro Seite zu deaktivieren. Bitte beachten: Für jeden Post-Container muss ein ID Attribut definiert sein."
+
+msgid "Comment pages URL regex"
+msgstr "Kommentar-Seiten URL-Regex"
+
+msgid "Regular expression that matches URLs of all pages that support comments; leave empty to use WordPress defaults to automatically detect pages where comments are allowed. Please note: The expression is evaluated against the full page URL including schema, hostname, port number (if none default ports are used), (full) path and query string."
+msgstr "Regulärer Ausdruck, der auf alle URLs von Seiten mit Kommentar-Unterstützung zutrifft; leerlassen um WordPress-Standards zu nutzen um Seiten mit Kommentar-Unterstützung zu ermitteln. Bitte beachten: Der Ausdruck wird gegen die vollständige Seiten-URL mit Schema, Hostname, Port-Nummer (wenn kein Standard-Port genutzt wird), (kmopletter) Pfad und Query-String ausgewertet."
+
 #: wp-ajaxify-comments.php:86
 msgid "Popup overlay"
 msgstr "Popup Overlay"
@@ -235,7 +247,7 @@ msgid "Trigger to load comments async"
 msgstr "Kommentare asynchron laden (Trigger)"
 
 msgid "Trigger to load comments asynchronously ('DomReady': Load comments immediately, 'Viewport': Load comments when comments container is in viewport, 'None': Comment loading is triggered manually)."
-msgstr "Trigger um Kommentare asynchron geladen werden sollen ('DomReady': Kommentare sofort laden, 'Viewport': Kommentare laden sobald Kommentar-Container im Sichtfeld ist, 'None': Kommentare laden erfolgt manuell')."
+msgstr "Trigger um Kommentare asynchron zu laden ('DomReady': Kommentare sofort laden, 'Viewport': Kommentare laden sobald Kommentar-Container im Sichtfeld ist, 'None': Kommentare laden erfolgt manuell')."
 
 #: wp-ajaxify-comments.php:261
 msgid "Disable URL updating"

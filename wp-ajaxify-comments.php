@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.19.0
+Version: 0.20.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -287,6 +287,18 @@ function wpac_get_config() {
 		array(
 			'section' => __('Expert settings', WPAC_DOMAIN),
 			'options' => array(
+				'selectorPostContainer' => array(
+						'type' => 'string',
+						'default' => '',
+						'label' => __('Post container selector', WPAC_DOMAIN),
+						'description' => __('Selector that matches post containers to enable support for multiple comment forms per page; leave empty to disable multiple comment form per page support. Please note: Each post container needs to have the ID attribute defined.', WPAC_DOMAIN),
+				),
+				'commentPagesUrlRegex' => array(
+						'type' => 'regex',
+						'default' => '',
+						'label' => __('Comment pages URL regex', WPAC_DOMAIN),
+						'description' => __('Regular expression that matches URLs of all pages that support comments; leave empty to use WordPress defaults to automatically detect pages where comments are allowed. Please note: The expression is evaluated against the full page URL including schema, hostname, port number (if none default ports are used), (full) path and query string.', WPAC_DOMAIN),
+				),
 				'callbackOnBeforeSelectElements' => array(
 					'type' => 'multiline',
 					'default' => '',
@@ -440,9 +452,25 @@ function wpac_save_options() {
 	update_option(WPAC_OPTION_KEY, $wpac_options);
 }
 
+function wpac_get_page_url()
+{
+	$ssl = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? true:false;
+	$sp = strtolower($_SERVER['SERVER_PROTOCOL']);
+	$protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl) ? 's' : '');
+	$port = $_SERVER['SERVER_PORT'];
+	$port = ((!$ssl && $port=='80') || ($ssl && $port=='443')) ? '' : ':'.$port;
+	$host = isset($_SERVER['HTTP_X_FORWARDED_HOST']) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
+	return $protocol.'://'.$host.$port.$_SERVER['REQUEST_URI'];
+}
+
 function wpac_comments_enabled() {
-	global $post;
-	return (is_page() || is_single()) && comments_open($post->ID);
+	$commentPagesUrlRegex = wpac_get_option('commentPagesUrlRegex');
+	if ($commentPagesUrlRegex) {
+		return preg_match($commentPagesUrlRegex, wpac_get_page_url()) > 0;
+	} else {
+		global $post;
+		return (is_page() || is_single()) && comments_open($post->ID);
+	}
 }
 
 function wpac_initialize() {
@@ -482,10 +510,10 @@ function wpac_initialize() {
 
 		// Callbacks
 		echo 'WPAC._Callbacks = {';
-		echo '"onBeforeSelectElements": function(dom) {'.wpac_get_option('callbackOnBeforeSelectElements').'},';
-		echo '"onBeforeUpdateComments": function(newDom) {'.wpac_get_option('callbackOnBeforeUpdateComments').'},';
-		echo '"onAfterUpdateComments": function(newDom) {'.wpac_get_option('callbackOnAfterUpdateComments').'},';
-		echo '"onBeforeSubmitComment": function() {'.wpac_get_option('callbackOnBeforeSubmitComment').'}';
+		echo '"beforeSelectElements": function(dom) {'.wpac_get_option('callbackOnBeforeSelectElements').'},';
+		echo '"beforeUpdateComments": function(newDom) {'.wpac_get_option('callbackOnBeforeUpdateComments').'},';
+		echo '"afterUpdateComments": function(newDom) {'.wpac_get_option('callbackOnAfterUpdateComments').'},';
+		echo '"beforeSubmitComment": function() {'.wpac_get_option('callbackOnBeforeSubmitComment').'}';
 		echo '};';
 		
 		echo '</script>';
@@ -582,11 +610,14 @@ function wpac_option_page() {
 				$type = $wpac_config[$section]['options'][$optionName]['type'];
 				
 				if (strlen($value) > 0) {
-					$error = $pattern ? 
-						(($type == 'select') ? 
+					$error = false;
+					if ($type == 'regex') {
+						$error = (@preg_match($value, null) === false);
+					} else if ($pattern) {
+						$error = ($type == 'select') ? 
 							!in_array($value, explode('|', $pattern)) 
-							: (preg_match($pattern, $value) !== 1)) 
-						: null;
+							: (preg_match($pattern, $value) !== 1);
+					}
 					if ($error) {
 						$errors[] = $optionName;
 					} else {
