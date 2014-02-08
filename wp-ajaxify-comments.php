@@ -345,6 +345,11 @@ function wpac_get_config() {
 					'default' => '0',
 					'label' => __('Disable URL updating', WPAC_DOMAIN),
 				),
+				'disableScrollToAnchor' => array(
+					'type' => 'boolean',
+					'default' => '0',
+					'label' => __('Disable scroll to anchor', WPAC_DOMAIN),
+				),
 				'useUncompressedScripts' => array(
 					'type' => 'boolean',
 					'default' => '0',
@@ -475,50 +480,46 @@ function wpac_comments_enabled() {
 
 function wpac_initialize() {
 
-	if (wpac_get_option('enable')) {
+	$commentsEnabled = wpac_comments_enabled();
+	
+	// Skip JavaScript options output if 
+	// - comments and debug mode are disabled and alwaysIncludeScripts option is false, or
+	// - request is a WPAC-AJAX request		
+	if (!$commentsEnabled && !wpac_get_option('alwaysIncludeScripts') && !wpac_get_option('debug')) return;
+	if (wpac_is_ajax_request()) return;
+	
+	echo '<script type="text/javascript">';
 
-		$commentsEnabled = wpac_comments_enabled();
-		
-		// Skip JavaScript options output if 
-		// - comments and debug mode are disabled and alwaysIncludeScripts option is false, or
-		// - request is a WPAC-AJAX request		
-		if (!$commentsEnabled && !wpac_get_option('alwaysIncludeScripts') && !wpac_get_option('debug')) return;
-		if (wpac_is_ajax_request()) return;
-		
-		echo '<script type="text/javascript">';
-
-		echo 'if (!window["WPAC"]) var WPAC = {};';
-		
-		// Options
-		echo 'WPAC._Options = {';
-		$wpac_config = wpac_get_config();
-		foreach($wpac_config as $config) {
-			foreach($config['options'] as $optionName => $option) {
-				if (isset($option['specialOption']) && $option['specialOption']) continue;
-				$value = trim(wpac_get_option($optionName));
-				if (strlen($value) == 0) $value = $option['default'];
-				echo $optionName.':';
-				switch ($option['type']) {
-					case 'int': echo $value.','; break;
-					case 'boolean': echo $value ? 'true,' : 'false,'; break;
-					default: echo '"'.wpac_js_escape($value).'",';
-				}
+	echo 'if (!window["WPAC"]) var WPAC = {};';
+	
+	// Options
+	echo 'WPAC._Options = {';
+	$wpac_config = wpac_get_config();
+	foreach($wpac_config as $config) {
+		foreach($config['options'] as $optionName => $option) {
+			if (isset($option['specialOption']) && $option['specialOption']) continue;
+			$value = trim(wpac_get_option($optionName));
+			if (strlen($value) == 0) $value = $option['default'];
+			echo $optionName.':';
+			switch ($option['type']) {
+				case 'int': echo $value.','; break;
+				case 'boolean': echo $value ? 'true,' : 'false,'; break;
+				default: echo '"'.wpac_js_escape($value).'",';
 			}
 		}
-		echo 'commentsEnabled:'.($commentsEnabled ? 'true' : 'false').',';
-		echo 'version:"'.wpac_get_version().'"};';
-
-		// Callbacks
-		echo 'WPAC._Callbacks = {';
-		echo '"beforeSelectElements": function(dom) {'.wpac_get_option('callbackOnBeforeSelectElements').'},';
-		echo '"beforeUpdateComments": function(newDom) {'.wpac_get_option('callbackOnBeforeUpdateComments').'},';
-		echo '"afterUpdateComments": function(newDom) {'.wpac_get_option('callbackOnAfterUpdateComments').'},';
-		echo '"beforeSubmitComment": function() {'.wpac_get_option('callbackOnBeforeSubmitComment').'}';
-		echo '};';
-		
-		echo '</script>';
-		
 	}
+	echo 'commentsEnabled:'.($commentsEnabled ? 'true' : 'false').',';
+	echo 'version:"'.wpac_get_version().'"};';
+
+	// Callbacks
+	echo 'WPAC._Callbacks = {';
+	echo '"beforeSelectElements": function(dom) {'.wpac_get_option('callbackOnBeforeSelectElements').'},';
+	echo '"beforeUpdateComments": function(newDom) {'.wpac_get_option('callbackOnBeforeUpdateComments').'},';
+	echo '"afterUpdateComments": function(newDom) {'.wpac_get_option('callbackOnAfterUpdateComments').'},';
+	echo '"beforeSubmitComment": function() {'.wpac_get_option('callbackOnBeforeSubmitComment').'}';
+	echo '};';
+	
+	echo '</script>';	
 }
 
 function wpac_is_login_page() {

@@ -3,8 +3,8 @@ Contributors: janjonas
 Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
-Tested up to: 3.8.0
-Stable tag: 0.20.0
+Tested up to: 3.8.1
+Stable tag: 0.21.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -144,6 +144,10 @@ There are known incompatibilities to the following plugins:
 * Jetpack with activated "Jetpack Comments" 
 
 == Changelog ==
+
+= 0.21.0 =
+
+* Added option 'Disable scroll to anchor'
 
 = 0.20.0 =
 
@@ -337,6 +341,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.21.0 =
+* Added option 'Disable scroll to anchor'
 
 = 0.20.0 =
 * Added support for multiple comment forms per page and support for none default WordPress comment pages

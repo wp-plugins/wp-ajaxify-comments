@@ -253,6 +253,9 @@ msgstr "Trigger um Kommentare asynchron zu laden ('DomReady': Kommentare sofort 
 msgid "Disable URL updating"
 msgstr "URL Aktualisierung unterbinden"
 
+msgid "Disable scroll to anchor"
+msgstr "Zum Anker scrollen unterbinden"
+
 msgid "Use uncompressed scripts"
 msgstr "Unkomprimierte Skripte nutzen"
 

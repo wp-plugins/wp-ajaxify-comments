@@ -1833,6 +1833,8 @@ WPAC.AttachForm = function(options) {
 		selectorRespondContainer: WPAC._Options.selectorRespondContainer,
 		beforeUpdateComments: WPAC._Callbacks.beforeUpdateComments,
 		afterUpdateComments: WPAC._Callbacks.afterUpdateComments,
+		scrollToAnchor: !WPAC._Options.disableScrollToAnchor,
+		updateUrl: !WPAC._Options.disableUrlUpdate
 	}, options || {});	
 
 	if (WPAC._Options.debug) {
@@ -1914,13 +1916,15 @@ WPAC.AttachForm = function(options) {
 				// Smooth scroll to comment url and update browser url
 				if (commentUrl) {
 						
-					if (!WPAC._Options.disableUrlUpdate)
+					if (options.updateUrl)
 						WPAC._UpdateUrl(commentUrl);
 					
-					var anchor = commentUrl.indexOf("#") >= 0 ? commentUrl.substr(commentUrl.indexOf("#")) : null;
-					if (anchor) {
-						WPAC._Debug("info", "Anchor '%s' extracted from comment URL '%s'", anchor, commentUrl);
-						WPAC._ScrollToAnchor(anchor, !WPAC._Options.disableUrlUpdate);
+					if (options.scrollToAnchor) {
+						var anchor = commentUrl.indexOf("#") >= 0 ? commentUrl.substr(commentUrl.indexOf("#")) : null;
+						if (anchor) {
+							WPAC._Debug("info", "Anchor '%s' extracted from comment URL '%s'", anchor, commentUrl);
+							WPAC._ScrollToAnchor(anchor, !WPAC._Options.disableUrlUpdate);
+						}
 					}
 				}
 				
@@ -2080,7 +2084,7 @@ WPAC.LoadComments = function(url, options) {
 
 	// Set default options
 	options = jQuery.extend({
-		scrollToAnchor: true,
+		scrollToAnchor: !WPAC._Options.disableScrollToAnchor,
 		showLoadingInfo: true,
 		updateUrl: !WPAC._Options.disableUrlUpdate,
 		success: function() {},
