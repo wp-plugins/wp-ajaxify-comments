@@ -148,6 +148,7 @@ There are known incompatibilities to the following plugins:
 = 0.21.0 =
 
 * Added option 'Disable scroll to anchor'
+* Fixed paging support and async comment loading for pages where comments are closed
 
 = 0.20.0 =
 
@@ -343,7 +344,7 @@ There are known incompatibilities to the following plugins:
 == Upgrade Notice ==
 
 = 0.21.0 =
-* Added option 'Disable scroll to anchor'
+* Added option 'Disable scroll to anchor', Bugfixes for pages where comments are closed
 
 = 0.20.0 =
 * Added support for multiple comment forms per page and support for none default WordPress comment pages

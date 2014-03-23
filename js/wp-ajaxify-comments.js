@@ -175,55 +175,59 @@ WPAC._ReplaceComments = function(data, fallbackUrl, formData, selectorCommentsCo
 	// Update comments container
 	oldCommentsContainer.replaceWith(newCommentsContainer);
 	
-	var form = jQuery(selectorCommentForm);
-	if (form.length) {
-
-		// Replace comment form (for spam protection plugin compatibility) if comment form is not nested in comments container
-		// If comment form is nested in comments container comment form has already been replaced
-		if (!form.parents(selectorCommentsContainer).length) {
-
-			WPAC._Debug("info", "Replace comment form...");
-			var newCommentForm = extractedBody.find(selectorCommentForm);
-			if (newCommentForm.length == 0) {
-				WPAC._Debug("error", "Comment form on requested page not found (selector: '%s')", selectorCommentForm);
+	if (WPAC._Options.commentsEnabled) {
+	
+		var form = jQuery(selectorCommentForm);
+		if (form.length) {
+	
+			// Replace comment form (for spam protection plugin compatibility) if comment form is not nested in comments container
+			// If comment form is nested in comments container comment form has already been replaced
+			if (!form.parents(selectorCommentsContainer).length) {
+	
+				WPAC._Debug("info", "Replace comment form...");
+				var newCommentForm = extractedBody.find(selectorCommentForm);
+				if (newCommentForm.length == 0) {
+					WPAC._Debug("error", "Comment form on requested page not found (selector: '%s')", selectorCommentForm);
+					WPAC._LoadFallbackUrl(fallbackUrl);
+					return false;
+				}
+				form.replaceWith(newCommentForm);
+			}
+			
+		} else {
+	
+			WPAC._Debug("info", "Try to re-inject comment form...");
+		
+			// "Re-inject" comment form, if comment form was removed by updating the comments container; could happen 
+			// if theme support threaded/nested comments and form tag is not nested in comments container
+			// -> Replace WordPress placeholder <div> (#wp-temp-form-div) with respond <div>
+			var wpTempFormDiv = jQuery("#wp-temp-form-div");
+			if (!wpTempFormDiv.length) {
+				WPAC._Debug("error", "WordPress' #wp-temp-form-div container not found", selectorRespondContainer);
 				WPAC._LoadFallbackUrl(fallbackUrl);
 				return false;
 			}
-			form.replaceWith(newCommentForm);
-		}
-		
-	} else {
-
-		WPAC._Debug("info", "Try to re-inject comment form...");
+			var newRespondContainer = extractedBody.find(selectorRespondContainer);
+			if (!newRespondContainer.length) {
+				WPAC._Debug("error", "Respond container on requested page not found (selector: '%s')", selectorRespondContainer);
+				WPAC._LoadFallbackUrl(fallbackUrl);
+				return false;
+			}
+			wpTempFormDiv.replaceWith(newRespondContainer);
 	
-		// "Re-inject" comment form, if comment form was removed by updating the comments container; could happen 
-		// if theme support threaded/nested comments and form tag is not nested in comments container
-		// -> Replace WordPress placeholder <div> (#wp-temp-form-div) with respond <div>
-		var wpTempFormDiv = jQuery("#wp-temp-form-div");
-		if (!wpTempFormDiv.length) {
-			WPAC._Debug("error", "WordPress' #wp-temp-form-div container not found", selectorRespondContainer);
-			WPAC._LoadFallbackUrl(fallbackUrl);
-			return false;
 		}
-		var newRespondContainer = extractedBody.find(selectorRespondContainer);
-		if (!newRespondContainer.length) {
-			WPAC._Debug("error", "Respond container on requested page not found (selector: '%s')", selectorRespondContainer);
-			WPAC._LoadFallbackUrl(fallbackUrl);
-			return false;
+	
+		if (formData) {
+			// Re-inject saved form data
+			jQuery.each(formData, function(key, value) {
+				var formElement = jQuery("[name='"+value.name+"']", selectorCommentForm);
+				if (formElement.length != 1 || formElement.val()) return;
+				formElement.val(value.value);
+			});
 		}
-		wpTempFormDiv.replaceWith(newRespondContainer);
 
 	}
-
-	if (formData) {
-		// Re-inject saved form data
-		jQuery.each(formData, function(key, value) {
-			var formElement = jQuery("[name='"+value.name+"']", selectorCommentForm);
-			if (formElement.length != 1 || formElement.val()) return;
-			formElement.val(value.value);
-		});
-	}
-
+		
 	afterUpdateComments(extractedBody);
 
 	return true;
@@ -256,11 +260,11 @@ WPAC.AttachForm = function(options) {
 		updateUrl: !WPAC._Options.disableUrlUpdate
 	}, options || {});	
 
-	if (WPAC._Options.debug) {
+	if (WPAC._Options.debug && WPAC._Options.commentsEnabled) {
 		WPAC._Debug("info", "Attach form...")
 		WPAC._DebugSelector("comment form", options.selectorCommentForm);
 		WPAC._DebugSelector("comments container",options.selectorCommentsContainer);
-		WPAC._DebugSelector("respond container", options.selectorRespondContainer);
+		WPAC._DebugSelector("respond container", options.selectorRespondContainer)
 		WPAC._DebugSelector("comment paging links", options.selectorCommentPagingLinks, true);
 	}
 	
@@ -283,6 +287,25 @@ WPAC.AttachForm = function(options) {
 			jQuery(selector).live(event, handler)
 		}
 	}
+
+	// Handle paging
+	var pagingSubmitHandler = function(event) {
+		var href = jQuery(this).attr("href");
+		if (href) {
+			event.preventDefault();
+			WPAC.LoadComments(href, {
+				selectorCommentForm: options.selectorCommentForm,
+				selectorCommentsContainer: options.selectorCommentsContainer,
+				selectorRespondContainer: options.selectorRespondContainer,
+				beforeSelectElements: options.beforeSelectElements,
+				beforeUpdateComments: options.beforeUpdateComments,
+				afterUpdateComments: options.afterUpdateComments,
+			});
+		}
+	};
+	addHandler("click", options.selectorCommentPagingLinks, pagingSubmitHandler);
+	
+	if (!WPAC._Options.commentsEnabled) return;
 	
 	// Handle form submit
 	var formSubmitHandler = function (event) {
@@ -371,22 +394,6 @@ WPAC.AttachForm = function(options) {
 		});
 	};
 	addHandler("submit", options.selectorCommentForm, formSubmitHandler)
-	
-	var pagingSubmitHandler = function(event) {
-		var href = jQuery(this).attr("href");
-		if (href) {
-			event.preventDefault();
-			WPAC.LoadComments(href, {
-				selectorCommentForm: options.selectorCommentForm,
-				selectorCommentsContainer: options.selectorCommentsContainer,
-				selectorRespondContainer: options.selectorRespondContainer,
-				beforeSelectElements: options.beforeSelectElements,
-				beforeUpdateComments: options.beforeUpdateComments,
-				afterUpdateComments: options.afterUpdateComments,
-			});
-		}
-	};
-	addHandler("click", options.selectorCommentPagingLinks, pagingSubmitHandler);
 }
 
 WPAC._Initialized = false;
@@ -402,12 +409,6 @@ WPAC.Init = function() {
 	// Assert that environment is set up correctly
 	if (!WPAC._Options || !WPAC._Callbacks) {
 		WPAC._Debug("error", "Something unexpected happened, initialization failed. Please try to reinstall the plugin.");
-		return false;
-	}
-
-	// Skip initialization if comments are not enabled
-	if (!WPAC._Options.commentsEnabled) {
-		WPAC._Debug("info", "Abort initialization version %s (comments are not enabled on current page)",  WPAC._Options.version);
 		return false;
 	}
 
@@ -453,7 +454,7 @@ WPAC.Init = function() {
 	}
 	
 	// Set up idle timer
-	if (WPAC._Options.autoUpdateIdleTime > 0) {
+	if (WPAC._Options.commentsEnabled && WPAC._Options.autoUpdateIdleTime > 0) {
 		WPAC._Debug("info", "Auto updating comments enabled (idle time: %s)", WPAC._Options.autoUpdateIdleTime);
 		WPAC._InitIdleTimer();
 	}
