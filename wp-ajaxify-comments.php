@@ -371,9 +371,15 @@ function wpac_get_config() {
 	
 function wpac_enqueue_scripts() {
 
-	// Skip if comments and debug mode are disabled and alwaysIncludeScripts option is false
+	// Skip if comments and debug mode are disabled, alwaysIncludeScripts option is false and comments are not loaded asynchronously
 	$debug = wpac_get_option('debug');
-	if (!wpac_comments_enabled() && !wpac_get_option('alwaysIncludeScripts') && !$debug) return;
+	$asyncCommentsThreshold = wpac_get_option('asyncCommentsThreshold');
+	if (
+		!wpac_comments_enabled() 
+		&& !wpac_get_option('alwaysIncludeScripts') 
+		&& !$debug
+		&& (!$asyncCommentsThreshold || (int)get_comments_number($post->ID) < (int)$asyncCommentsThreshold)
+	) return;
 	
 	$version = wpac_get_version();
 	$jsPath = WP_PLUGIN_URL.'/wp-ajaxify-comments/js/';
@@ -480,12 +486,19 @@ function wpac_comments_enabled() {
 
 function wpac_initialize() {
 
+	global $post;
+	
 	$commentsEnabled = wpac_comments_enabled();
+	$asyncCommentsThreshold = wpac_get_option('asyncCommentsThreshold');
 	
 	// Skip JavaScript options output if 
-	// - comments and debug mode are disabled and alwaysIncludeScripts option is false, or
+	// - comments and debug mode are disabled, alwaysIncludeScripts option is false and comments are not loaded asynchronously, or
 	// - request is a WPAC-AJAX request		
-	if (!$commentsEnabled && !wpac_get_option('alwaysIncludeScripts') && !wpac_get_option('debug')) return;
+	if (!$commentsEnabled 
+		&& !wpac_get_option('alwaysIncludeScripts') 
+		&& !wpac_get_option('debug')
+		&& (!$asyncCommentsThreshold || (int)get_comments_number($post->ID) < (int)$asyncCommentsThreshold)
+	) return;
 	if (wpac_is_ajax_request()) return;
 	
 	echo '<script type="text/javascript">';
