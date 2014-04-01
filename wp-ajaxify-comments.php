@@ -373,12 +373,11 @@ function wpac_enqueue_scripts() {
 
 	// Skip if comments and debug mode are disabled, alwaysIncludeScripts option is false and comments are not loaded asynchronously
 	$debug = wpac_get_option('debug');
-	$asyncCommentsThreshold = wpac_get_option('asyncCommentsThreshold');
 	if (
 		!wpac_comments_enabled() 
 		&& !wpac_get_option('alwaysIncludeScripts') 
 		&& !$debug
-		&& (!$asyncCommentsThreshold || (int)get_comments_number($post->ID) < (int)$asyncCommentsThreshold)
+		&& !wpac_load_comments_async()
 	) return;
 	
 	$version = wpac_get_version();
@@ -484,12 +483,23 @@ function wpac_comments_enabled() {
 	}
 }
 
+function wpac_load_comments_async() {
+	global $post;
+
+	$asyncCommentsThreshold = wpac_get_option('asyncCommentsThreshold');
+	$commentsCount = (int)get_comments_number($post->ID);
+
+	return (
+		strlen($asyncCommentsThreshold) > 0 &&
+		$commentsCount > 0 &&
+		$asyncCommentsThreshold <= $commentsCount
+	);
+}
+
 function wpac_initialize() {
 
-	global $post;
 	
 	$commentsEnabled = wpac_comments_enabled();
-	$asyncCommentsThreshold = wpac_get_option('asyncCommentsThreshold');
 	
 	// Skip JavaScript options output if 
 	// - comments and debug mode are disabled, alwaysIncludeScripts option is false and comments are not loaded asynchronously, or
@@ -497,7 +507,7 @@ function wpac_initialize() {
 	if (!$commentsEnabled 
 		&& !wpac_get_option('alwaysIncludeScripts') 
 		&& !wpac_get_option('debug')
-		&& (!$asyncCommentsThreshold || (int)get_comments_number($post->ID) < (int)$asyncCommentsThreshold)
+		&& !wpac_load_comments_async()
 	) return;
 	if (wpac_is_ajax_request()) return;
 	
@@ -760,7 +770,8 @@ function wpac_admin_menu() {
 	add_options_page(WPAC_PLUGIN_NAME, WPAC_PLUGIN_NAME, 'manage_options', WPAC_PLUGIN_NAME, 'wpac_option_page');
 }
 
-function comments_query_filter($query) {
+function wpac_comments_query_filter($query) {
+
 	// No comment filtering if request is a fallback or WPAC-AJAX request  
 	if ((isset($_REQUEST['WPACFallback']) && $_REQUEST['WPACFallback']) || wpac_is_ajax_request()) return $query;
 	
@@ -796,7 +807,7 @@ function wpac_filter_gettext($translation, $text, $domain) {
 
 if (!is_admin() && !wpac_is_login_page()) {
 	if (wpac_get_option('enable')) {
-		add_filter('comments_array', 'comments_query_filter');
+		add_filter('comments_array', 'wpac_comments_query_filter');
 		add_action('wp_head', 'wpac_initialize');
 		add_action('wp_enqueue_scripts', 'wpac_enqueue_scripts');
 		add_filter('gettext', 'wpac_filter_gettext', 20, 3);
