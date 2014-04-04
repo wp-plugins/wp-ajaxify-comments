@@ -2344,15 +2344,24 @@ jQuery(function() {
 			return;
 		}
 
-		WPAC._Debug("info", "Loading comments asynchronously with secondary AJAX request (trigger: '%s')", WPAC._Options.asyncLoadTrigger);
+		var asyncLoadTrigger = WPAC._Options.asyncLoadTrigger;
+		WPAC._Debug("info", "Loading comments asynchronously with secondary AJAX request (trigger: '%s')", asyncLoadTrigger);
 		
-		if (WPAC._Options.asyncLoadTrigger == 'Viewport') {
+		if (window.location.hash) {
+			var regex = /^#comment-[0-9]+$/;
+			if (regex.test(window.location.hash)) {
+				WPAC._Debug("info", "Comment anchor in URL detected, force loading comments on DomReady (hash: '%s')", window.location.hash);
+				asyncLoadTrigger = "DomReady";
+			}
+		}
+		
+		if (asyncLoadTrigger == "Viewport") {
 			jQuery(WPAC._Options.selectorCommentsContainer).waypoint(function() {
-				jQuery(WPAC._Options.selectorCommentsContainer).waypoint('destroy');
+				jQuery(WPAC._Options.selectorCommentsContainer).waypoint("destroy");
 				WPAC.RefreshComments();
-			}, { offset: '100%' });
-		} else if (WPAC._Options.asyncLoadTrigger == 'DomReady') {
-			WPAC.RefreshComments();
+			}, { offset: "100%" });
+		} else if (asyncLoadTrigger == "DomReady") {
+			WPAC.RefreshComments({scrollToAnchor: true}); // force scroll to anchor
 		}
 	} 
 });
