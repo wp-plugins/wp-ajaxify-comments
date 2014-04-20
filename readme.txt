@@ -145,6 +145,10 @@ There are known incompatibilities to the following plugins:
 
 == Changelog ==
 
+= 0.22.0 =
+
+* Minor optimizations
+
 = 0.21.0 =
 
 * Added option 'Disable scroll to anchor'
@@ -344,6 +348,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.22.0 =
+* Minor optimizations
 
 = 0.21.0 =
 * Added option 'Disable scroll to anchor', Bugfixes for pages where comments are closed and/or async comment loading is enabled, Fixed compressed JavaScript file
