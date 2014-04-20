@@ -365,13 +365,26 @@ function wpac_get_config() {
 					'description' => __('By default JavaScript files are only included on pages where comments are enabled, check to include JavaScript files on every page. Please note: If debug mode is enabled, JavaScript files are included on every pages.', WPAC_DOMAIN),
 					'specialOption' => true,
 				),
+				'optimizeAjaxResponse' => array(
+					'type' => 'boolean',
+					'default' => '0',
+					'label' => __('Optimize AJAX response', WPAC_DOMAIN),
+					'description' => __('Check to remove unnecessary HTML content from AJAX responses to save bandwidth.', WPAC_DOMAIN),
+					'specialOption' => true,
+				),
 			)
 		)
 	);
 }
+
+function wpac_return_optimized_ajax_response() {
+	return (wpac_get_option("optimizeAjaxResponse") && wpac_is_ajax_request());
+}
 	
 function wpac_enqueue_scripts() {
 
+	if (wpac_return_optimized_ajax_response()) return;
+	
 	// Skip if comments and debug mode are disabled, alwaysIncludeScripts option is false and comments are not loaded asynchronously
 	$debug = wpac_get_option('debug');
 	if (
@@ -499,6 +512,9 @@ function wpac_load_comments_async() {
 }
 
 function wpac_initialize() {
+
+	if (wpac_return_optimized_ajax_response()) return;
+	
 	$commentsEnabled = wpac_comments_enabled();
 	
 	// Skip JavaScript options output if 
@@ -610,6 +626,11 @@ function wpac_comment_post_redirect($location)
 	return $location;
 }
 add_action('comment_post_redirect', 'wpac_comment_post_redirect');
+
+function wpac_the_content($content) {
+	return wpac_return_optimized_ajax_response() ? "" : $content;
+}
+add_filter('the_content', 'wpac_the_content', PHP_INT_MAX);
 
 function wpac_option_page() {
 	if (!current_user_can('manage_options'))  {

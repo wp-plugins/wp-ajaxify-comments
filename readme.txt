@@ -39,6 +39,7 @@ Some features of the plugin:
 * Client-side JavaScript API (see FAQ for more details)
 * Auto updating comments if user is "idle"
 * Option to load comments asynchronously with secondary AJAX request if page contains more than a specified number of comments
+* Option to save bandwidth for AJAX responses
 * Debug mode to support troubleshooting
 
 == Screenshots ==
@@ -148,6 +149,7 @@ There are known incompatibilities to the following plugins:
 = 0.22.0 =
 
 * Minor optimizations
+* Added (expert) option "Optimize AJAX response" to save bandwidth
 
 = 0.21.0 =
 
@@ -350,7 +352,7 @@ There are known incompatibilities to the following plugins:
 == Upgrade Notice ==
 
 = 0.22.0 =
-* Minor optimizations
+* Minor optimizations, Added (expert) option "Optimize AJAX response"
 
 = 0.21.0 =
 * Added option 'Disable scroll to anchor', Bugfixes for pages where comments are closed and/or async comment loading is enabled, Fixed compressed JavaScript file

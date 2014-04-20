@@ -268,6 +268,12 @@ msgstr "Skripte immer einbinden"
 msgid "By default JavaScript files are only included on pages where comments are enabled, check to include JavaScript files on every page. Please note: If debug mode is enabled, JavaScript files are included on every pages."
 msgstr "Standardmäßig werden JavaScript Dateien nur auf Seiten eingebunden, auf denen die Kommentarfunktion aktiviert ist, anhaken um die JavaScript Dateien auf allen Seiten einzubinden. Bitte beachten: Wenn der Debug-Modus aktiviert ist, werden JavaScript Dateien auf allen Seiten eingebunden."
 
+msgid "Optimize AJAX response"
+msgstr "AJAX-Antworten optimieren"
+
+msgid "Check to remove unnecessary HTML content from AJAX responses to save bandwidth."
+msgstr "Anhaken um unnötigen HTML Inhalt in AJAX-Antworten zu entfernen um Bandbreite zu sparen."
+
 #: wp-ajaxify-comments.php:263
 msgid ""
 "Load comments asynchronously with secondary AJAX request if more than the specified number of comments exist (0 for always load comments asynchronously). Leave empty to disable this feature."
