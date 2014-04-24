@@ -395,7 +395,7 @@ function wpac_enqueue_scripts() {
 	) return;
 	
 	$version = wpac_get_version();
-	$jsPath = WP_PLUGIN_URL.'/wp-ajaxify-comments/js/';
+	$jsPath = plugins_url('js/', __FILE__);
 	
 	if ($debug || wpac_get_option('useUncompressedScripts')) {
 		wp_enqueue_script('jsuri', $jsPath.'jsuri-1.1.1.js', array(), $version);

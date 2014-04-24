@@ -150,6 +150,7 @@ There are known incompatibilities to the following plugins:
 
 * Minor optimizations
 * Added (expert) option "Optimize AJAX response" to save bandwidth
+* Fixed JavaScript includes for HTTPS
 
 = 0.21.0 =
 
