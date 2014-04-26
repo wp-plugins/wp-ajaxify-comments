@@ -4,7 +4,7 @@ Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.9.0
-Stable tag: 0.21.0
+Stable tag: 0.22.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -353,7 +353,7 @@ There are known incompatibilities to the following plugins:
 == Upgrade Notice ==
 
 = 0.22.0 =
-* Minor optimizations, Added (expert) option "Optimize AJAX response"
+* Minor optimizations, Added (expert) option "Optimize AJAX response", Bugfix for HTTPS
 
 = 0.21.0 =
 * Added option 'Disable scroll to anchor', Bugfixes for pages where comments are closed and/or async comment loading is enabled, Fixed compressed JavaScript file
