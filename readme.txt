@@ -146,6 +146,10 @@ There are known incompatibilities to the following plugins:
 
 == Changelog ==
 
+= 0.23.0 =
+
+* Added (expert) option "Place scripts in footer"
+
 = 0.22.0 =
 
 * Minor optimizations
@@ -351,6 +355,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.23.0 =
+* Added (expert) option "Place scripts in footer"
 
 = 0.22.0 =
 * Minor optimizations, Added (expert) option "Optimize AJAX response", Bugfix for HTTPS

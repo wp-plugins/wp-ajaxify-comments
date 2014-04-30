@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: Jan Jonas
 Author URI: http://janjonas.net
-Version: 0.22.0
+Version: 0.23.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -365,6 +365,13 @@ function wpac_get_config() {
 					'description' => __('By default JavaScript files are only included on pages where comments are enabled, check to include JavaScript files on every page. Please note: If debug mode is enabled, JavaScript files are included on every pages.', WPAC_DOMAIN),
 					'specialOption' => true,
 				),
+				'placeScriptsInFooter' => array(
+					'type' => 'boolean',
+					'default' => '0',
+					'label' => __('Place scripts in footer', WPAC_DOMAIN),
+					'description' => __('Enable to place JavaScript files before the </body> tag.', WPAC_DOMAIN),
+					'specialOption' => true,
+				),
 				'optimizeAjaxResponse' => array(
 					'type' => 'boolean',
 					'default' => '0',
@@ -396,15 +403,16 @@ function wpac_enqueue_scripts() {
 	
 	$version = wpac_get_version();
 	$jsPath = plugins_url('js/', __FILE__);
+	$inFooter = wpac_get_option("placeScriptsInFooter");
 	
 	if ($debug || wpac_get_option('useUncompressedScripts')) {
-		wp_enqueue_script('jsuri', $jsPath.'jsuri-1.1.1.js', array(), $version);
-		wp_enqueue_script('jQueryBlockUi', $jsPath.'jquery.blockUI.js', array('jquery'), $version);
-		wp_enqueue_script('jQueryIdleTimer', $jsPath.'idle-timer.js', array('jquery'), $version);
-		wp_enqueue_script('waypoints', $jsPath.'waypoints.js', array('jquery'), $version);
-		wp_enqueue_script('wpAjaxifyComments', $jsPath.'wp-ajaxify-comments.js', array('jquery', 'jQueryBlockUi', 'jsuri', 'jQueryIdleTimer', 'waypoints'), $version);
+		wp_enqueue_script('jsuri', $jsPath.'jsuri-1.1.1.js', array(), $version, $inFooter);
+		wp_enqueue_script('jQueryBlockUi', $jsPath.'jquery.blockUI.js', array('jquery'), $version, $inFooter);
+		wp_enqueue_script('jQueryIdleTimer', $jsPath.'idle-timer.js', array('jquery'), $version, $inFooter);
+		wp_enqueue_script('waypoints', $jsPath.'waypoints.js', array('jquery'), $version, $inFooter);
+		wp_enqueue_script('wpAjaxifyComments', $jsPath.'wp-ajaxify-comments.js', array('jquery', 'jQueryBlockUi', 'jsuri', 'jQueryIdleTimer', 'waypoints'), $version, $inFooter);
 	} else {
-		wp_enqueue_script('wpAjaxifyComments', $jsPath.'wp-ajaxify-comments.min.js', array('jquery'), $version);
+		wp_enqueue_script('wpAjaxifyComments', $jsPath.'wp-ajaxify-comments.min.js', array('jquery'), $version, $inFooter);
 	}
 }
 
@@ -735,7 +743,7 @@ function wpac_option_page() {
 						} 
 						if (isset($option['default']) && $option['default']) echo '<br/>'.sprintf(__('Leave empty for default value %s', WPAC_DOMAIN), '<em>'.$option['default'].'</em>');
 					}
-					if (isset($option['description']) && $option['description']) echo '<br/><em style="width:300px; display: inline-block">'.$option['description'].'</em>';
+					if (isset($option['description']) && $option['description']) echo '<br/><em style="width:300px; display: inline-block">'.htmlspecialchars($option['description']).'</em>';
 					echo '</td></tr>';
 				}
 				$section++;

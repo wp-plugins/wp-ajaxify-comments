@@ -58,7 +58,7 @@ msgid "Comment pages URL regex"
 msgstr "Kommentar-Seiten URL-Regex"
 
 msgid "Regular expression that matches URLs of all pages that support comments; leave empty to use WordPress defaults to automatically detect pages where comments are allowed. Please note: The expression is evaluated against the full page URL including schema, hostname, port number (if none default ports are used), (full) path and query string."
-msgstr "Regulärer Ausdruck, der auf alle URLs von Seiten mit Kommentar-Unterstützung zutrifft; leerlassen um WordPress-Standards zu nutzen um Seiten mit Kommentar-Unterstützung zu ermitteln. Bitte beachten: Der Ausdruck wird gegen die vollständige Seiten-URL mit Schema, Hostname, Port-Nummer (wenn kein Standard-Port genutzt wird), (kmopletter) Pfad und Query-String ausgewertet."
+msgstr "Regulärer Ausdruck, der auf alle URLs von Seiten mit Kommentar-Unterstützung zutrifft; leerlassen um WordPress-Standards zu nutzen um Seiten mit Kommentar-Unterstützung zu ermitteln. Bitte beachten: Der Ausdruck wird gegen die vollständige Seiten-URL mit Schema, Hostname, Port-Nummer (wenn kein Standard-Port genutzt wird), (kompletter) Pfad und Query-String ausgewertet."
 
 #: wp-ajaxify-comments.php:86
 msgid "Popup overlay"
@@ -264,6 +264,12 @@ msgstr "Standardmäßig wird eine komprimierte (und zusammengefasste) JavaScript
 
 msgid "Always include scripts"
 msgstr "Skripte immer einbinden"
+
+msgid "Place scripts in footer"
+msgstr "JavaScript Dateien im Footer einbinden"
+
+msgid "Enable to place JavaScript files before the </body> tag."
+msgstr "Anhaken um JavaScript Dateien vor dem </body> Tag einzubinden."
 
 msgid "By default JavaScript files are only included on pages where comments are enabled, check to include JavaScript files on every page. Please note: If debug mode is enabled, JavaScript files are included on every pages."
 msgstr "Standardmäßig werden JavaScript Dateien nur auf Seiten eingebunden, auf denen die Kommentarfunktion aktiviert ist, anhaken um die JavaScript Dateien auf allen Seiten einzubinden. Bitte beachten: Wenn der Debug-Modus aktiviert ist, werden JavaScript Dateien auf allen Seiten eingebunden."
