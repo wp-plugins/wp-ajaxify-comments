@@ -395,10 +395,10 @@ function wpac_enqueue_scripts() {
 	// Skip if comments and debug mode are disabled, alwaysIncludeScripts option is false and comments are not loaded asynchronously
 	$debug = wpac_get_option('debug');
 	if (
-		!wpac_comments_enabled() 
-		&& !wpac_get_option('alwaysIncludeScripts') 
+		!wpac_get_option('alwaysIncludeScripts') 
 		&& !$debug
 		&& !wpac_load_comments_async()
+		&& !(wpac_comments_enabled() || wpac_get_comments_count() > 0) 
 	) return;
 	
 	$version = wpac_get_version();
@@ -501,18 +501,22 @@ function wpac_comments_enabled() {
 		return preg_match($commentPagesUrlRegex, wpac_get_page_url()) > 0;
 	} else {
 		global $post;
-		return (is_page() || is_single()) && comments_open($post->ID);
+		return (is_page() || is_single()) && comments_open($post->ID) && (!get_option('comment_registration') || is_user_logged_in());
 	}
+}
+
+function wpac_get_comments_count() {
+	global $post;
+	if (!$post) return 0;
+	
+	return (int)get_comments_number($post->ID);
 }
 
 function wpac_load_comments_async() {
 	$asyncCommentsThreshold = wpac_get_option('asyncCommentsThreshold');
 	if (strlen($asyncCommentsThreshold) == 0) return false;
 	
-	global $post;
-	if (!$post) return false;
-	
-	$commentsCount = (int)get_comments_number($post->ID);
+	$commentsCount = wpac_get_comments_count();
 	return (
 		$commentsCount > 0 &&
 		$asyncCommentsThreshold <= $commentsCount
@@ -528,10 +532,11 @@ function wpac_initialize() {
 	// Skip JavaScript options output if 
 	// - comments and debug mode are disabled, alwaysIncludeScripts option is false and comments are not loaded asynchronously, or
 	// - request is a WPAC-AJAX request		
-	if (!$commentsEnabled 
-		&& !wpac_get_option('alwaysIncludeScripts') 
+	if (  
+		!wpac_get_option('alwaysIncludeScripts') 
 		&& !wpac_get_option('debug')
 		&& !wpac_load_comments_async()
+		&& !($commentsEnabled || wpac_get_comments_count() > 0)
 	) return;
 	if (wpac_is_ajax_request()) return;
 	

@@ -17,7 +17,7 @@ Moreover this plugin includes an option to automatically refresh the comments on
 
 **Live demo:** You can try out a live demo in <a target="_blank" href="http://blog.janjonas.net/2012-06-08/wordpress-ajax-comment-wp-ajaxify-comments-plugin">the blog post I've written for the initial release of the plugin</a>. 
 
-Since the plugin hooks (on client-side) into the theme to intercept the comment form submit process, and to add new comments without reloading the page, the plugin needs to access the DOM nodes using (jQuery) selectors. The plugin comes with default values for these selectors that were successfully tested with WordPress' default themes "Twenty Ten", "Twenty Eleven", "Twenty Twelve". 
+Since the plugin hooks (on client-side) into the theme to intercept the comment form submit process, and to add new comments without reloading the page, the plugin needs to access the DOM nodes using (jQuery) selectors. The plugin comes with default values for these selectors that were successfully tested with WordPress' default themes "Twenty Ten", "Twenty Eleven", "Twenty Twelve", "Twenty Thirteen", "Twenty Fourteen". 
 
 Summarized, the WP-Ajaxify-Comments plugin hooks into your theme and improves the usability of the comment form by validating and adding comments without the need of complete page reloads.
 
@@ -149,6 +149,7 @@ There are known incompatibilities to the following plugins:
 = 0.23.0 =
 
 * Added (expert) option "Place scripts in footer"
+* Bugfix for "Users must be registered and logged in to comment"
 
 = 0.22.0 =
 
@@ -357,7 +358,7 @@ There are known incompatibilities to the following plugins:
 == Upgrade Notice ==
 
 = 0.23.0 =
-* Added (expert) option "Place scripts in footer"
+* Added (expert) option "Place scripts in footer", Bugfix for "Users must be registered and logged in to comment"
 
 = 0.22.0 =
 * Minor optimizations, Added (expert) option "Optimize AJAX response", Bugfix for HTTPS
