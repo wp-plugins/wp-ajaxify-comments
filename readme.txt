@@ -149,6 +149,7 @@ There are known incompatibilities to the following plugins:
 = 0.23.0 =
 
 * Added (expert) option "Place scripts in footer"
+* Added option "Comment links selector" to prevent (complete) page loads for comment links on pages if "Break comments into pages [...]" is enabled
 * Bugfix for "Users must be registered and logged in to comment"
 
 = 0.22.0 =
@@ -358,7 +359,7 @@ There are known incompatibilities to the following plugins:
 == Upgrade Notice ==
 
 = 0.23.0 =
-* Added (expert) option "Place scripts in footer", Bugfix for "Users must be registered and logged in to comment"
+* Added (expert) option "Place scripts in footer", Bugfix for "Users must be registered and logged in to comment", Added option "Comment links selector"
 
 = 0.22.0 =
 * Minor optimizations, Added (expert) option "Optimize AJAX response", Bugfix for HTTPS

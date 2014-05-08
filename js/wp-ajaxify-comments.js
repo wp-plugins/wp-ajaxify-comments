@@ -257,7 +257,8 @@ WPAC.AttachForm = function(options) {
 		beforeUpdateComments: WPAC._Callbacks.beforeUpdateComments,
 		afterUpdateComments: WPAC._Callbacks.afterUpdateComments,
 		scrollToAnchor: !WPAC._Options.disableScrollToAnchor,
-		updateUrl: !WPAC._Options.disableUrlUpdate
+		updateUrl: !WPAC._Options.disableUrlUpdate,
+		selectorCommentLinks: WPAC._Options.selectorCommentLinks
 	}, options || {});	
 
 	if (WPAC._Options.debug && WPAC._Options.commentsEnabled) {
@@ -266,6 +267,7 @@ WPAC.AttachForm = function(options) {
 		WPAC._DebugSelector("comments container",options.selectorCommentsContainer);
 		WPAC._DebugSelector("respond container", options.selectorRespondContainer)
 		WPAC._DebugSelector("comment paging links", options.selectorCommentPagingLinks, true);
+		WPAC._DebugSelector("comment links", options.selectorCommentLinks, true);
 	}
 	
 	options.beforeSelectElements(jQuery(document));
@@ -288,8 +290,8 @@ WPAC.AttachForm = function(options) {
 		}
 	}
 
-	// Handle paging
-	var pagingSubmitHandler = function(event) {
+	// Handle paging link clicks
+	var pagingClickHandler = function(event) {
 		var href = jQuery(this).attr("href");
 		if (href) {
 			event.preventDefault();
@@ -303,7 +305,19 @@ WPAC.AttachForm = function(options) {
 			});
 		}
 	};
-	addHandler("click", options.selectorCommentPagingLinks, pagingSubmitHandler);
+	addHandler("click", options.selectorCommentPagingLinks, pagingClickHandler);
+	
+	// Handle comment link clicks
+	var linkClickHandler = function(event) {
+		var href = jQuery(this).attr("href");
+		var anchor = "#" + (new Uri(href)).anchor();
+		if (jQuery(anchor).length > 0) {
+			if (options.updateUrl) WPAC._UpdateUrl(href);
+			WPAC._ScrollToAnchor(anchor, !WPAC._Options.disableUrlUpdate);
+			event.preventDefault();
+		}
+	};
+	addHandler("click", options.selectorCommentLinks, linkClickHandler);
 	
 	if (!WPAC._Options.commentsEnabled) return;
 	

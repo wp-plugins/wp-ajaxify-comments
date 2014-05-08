@@ -79,6 +79,11 @@ function wpac_get_config() {
 						'default' => '#comments [class^=\'nav-\'] a',
 						'label' => __('Comment paging links selector', WPAC_DOMAIN),
 				),
+				'selectorCommentLinks' => array(
+						'type' => 'string',
+						'default' => '#comments a[href*="/comment-page-"]',
+						'label' => __('Comment links selector', WPAC_DOMAIN),
+				),
 				'selectorRespondContainer' => array(
 					'type' => 'string',
 					'default' => '#respond',
