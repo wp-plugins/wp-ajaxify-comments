@@ -4,7 +4,7 @@ Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.9.0
-Stable tag: 0.22.0
+Stable tag: 0.23.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,6 +151,7 @@ There are known incompatibilities to the following plugins:
 * Added (expert) option "Place scripts in footer"
 * Added option "Comment links selector" to prevent (complete) page loads for comment links on pages if "Break comments into pages [...]" is enabled
 * Bugfix for "Users must be registered and logged in to comment"
+* Fixed PHP Notice for PHP < 5.4.0
 
 = 0.22.0 =
 
@@ -359,7 +360,7 @@ There are known incompatibilities to the following plugins:
 == Upgrade Notice ==
 
 = 0.23.0 =
-* Added (expert) option "Place scripts in footer", Bugfix for "Users must be registered and logged in to comment", Added option "Comment links selector"
+* Added (expert) option "Place scripts in footer", Bugfix for "Users must be registered and logged in to comment", Added option "Comment links selector", Fixed PHP Notice for PHP < 5.4.0
 
 = 0.22.0 =
 * Minor optimizations, Added (expert) option "Optimize AJAX response", Bugfix for HTTPS

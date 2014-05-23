@@ -745,7 +745,8 @@ function wpac_option_page() {
 						}
 						echo '</select>';
 					} else {
-						$escapedValue = htmlentities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
+						$flags = defined('ENT_HTML401') ? ENT_COMPAT | ENT_HTML401 : ENT_COMPAT; // ENT_HTML401 was added in PHP 5.4.0
+						$escapedValue = htmlentities($value, $flags, 'UTF-8');
 						if ($option['type'] == 'multiline') {
 							echo '<textarea name="'.$name.'" id="'.$optionName.'" rows="5" cols="40" style="width: 300px; color: '.$color.'">'.$escapedValue.'</textarea>';
 						} else {
