@@ -1774,6 +1774,7 @@ https://github.com/imakewebthings/jquery-waypoints/blob/master/licenses.txt
 
 }).call(this);
 if (!window["WPAC"]) var WPAC = {};
+WPAC._Options = WPAC._Options || {}; 
 
 WPAC._Regex = new RegExp("<body[^>]*>((.|\n|\r)*)</body>", "i");
 

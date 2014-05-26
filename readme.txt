@@ -146,6 +146,11 @@ There are known incompatibilities to the following plugins:
 
 == Changelog ==
 
+= 0.23.1 =
+
+* Changed order of links in plugin overview
+* Make sure WPAC._Options is always initialized
+
 = 0.23.0 =
 
 * Added (expert) option "Place scripts in footer"

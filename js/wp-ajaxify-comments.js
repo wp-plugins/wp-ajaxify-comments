@@ -1,4 +1,5 @@
 if (!window["WPAC"]) var WPAC = {};
+WPAC._Options = WPAC._Options || {}; 
 
 WPAC._Regex = new RegExp("<body[^>]*>((.|\n|\r)*)</body>", "i");
 
