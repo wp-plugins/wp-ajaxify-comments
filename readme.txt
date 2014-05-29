@@ -3,7 +3,7 @@ Contributors: janjonas
 Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
-Tested up to: 3.9.0
+Tested up to: 3.9.1
 Stable tag: 0.23.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -150,6 +150,7 @@ There are known incompatibilities to the following plugins:
 
 * Changed order of links in plugin overview
 * Make sure WPAC._Options is always initialized
+* Bugfix for comment paging links
 
 = 0.23.0 =
 
@@ -363,6 +364,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.23.1 =
+* Changed order of links in plugin overview, Make sure WPAC._Options is always initialized, Bugfix for comment paging links
 
 = 0.23.0 =
 * Added (expert) option "Place scripts in footer", Bugfix for "Users must be registered and logged in to comment", Added option "Comment links selector", Fixed PHP Notice for PHP < 5.4.0

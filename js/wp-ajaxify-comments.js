@@ -310,7 +310,9 @@ WPAC.AttachForm = function(options) {
 	
 	// Handle comment link clicks
 	var linkClickHandler = function(event) {
-		var href = jQuery(this).attr("href");
+		var element = jQuery(this);
+		if (element.is(options.selectorCommentPagingLinks)) return; // skip if paging link was clicked 
+		var href = element.attr("href");
 		var anchor = "#" + (new Uri(href)).anchor();
 		if (jQuery(anchor).length > 0) {
 			if (options.updateUrl) WPAC._UpdateUrl(href);
