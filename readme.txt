@@ -146,6 +146,10 @@ There are known incompatibilities to the following plugins:
 
 == Changelog ==
 
+= 0.24.0 =
+
+* Added parameter commentUrl to callbacks OnBeforeUpdateComments and OnAfterUpdateComments
+
 = 0.23.1 =
 
 * Changed order of links in plugin overview
@@ -178,7 +182,7 @@ There are known incompatibilities to the following plugins:
 * Added option 'Comment pages URL regex' to support none default WordPress comment pages 
 
 = 0.19.0 =
-* Added parameter newDom to callbacks onBeforeUpdateComments and onAfterUpdateComments
+* Added parameter newDom to callbacks OnBeforeUpdateComments and OnAfterUpdateComments
 * Fixed JavaScript error "TypeError: WPAC._Options is undefined" (thanks to Suzanne Ahjira)
 * Fixed JavaScript error in Internet Explorer (thanks to timhengeveld)
 
@@ -365,6 +369,9 @@ There are known incompatibilities to the following plugins:
 
 == Upgrade Notice ==
 
+= 0.24.0 =
+* Added parameter commentUrl to callbacks OnBeforeUpdateComments and OnAfterUpdateComments
+
 = 0.23.1 =
 * Changed order of links in plugin overview, Make sure WPAC._Options is always initialized, Bugfix for comment paging links
 
@@ -381,7 +388,7 @@ There are known incompatibilities to the following plugins:
 * Added support for multiple comment forms per page and support for none default WordPress comment pages
 
 = 0.19.0 =
-* Added parameter newDom to callbacks onBeforeUpdateComments and onAfterUpdateComments, Fixed JavaScript errors
+* Added parameter newDom to callbacks OnBeforeUpdateComments and OnAfterUpdateComments, Fixed JavaScript errors
 
 = 0.18.1 =
 * Fixed double slashes in JavaScript include 

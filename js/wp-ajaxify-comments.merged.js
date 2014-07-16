@@ -1921,7 +1921,9 @@ WPAC._UpdateUrl= function(url) {
 	}
 }
 
-WPAC._ReplaceComments = function(data, fallbackUrl, formData, selectorCommentsContainer, selectorCommentForm, selectorRespondContainer, beforeSelectElements, beforeUpdateComments, afterUpdateComments) {
+WPAC._ReplaceComments = function(data, commentUrl, useFallbackUrl, formData, selectorCommentsContainer, selectorCommentForm, selectorRespondContainer, beforeSelectElements, beforeUpdateComments, afterUpdateComments) {
+	
+	var fallbackUrl = useFallbackUrl ? WPAC._AddQueryParamStringToUrl(commentUrl, "WPACFallback", "1") : commentUrl;
 	
 	var oldCommentsContainer = jQuery(selectorCommentsContainer);
 	if (!oldCommentsContainer.length) {
@@ -1946,7 +1948,7 @@ WPAC._ReplaceComments = function(data, fallbackUrl, formData, selectorCommentsCo
 		return false;
 	}
 
-	beforeUpdateComments(extractedBody);
+	beforeUpdateComments(extractedBody, commentUrl);
 
 	// Update comments container
 	oldCommentsContainer.replaceWith(newCommentsContainer);
@@ -2004,7 +2006,7 @@ WPAC._ReplaceComments = function(data, fallbackUrl, formData, selectorCommentsCo
 
 	}
 		
-	afterUpdateComments(extractedBody);
+	afterUpdateComments(extractedBody, commentUrl);
 
 	return true;
 }
@@ -2091,7 +2093,7 @@ WPAC.AttachForm = function(options) {
 		var anchor = "#" + (new Uri(href)).anchor();
 		if (jQuery(anchor).length > 0) {
 			if (options.updateUrl) WPAC._UpdateUrl(href);
-			WPAC._ScrollToAnchor(anchor, !WPAC._Options.disableUrlUpdate);
+			WPAC._ScrollToAnchor(anchor, options.updateUrl);
 			event.preventDefault();
 		}
 	};
@@ -2144,7 +2146,7 @@ WPAC.AttachForm = function(options) {
 				WPAC._ShowMessage(unapproved == '1' ? WPAC._Options.textPostedUnapproved : WPAC._Options.textPosted, "success");
 
 				// Replace comments (and return if replacing failed)
-				if (!WPAC._ReplaceComments(data, commentUrl, {}, options.selectorCommentsContainer, options.selectorCommentForm, options.selectorRespondContainer, 
+				if (!WPAC._ReplaceComments(data, commentUrl, false, {}, options.selectorCommentsContainer, options.selectorCommentForm, options.selectorRespondContainer, 
 					options.beforeSelectElements, options.beforeUpdateComments, options.afterUpdateComments)) return;
 				
 				// Smooth scroll to comment url and update browser url
@@ -2157,7 +2159,7 @@ WPAC.AttachForm = function(options) {
 						var anchor = commentUrl.indexOf("#") >= 0 ? commentUrl.substr(commentUrl.indexOf("#")) : null;
 						if (anchor) {
 							WPAC._Debug("info", "Anchor '%s' extracted from comment URL '%s'", anchor, commentUrl);
-							WPAC._ScrollToAnchor(anchor, !WPAC._Options.disableUrlUpdate);
+							WPAC._ScrollToAnchor(anchor, options.updateUrl);
 						}
 					}
 				}
@@ -2322,7 +2324,7 @@ WPAC.LoadComments = function(url, options) {
 		success: function (data) {
 
 			// Replace comments (and return if replacing failed)
-			if (!WPAC._ReplaceComments(data, WPAC._AddQueryParamStringToUrl(url, "WPACFallback", 1), formData, options.selectorCommentsContainer, options.selectorCommentForm, 
+			if (!WPAC._ReplaceComments(data, url, true, formData, options.selectorCommentsContainer, options.selectorCommentForm, 
 				options.selectorRespondContainer, options.beforeSelectElements, options.beforeUpdateComments, options.afterUpdateComments)) return;
 			
 			if (options.updateUrl) WPAC._UpdateUrl(url);
