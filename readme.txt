@@ -146,6 +146,10 @@ There are known incompatibilities to the following plugins:
 
 == Changelog ==
 
+= 0.24.1 =
+
+* Updated localization for zh-CN (thanks to Jincheng Shan)
+
 = 0.24.0 =
 
 * Added parameter commentUrl to callbacks OnBeforeUpdateComments and OnAfterUpdateComments
@@ -368,6 +372,9 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.24.1 =
+* Updated localization for zh-CN
 
 = 0.24.0 =
 * Added parameter commentUrl to callbacks OnBeforeUpdateComments and OnAfterUpdateComments
