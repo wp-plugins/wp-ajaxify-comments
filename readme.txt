@@ -149,6 +149,7 @@ There are known incompatibilities to the following plugins:
 = 0.24.1 =
 
 * Updated localization for zh-CN (thanks to Jincheng Shan)
+* Added CDATA tag for inline JavaScript (thanks to Jincheng Shan)
 
 = 0.24.0 =
 

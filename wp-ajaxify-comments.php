@@ -545,7 +545,7 @@ function wpac_initialize() {
 	) return;
 	if (wpac_is_ajax_request()) return;
 	
-	echo '<script type="text/javascript">';
+	echo '<script type="text/javascript">/* <![CDATA[ */';
 
 	echo 'if (!window["WPAC"]) var WPAC = {};';
 	
@@ -576,7 +576,7 @@ function wpac_initialize() {
 	echo '"beforeSubmitComment": function() {'.wpac_get_option('callbackOnBeforeSubmitComment').'}';
 	echo '};';
 	
-	echo '</script>';	
+	echo '/* ]]> */</script>';	
 }
 
 function wpac_is_login_page() {
