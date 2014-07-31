@@ -1,11 +1,19 @@
 if (!window["WPAC"]) var WPAC = {};
 WPAC._Options = WPAC._Options || {}; 
 
-WPAC._Regex = new RegExp("<body[^>]*>((.|\n|\r)*)</body>", "i");
-
+WPAC._BodyRegex = new RegExp("<body[^>]*>((.|\n|\r)*)</body>", "i");
 WPAC._ExtractBody = function(html) {
 	try {
-		return jQuery("<div>"+WPAC._Regex.exec(html)[1]+"</div>");
+		return jQuery("<div>"+WPAC._BodyRegex.exec(html)[1]+"</div>");
+	} catch (e) {
+		return false;
+	}
+}
+
+WPAC._TitleRegex = new RegExp("<title[^>]*>(.*?)<\\/title>", "im");
+WPAC._ExtractTitle = function(html) {
+	try {
+		return WPAC._TitleRegex.exec(html)[1];
 	} catch (e) {
 		return false;
 	}
@@ -175,6 +183,10 @@ WPAC._ReplaceComments = function(data, commentUrl, useFallbackUrl, formData, sel
 
 	beforeUpdateComments(extractedBody, commentUrl);
 
+	// Update title
+	var extractedTitle = WPAC._ExtractTitle(data);
+	if (extractedBody !== false) document.title = extractedTitle;
+	
 	// Update comments container
 	oldCommentsContainer.replaceWith(newCommentsContainer);
 	
@@ -330,6 +342,8 @@ WPAC.AttachForm = function(options) {
 	var formSubmitHandler = function (event) {
 		var form = jQuery(this);
 
+		options.beforeSubmitComment();
+
 		var submitUrl = form.attr("action");
 
 		// Cancel AJAX request if cross-domain scripting is detected
@@ -350,8 +364,6 @@ WPAC.AttachForm = function(options) {
 		// Show loading info
 		WPAC._ShowMessage(WPAC._Options.textPostComment, "loading");
 
-		options.beforeSubmitComment();
-		
 		var request = jQuery.ajax({
 			url: submitUrl,
 			type: "POST",

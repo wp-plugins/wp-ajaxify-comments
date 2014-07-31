@@ -146,6 +146,11 @@ There are known incompatibilities to the following plugins:
 
 == Changelog ==
 
+= 0.25.0 =
+
+* Loading comments now updates page title (thanks to Jincheng Shan)
+* OnBeforeSubmitComment callback is now called before submitUrl is extracted
+
 = 0.24.1 =
 
 * Updated localization for zh-CN (thanks to Jincheng Shan)
