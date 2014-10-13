@@ -2179,6 +2179,13 @@ WPAC.AttachForm = function(options) {
 			},
 			error: function (jqXhr, textStatus, errorThrown) {
 
+				// Test if loading comment url failed (due to cross site scripting error)
+				if (jqXhr.status === 0 && jqXhr.responseText === "") {
+					WPAC._Debug("error", "Comment seems to be posted, but loading comment update failed.");
+					WPAC._LoadFallbackUrl(WPAC._AddQueryParamStringToUrl(window.location.href, "WPACFallback", "1"));
+					return;
+				}
+			
 				WPAC._Debug("info", "Comment has not been posted");
 				WPAC._Debug("info", "Try to extract error message (selector: '%s')...", WPAC._Options.selectorErrorContainer);
 			

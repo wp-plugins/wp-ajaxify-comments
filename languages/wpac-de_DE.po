@@ -283,6 +283,12 @@ msgstr "AJAX-Antworten optimieren"
 msgid "Check to remove unnecessary HTML content from AJAX responses to save bandwidth."
 msgstr "Anhaken um unnötigen HTML Inhalt in AJAX-Antworten zu entfernen um Bandbreite zu sparen."
 
+msgid "Base URL"
+msgstr "Basis URL"
+
+msgid "If you are running your Wordpress site behind a reverse proxy, set the this option to be the FQDN that the site will be accessed on (e.g. http://www.your-site.com)."
+msgstr "Wenn die Wordpress Seite hinter einem Reverse Proxy betrieben wird, kann diese Option auf den FQDN gesetzt werden, über welchen die Seite erreichbar ist (z.B. http://www.your-site.com)."
+
 #: wp-ajaxify-comments.php:263
 msgid ""
 "Load comments asynchronously with secondary AJAX request if more than the specified number of comments exist (0 for always load comments asynchronously). Leave empty to disable this feature."

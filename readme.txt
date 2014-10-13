@@ -4,7 +4,7 @@ Donate link: http://janjonas.net/donate
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
 Tested up to: 3.9.1
-Stable tag: 0.25.0
+Stable tag: 0.26.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -145,6 +145,10 @@ There are known incompatibilities to the following plugins:
 * Jetpack with activated "Jetpack Comments" 
 
 == Changelog ==
+
+= 0.26.0 =
+
+* Added (expert) option "Base URL" to support reverse proxy configuration
 
 = 0.25.0 =
 
@@ -378,6 +382,12 @@ There are known incompatibilities to the following plugins:
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.26.0 =
+* Added (expert) option "Base URL" to support reverse proxy configuration
+
+= 0.25.0 =
+* Loading comments now updates page title, OnBeforeSubmitComment callback is now called before submitUrl is extracted
 
 = 0.24.1 =
 * Updated localization for zh-CN

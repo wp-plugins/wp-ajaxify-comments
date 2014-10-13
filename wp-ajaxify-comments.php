@@ -384,6 +384,13 @@ function wpac_get_config() {
 					'description' => __('Check to remove unnecessary HTML content from AJAX responses to save bandwidth.', WPAC_DOMAIN),
 					'specialOption' => true,
 				),
+				'baseUrl' => array(
+					'type' => 'string',
+					'default' => '',
+					'label' => __('Base URL', WPAC_DOMAIN),
+					'description' => __('If you are running your Wordpress site behind a reverse proxy, set the this option to be the FQDN that the site will be accessed on (e.g. http://www.your-site.com).', WPAC_DOMAIN),
+					'specialOption' => true,
+				),
 			)
 		)
 	);
@@ -491,6 +498,13 @@ function wpac_save_options() {
 
 function wpac_get_page_url()
 {
+	// Test if base url is defined
+	$baseUrl = wpac_get_option('baseUrl');
+	if ($baseUrl) {
+		return rtrim($baseUrl, '/').'/'.ltrim($_SERVER['REQUEST_URI'], '/');
+	}
+	
+	// Create page url from $_SERVER variables
 	$ssl = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? true:false;
 	$sp = strtolower($_SERVER['SERVER_PROTOCOL']);
 	$protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl) ? 's' : '');
@@ -618,8 +632,7 @@ function wpac_init()
 
 	// Update session var and add header if session var is defined
 	if (isset($_SESSION[WPAC_SESSION_VAR]) && $_SESSION[WPAC_SESSION_VAR]) {
-		$currentUrl = 'http'.((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] && $_SERVER['HTTPS'] != 'off') ? 's' : '')
-			.'://'.$_SERVER['SERVER_NAME'].($_SERVER['SERVER_PORT'] != '80' ? ':'.$_SERVER['SERVER_PORT'] : '').$_SERVER['REQUEST_URI'];
+		$currentUrl = wpac_get_page_url();
 		$sessionUrl = $_SESSION[WPAC_SESSION_VAR]['url'];
 		if ($sessionUrl !== $currentUrl && strpos($sessionUrl, $currentUrl.'#') !== 0) {	
 			$_SESSION[WPAC_SESSION_VAR] = null;
@@ -635,15 +648,35 @@ function wpac_comment_post_redirect($location)
 {
 	global $comment;
 
+	// If base url is defined, replace Wordpress site url by base url
+	$url = $location;
+	$baseUrl = wpac_get_option('baseUrl');
+	if ($baseUrl) {
+		$siteUrl = rtrim(get_site_url(), '/');
+		if (strpos(strtolower($url), strtolower($siteUrl)) === 0) {
+			$url = preg_replace('/'.preg_quote($siteUrl, '/').'/', rtrim($baseUrl, '/'), $url, 1);
+		}
+	}
+	
 	// Save comment data in session
 	$_SESSION[WPAC_SESSION_VAR] = array(
-		'url' => $location, 
+		'url' => $url, 
 		'unapproved' => ($comment && $comment->comment_approved == '0') ? '1' : '0',
 	);
 	
-	return $location;
+	return $url;
 }
 add_action('comment_post_redirect', 'wpac_comment_post_redirect');
+
+function wpac_allowed_redirect_hosts($content){
+	$baseUrl = wpac_get_option('baseUrl');
+	if ($baseUrl) {
+		$baseUrlHost = parse_url($baseUrl, PHP_URL_HOST);
+		if ($baseUrlHost !== false) $content[] = $baseUrlHost;
+	}
+	return $content;
+}
+add_filter('allowed_redirect_hosts' , 'wpac_allowed_redirect_hosts');
 
 function wpac_the_content($content) {
 	return wpac_return_optimized_ajax_response() ? "" : $content;
