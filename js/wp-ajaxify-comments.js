@@ -185,7 +185,9 @@ WPAC._ReplaceComments = function(data, commentUrl, useFallbackUrl, formData, sel
 
 	// Update title
 	var extractedTitle = WPAC._ExtractTitle(data);
-	if (extractedBody !== false) document.title = extractedTitle;
+	if (extractedBody !== false) 
+		// Decode HTML entities (see http://stackoverflow.com/a/5796744)
+		document.title = jQuery('<textarea />').html(extractedTitle).text(); 
 	
 	// Update comments container
 	oldCommentsContainer.replaceWith(newCommentsContainer);

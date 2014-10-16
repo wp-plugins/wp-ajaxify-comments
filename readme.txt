@@ -149,6 +149,7 @@ There are known incompatibilities to the following plugins:
 = 0.26.0 =
 
 * Added (expert) option "Base URL" to support reverse proxy configuration
+* Fixed page title update for titles containing UTF-8 characters
 
 = 0.25.0 =
 
@@ -384,7 +385,7 @@ There are known incompatibilities to the following plugins:
 == Upgrade Notice ==
 
 = 0.26.0 =
-* Added (expert) option "Base URL" to support reverse proxy configuration
+* Added (expert) option "Base URL" to support reverse proxy configuration, fixed page title update for titles containing UTF-8 characters
 
 = 0.25.0 =
 * Loading comments now updates page title, OnBeforeSubmitComment callback is now called before submitUrl is extracted
