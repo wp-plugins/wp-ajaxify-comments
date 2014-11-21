@@ -1,17 +1,17 @@
 <?php
 /*
 Plugin Name: WP-Ajaxify-Comments
-Plugin URI: http://wordpress.org/extend/plugins/wp-ajaxify-comments/
+Plugin URI: https://weweave.net/s/wp-ajaxify-comments
 Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
-Author: Jan Jonas
-Author URI: http://janjonas.net
-Version: 0.26.0
+Author: weweave GbR
+Author URI: https://weweave.net
+Version: 1.0.0
 License: GPLv2
 Text Domain: wpac
 */ 
 
 /*  
-	Copyright 2012, Jan Jonas, (email : mail@janjonas.net)
+	Copyright 2014, weweave GbR, (email : mail@weweave.net)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
