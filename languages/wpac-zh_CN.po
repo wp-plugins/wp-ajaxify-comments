@@ -85,7 +85,7 @@ msgid "Default font size"
 msgstr "默认字体大小"
 
 #: wp-ajaxify-comments.php:46 loco:53c887500990d2f85a446b73
-msgid "Enabled plugin"
+msgid "Enable plugin"
 msgstr "启用插件"
 
 #: wp-ajaxify-comments.php:153 loco:53c887510990d2f85a446b87

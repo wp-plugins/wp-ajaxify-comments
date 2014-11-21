@@ -51,7 +51,7 @@ function wpac_get_config() {
 				'enable' => array(
 					'type' => 'boolean',
 					'default' => '0',
-					'label' => __('Enabled plugin', WPAC_DOMAIN),
+					'label' => __('Enable plugin', WPAC_DOMAIN),
 					'specialOption' => true,
 				),
 				'debug' => array(

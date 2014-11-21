@@ -18,7 +18,7 @@ msgid "General"
 msgstr "Generelt"
 
 #: wp-ajaxify-comments.php:46
-msgid "Enabled plugin"
+msgid "Enable plugin"
 msgstr "Plugin tilkoblet"
 
 #: wp-ajaxify-comments.php:51

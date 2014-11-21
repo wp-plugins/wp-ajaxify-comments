@@ -20,7 +20,7 @@ msgid "General"
 msgstr "הגדרות כלליות"
 
 #: wp-ajaxify-comments.php:43
-msgid "Enabled plugin"
+msgid "Enable plugin"
 msgstr "הפעל פלאגין"
 
 #: wp-ajaxify-comments.php:48
