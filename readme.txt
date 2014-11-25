@@ -19,15 +19,19 @@ The WP-Ajaxify-Comments WordPress plugin hooks into any WordPress theme and adds
 Moreover this plugin includes an option to automatically refresh the comments on the current page while the user stays on your page without requiring a page reload.
 
 **tl;dr**
+
 WP-Ajaxify-Comments hooks into your theme and improves the usability of the comment form by validating and adding comments without the need of page reloads.
 
 **Live demo**
+
 You can try out a live demo in <a target="_blank" href="https://weweave.net/s/wp-ajaxify-comments/demo">our demo WordPress environment</a>.
 
 **Technical note**
+
 Since the plugin hooks into the theme on client-side to intercept the comment form submit process, and to add new comments without reloading the page, the plugin needs to access the DOM nodes using jQuery selectors. The plugin comes with default values for these selectors that were successfully tested with WordPress' default themes "Twenty Ten", "Twenty Eleven", "Twenty Twelve", "Twenty Thirteen", "Twenty Fourteen". If required, the selectors can be customized to match your theme in the plugin's settings.
 
 **Important**
+
 If the plugin does not work out of the box with your theme, custom selectors could be defined in the plugin's settings. If you don't succeed in configuring the proper selectors, we'd be happy to support you! Check our <a href="https://weweave.net/s/wp-ajaxify-comments/support">support page</a> for further information on individual assistance. The plugin is highly customizable and *We're aware of only a few conflicts with any themes or other plugins that cannot be resolved* (see "Known incompatibilities" in the FAQ section).
 
 **Some features of the plugin**
