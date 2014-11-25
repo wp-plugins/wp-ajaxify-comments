@@ -331,8 +331,8 @@ msgid "Save Changes"
 msgstr "Einstellungen speichern"
 
 #: wp-ajaxify-comments.php:571
-msgid "Contact & Donation"
-msgstr "Kontakt & Spende"
+msgid "Contact & Support"
+msgstr "Kontakt & Support"
 
 #. Plugin Name of the plugin/theme
 msgid "WP-Ajaxify-Comments"

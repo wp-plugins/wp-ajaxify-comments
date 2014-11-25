@@ -818,15 +818,14 @@ function wpac_option_page() {
 	
 				<div id="poststuff">
 					<div class="postbox">
-						<h3 id="plugin-settings"><?php _e('Contact & Donation', WPAC_DOMAIN); ?></h3>
+						<h3 id="plugin-settings"><?php _e('Contact & Support', WPAC_DOMAIN); ?></h3>
 						<div class="inside">	
-							<p>Thanks for using <?php echo WPAC_PLUGIN_NAME; ?>. If you have trouble using the plugin or you miss a feature please do not hesitate to ask a question in the <a target="_blank" href="http://wordpress.org/support/plugin/wp-ajaxify-comments">plugin's support forum</a> or <a href="http://blog.janjonas.net/contact" target="_blank">send me a private message</a>.
-							</p>
-							<p>
-								If you would like to support future development, please consider <a href="http://wordpress.org/support/view/plugin-reviews/wp-ajaxify-comments#postform" target="_blank">writing a short review</a> or making a small donation. Thank you!
-								<br/>
-								<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-							</p>
+							<p>Thanks for using <?php echo WPAC_PLUGIN_NAME; ?>. Do you have any issues with WP Ajaxify Comments? Not sure if your theme supports the plugin? Need assistance with getting your DOM selectors right? We provide professional support!
+							<br/><br/>
+							<a target="_blank" href="https://weweave.net/s/wp-ajaxify-comments/support">Submit a support ticket.</a>
+							<br/><br/>
+							Before submitting a support ticket, you should first check out our <a target="_blank" href="https://weweave.net/s/wp-ajaxify-comments/faq">FAQ</a>.</p>
+							<p>If you found a bug or you like to leave us a message, please do not hesitate to <a target="_blank" href="https://weweave.net/s/contact">contact us</a>.</p>
 						</div>
 					</div>
 				</div>
