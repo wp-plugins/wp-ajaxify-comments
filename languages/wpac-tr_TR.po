@@ -1,4 +1,4 @@
-# Copyright (C) 2012 WP-Ajaxify-Comments
+# Copyright (C) 2012 WP Ajaxify Comments
 # This file is distributed under the same license as the WP-Ajaxify-Comments package.
 msgid ""
 msgstr ""
@@ -34,8 +34,8 @@ msgid "Reloading page. Please wait&hellip;"
 msgstr "Sayfa yeniden yükleniyor. Lütfen bekleyiniz&hellip;"
 
 #. Plugin Name of the plugin/theme
-msgid "WP-Ajaxify-Comments"
-msgstr "WP-Ajaxify-Comments"
+msgid "WP Ajaxify Comments"
+msgstr "WP Ajaxify Comments"
 
 #. Plugin URI of the plugin/theme
 msgid "http://wordpress.org/extend/plugins/wp-ajaxify-comments/"
@@ -43,10 +43,10 @@ msgstr "http://wordpress.org/extend/plugins/wp-ajaxify-comments/"
 
 #. Description of the plugin/theme
 msgid ""
-"WP-Ajaxify-Comments hooks into your current theme and adds AJAX "
+"WP Ajaxify Comments hooks into your current theme and adds AJAX "
 "functionality to the comment form."
 msgstr ""
-"WP-Ajaxify-Comments, mevcut temanız ile birlikte çalışır ve yorum formunuza "
+"WP Ajaxify Comments, mevcut temanız ile birlikte çalışır ve yorum formunuza "
 "AJAX işlevselliği ekler."
 
 #. Author of the plugin/theme

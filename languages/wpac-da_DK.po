@@ -1,4 +1,4 @@
-# Copyright (C) 2013 WP-Ajaxify-Comments
+# Copyright (C) 2013 WP Ajaxify Comments
 # This file is distributed under the same license as the WP-Ajaxify-Comments package.
 msgid ""
 msgstr ""
@@ -220,7 +220,7 @@ msgid "Contact & Donation"
 msgstr "Kontakt & Donation"
 
 #. Plugin Name of the plugin/theme
-msgid "WP-Ajaxify-Comments"
+msgid "WP Ajaxify Comments"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
@@ -229,10 +229,10 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"WP-Ajaxify-Comments hooks into your current theme and adds AJAX "
+"WP Ajaxify Comments hooks into your current theme and adds AJAX "
 "functionality to the comment form."
 msgstr ""
-"WP-Ajaxify-Comments kobler sig ind i dit tema og tilf&oslash;jer AJAX "
+"WP Ajaxify Comments kobler sig ind i dit tema og tilf&oslash;jer AJAX "
 "funktionalitet ti kommentarformen."
 
 #. Author of the plugin/theme

@@ -1,4 +1,4 @@
-=== WP-Ajaxify-Comments ===
+=== WP Ajaxify Comments ===
 Contributors: weweave
 Donate link: https://weweave.net/s/wp-ajaxify-comments
 Tags: AJAX, comments, comment, themes, theme
@@ -8,19 +8,19 @@ Stable tag: 1.0.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WP-Ajaxify-Comments hooks into your comment form and adds AJAX functionality - no page reloads required when validating, posting or updating comments
+WP Ajaxify Comments hooks into your comment form and adds AJAX functionality - no page reloads required when validating, posting or updating comments
 
 == Description ==
 
 When submitting the comment form, WordPress by default reloads the entire page. In the case of an error (e.g. an invalid email address or an empty comment field) the error message is shown on top of a new (blank) screen and the user has to use the browser's back button to correct his inputs before posting the comment again.
 
-The WP-Ajaxify-Comments WordPress plugin hooks into any WordPress theme and adds AJAX functionality to the comment form: When the user submits his comment, the plugin sends the data to the WordPress backend without reloading the entire page. In the case of an error, the plugin shows an overlay containing the error message so that the user can correct his comment without navigating back. If the comment has been posted successfully, the plugin adds the (new) comment to the list of existing comments without leaving the page and shows an information overlay.
+The WP Ajaxify Comments WordPress plugin hooks into any WordPress theme and adds AJAX functionality to the comment form: When the user submits his comment, the plugin sends the data to the WordPress backend without reloading the entire page. In the case of an error, the plugin shows an overlay containing the error message so that the user can correct his comment without navigating back. If the comment has been posted successfully, the plugin adds the (new) comment to the list of existing comments without leaving the page and shows an information overlay.
 
 Moreover this plugin includes an option to automatically refresh the comments on the current page while the user stays on your page without requiring a page reload.
 
 **tl;dr**
 
-WP-Ajaxify-Comments hooks into your theme and improves the usability of the comment form by validating and adding comments without the need of page reloads.
+WP Ajaxify Comments hooks into your theme and improves the usability of the comment form by validating and adding comments without the need of page reloads.
 
 **Live demo**
 
@@ -65,7 +65,7 @@ If the plugin does not work out of the box with your theme, custom selectors cou
 
 1. Upload wp-ajaxify-comments.zip to your WordPress plugins directory, usually `wp-content/plugins/` and unzip the file. It will create a `wp-content/plugins/wp-ajaxify-comments/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
-1. Enable the plugin on the plugin's settings page (Settings > WP-Ajaxify-Comments)
+1. Enable the plugin on the plugin's settings page (Settings > WP Ajaxify Comments)
 
 
 == Frequently Asked Questions ==
@@ -73,6 +73,10 @@ If the plugin does not work out of the box with your theme, custom selectors cou
 Please find the <a href="https://weweave.net/s/wp-ajaxify-comments/faq" target="_blank">FAQ on weweave.net</a>.
 
 == Changelog ==
+
+= 1.0.1 =
+
+* Changed plugin name from "WP-Ajaxify-Comments" to "WP Ajaxify Comments"
 
 = 1.0.0 =
 

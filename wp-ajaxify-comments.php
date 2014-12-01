@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: WP-Ajaxify-Comments
+Plugin Name: WP Ajaxify Comments
 Plugin URI: https://weweave.net/s/wp-ajaxify-comments
-Description: WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form.
+Description: WP Ajaxify Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: weweave GbR
 Author URI: https://weweave.net
-Version: 1.0.0
+Version: 1.0.1
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -27,7 +27,7 @@ Text Domain: wpac
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-define('WPAC_PLUGIN_NAME', 'WP-Ajaxify-Comments');
+define('WPAC_PLUGIN_NAME', 'WP Ajaxify Comments');
 define('WPAC_SETTINGS_URL', 'admin.php?page='.WPAC_PLUGIN_NAME);
 define('WPAC_DOMAIN', 'wpac');
 define('WPAC_SESSION_VAR', WPAC_DOMAIN.'_session');

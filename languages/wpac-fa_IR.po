@@ -34,15 +34,15 @@ msgid "Reloading page. Please wait&hellip;"
 msgstr "صفحه مجددا بارگذاری می شود . لطفا منتظر بمانید!"
 
 #. Plugin Name of the plugin/theme
-msgid "WP-Ajaxify-Comments"
-msgstr "ارسال نظر آیجکس"
+msgid "WP Ajaxify Comments"
+msgstr "WP Ajaxify Comments"
 
 #. Plugin URI of the plugin/theme
 msgid "http://wordpress.org/extend/plugins/wp-ajaxify-comments/"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form."
+msgid "WP Ajaxify Comments hooks into your current theme and adds AJAX functionality to the comment form."
 msgstr ""
 
 #. Author of the plugin/theme

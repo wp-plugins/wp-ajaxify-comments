@@ -36,8 +36,8 @@ msgstr "文字设置"
 
 #. Plugin Name of the plugin/theme
 #: loco:53c887540990d2f85a446bac
-msgid "WP-Ajaxify-Comments"
-msgstr "WP-Ajaxify-Comments"
+msgid "WP Ajaxify Comments"
+msgstr "WP Ajaxify Comments"
 
 #: wp-ajaxify-comments.php:180 loco:53c887520990d2f85a446b8d
 msgid "Z-Index"
@@ -258,10 +258,10 @@ msgstr "width 属性（%）"
 #. Description of the plugin/theme
 #: loco:53c887540990d2f85a446bae
 msgid ""
-"WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality "
+"WP Ajaxify Comments hooks into your current theme and adds AJAX functionality "
 "to the comment form."
 msgstr ""
-"WP-Ajaxify-Comments 将嵌入您的当前主题，为评论框增加 Ajax "
+"WP Ajaxify Comments 将嵌入您的当前主题，为评论框增加 Ajax "
 "动态效果。"
 
 #: wp-ajaxify-comments.php:237 wp-ajaxify-comments.php:244

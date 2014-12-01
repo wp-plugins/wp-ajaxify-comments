@@ -1,4 +1,4 @@
-# Copyright (C) 2012 WP-Ajaxify-Comments
+# Copyright (C) 2012 WP Ajaxify Comments
 # This file is distributed under the same license as the WP-Ajaxify-Comments package.
 msgid ""
 msgstr ""
@@ -36,7 +36,7 @@ msgid "Reloading page. Please wait&hellip;"
 msgstr "Đang tải lại trang. Vui lòng đợi&hellip;"
 
 #. Plugin Name of the plugin/theme
-msgid "WP-Ajaxify-Comments"
+msgid "WP Ajaxify Comments"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
@@ -44,8 +44,8 @@ msgid "http://wordpress.org/extend/plugins/wp-ajaxify-comments/"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "WP-Ajaxify-Comments hooks into your current theme and adds AJAX functionality to the comment form."
-msgstr "WP-Ajaxify-Comments là 1 plugin cho phép bạn thêm chức năng AJAX cho phần phản hồi giúp việc gửi phản hồi không cần làm mới trang. Bạn không cần phải chỉnh sửa trong giao diện bất kì điều gì."
+msgid "WP Ajaxify Comments hooks into your current theme and adds AJAX functionality to the comment form."
+msgstr "WP Ajaxify Comments là 1 plugin cho phép bạn thêm chức năng AJAX cho phần phản hồi giúp việc gửi phản hồi không cần làm mới trang. Bạn không cần phải chỉnh sửa trong giao diện bất kì điều gì."
 
 #. Author of the plugin/theme
 msgid "Jan Jonas"
