@@ -3,8 +3,8 @@ Contributors: weweave
 Donate link: https://weweave.net/s/wp-ajaxify-comments
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
-Tested up to: 4.0.1
-Stable tag: 1.0.0
+Tested up to: 4.1.0
+Stable tag: 1.1.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,8 +74,9 @@ Please find the <a href="https://weweave.net/s/wp-ajaxify-comments/faq" target="
 
 == Changelog ==
 
-= 1.0.1 =
+= 1.1.0 =
 
+* Fixed compatibility to WordPress 4.1
 * Changed plugin name from "WP-Ajaxify-Comments" to "WP Ajaxify Comments"
 
 = 1.0.0 =
@@ -316,6 +317,9 @@ Please find the <a href="https://weweave.net/s/wp-ajaxify-comments/faq" target="
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+* Fixed compatibility to WordPress 4.1
 
 = 1.0.0 =
 * Added (expert) option "Base URL" to support reverse proxy configuration, fixed page title update for titles containing UTF-8 characters, typo fix

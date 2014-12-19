@@ -366,6 +366,27 @@ WPAC.AttachForm = function(options) {
 		// Show loading info
 		WPAC._ShowMessage(WPAC._Options.textPostComment, "loading");
 
+		var handleErrorResponse = function(data) {
+
+			WPAC._Debug("info", "Comment has not been posted");
+			WPAC._Debug("info", "Try to extract error message (selector: '%s')...", WPAC._Options.selectorErrorContainer);
+			
+			// Extract error message
+			var extractedBody = WPAC._ExtractBody(data);
+			if (extractedBody !== false) {
+				var errorMessage = extractedBody.find(WPAC._Options.selectorErrorContainer);
+				if (errorMessage.length) {
+					errorMessage = errorMessage.html();
+					WPAC._Debug("info", "Error message '%s' successfully extracted", errorMessage);
+					WPAC._ShowMessage(errorMessage, "error");
+					return;
+				}
+			}
+
+			WPAC._Debug("error", "Error message could not be extracted, use error message '%s'.", WPAC._Options.textUnknownError);
+			WPAC._ShowMessage(WPAC._Options.textUnknownError, "error");
+		}
+		
 		var request = jQuery.ajax({
 			url: submitUrl,
 			type: "POST",
@@ -373,6 +394,13 @@ WPAC.AttachForm = function(options) {
 			beforeSend: function(xhr){ xhr.setRequestHeader('X-WPAC-REQUEST', '1'); },
 			success: function (data) {
 
+				// Test error state (WordPress >=4.1 does not return 500 status code if posting comment failed)
+				if (request.getResponseHeader("X-WPAC-ERROR")) {
+					WPAC._Debug("info", "Found error state X-WPAC-ERROR header.", commentUrl);
+					handleErrorResponse(data);
+					return;
+				}
+			
 				WPAC._Debug("info", "Comment has been posted");
 
 				// Get info from response header
@@ -413,23 +441,7 @@ WPAC.AttachForm = function(options) {
 					return;
 				}
 			
-				WPAC._Debug("info", "Comment has not been posted");
-				WPAC._Debug("info", "Try to extract error message (selector: '%s')...", WPAC._Options.selectorErrorContainer);
-			
-				// Extract error message
-				var extractedBody = WPAC._ExtractBody(jqXhr.responseText);
-				if (extractedBody !== false) {
-					var errorMessage = extractedBody.find(WPAC._Options.selectorErrorContainer);
-					if (errorMessage.length) {
-						errorMessage = errorMessage.html();
-						WPAC._Debug("info", "Error message '%s' successfully extracted", errorMessage);
-						WPAC._ShowMessage(errorMessage, "error");
-						return;
-					}
-				}
-
-				WPAC._Debug("error", "Error message could not be extracted, use error message '%s'.", WPAC._Options.textUnknownError);
-				WPAC._ShowMessage(WPAC._Options.textUnknownError, "error");
+				handleErrorResponse(jqXhr.responseText);
 			}
 		});
 	};

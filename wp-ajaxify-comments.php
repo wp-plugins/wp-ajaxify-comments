@@ -5,7 +5,7 @@ Plugin URI: https://weweave.net/s/wp-ajaxify-comments
 Description: WP Ajaxify Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: weweave GbR
 Author URI: https://weweave.net
-Version: 1.0.1
+Version: 1.1.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -877,12 +877,24 @@ function wpac_filter_gettext($translation, $text, $domain) {
 	return $translation;
 }
 
+function wpac_default_wp_die_handler( $message, $title = '', $args = array() ) {
+	// Set X-WPAC-ERROR if script "dies" when posting comment
+	if (wpac_is_ajax_request()) header('X-WPAC-ERROR: 1');
+	return _default_wp_die_handler($message, $title, $args);
+}
+
+function wpac_wp_die_handler($handler) {
+	if ($handler != "_default_wp_die_handler") return $handler;
+	return "wpac_default_wp_die_handler";
+}
+
 if (!is_admin() && !wpac_is_login_page()) {
 	if (wpac_get_option('enable')) {
 		add_filter('comments_array', 'wpac_comments_query_filter');
 		add_action('wp_head', 'wpac_initialize');
 		add_action('wp_enqueue_scripts', 'wpac_enqueue_scripts');
 		add_filter('gettext', 'wpac_filter_gettext', 20, 3);
+		add_filter('wp_die_handler', 'wpac_wp_die_handler');
 	}
 } else {
 	add_action('admin_menu', 'wpac_admin_menu');
