@@ -5,7 +5,7 @@ Plugin URI: https://weweave.net/s/wp-ajaxify-comments
 Description: WP Ajaxify Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: weweave GbR
 Author URI: https://weweave.net
-Version: 1.1.0
+Version: 1.1.1
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -28,7 +28,7 @@ Text Domain: wpac
 */
 
 define('WPAC_PLUGIN_NAME', 'WP Ajaxify Comments');
-define('WPAC_SETTINGS_URL', 'admin.php?page='.WPAC_PLUGIN_NAME);
+define('WPAC_SETTINGS_URL', 'admin.php?page=wp-ajaxify-comments');
 define('WPAC_DOMAIN', 'wpac');
 define('WPAC_SESSION_VAR', WPAC_DOMAIN.'_session');
 define('WPAC_OPTION_PREFIX', WPAC_DOMAIN.'_'); // used to save options in version <=0.8.0
@@ -839,7 +839,7 @@ function wpac_is_ajax_request() {
 }
 
 function wpac_admin_menu() {
-	add_options_page(WPAC_PLUGIN_NAME, WPAC_PLUGIN_NAME, 'manage_options', WPAC_PLUGIN_NAME, 'wpac_option_page');
+	add_options_page(WPAC_PLUGIN_NAME, WPAC_PLUGIN_NAME, 'manage_options', 'wp-ajaxify-comments', 'wpac_option_page');
 }
 
 function wpac_comments_query_filter($query) {
