@@ -5,7 +5,7 @@ Plugin URI: https://weweave.net/s/wp-ajaxify-comments
 Description: WP Ajaxify Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: weweave GbR
 Author URI: https://weweave.net
-Version: 1.1.1
+Version: 1.2.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -391,6 +391,12 @@ function wpac_get_config() {
 					'description' => __('If you are running your Wordpress site behind a reverse proxy, set the this option to be the FQDN that the site will be accessed on (e.g. http://www.your-site.com).', WPAC_DOMAIN),
 					'specialOption' => true,
 				),
+				'disableCache' => array(
+					'type' => 'boolean',
+					'default' => '0',
+					'label' => __('Disable Cache', WPAC_DOMAIN),
+					'description' => __('Check to disable client-side caching when updating comments.', WPAC_DOMAIN),
+				),
 			)
 		)
 	);
@@ -644,6 +650,19 @@ function wpac_init()
 }
 add_action('init', 'wpac_init');
 
+function wpac_unparse_url($urlParts) {
+	$scheme = isset($urlParts['scheme']) ? $urlParts['scheme'].'://' : '';
+	$host = isset($urlParts['host']) ? $urlParts['host'] : '';
+	$port = isset($urlParts['port']) ? ':'.$urlParts['port'] : '';
+	$user = isset($urlParts['user']) ? $urlParts['user'] : '';
+	$pass = isset($urlParts['pass']) ? ':'.$urlParts['pass']  : '';
+	$pass = ($user || $pass) ? "$pass@" : '';
+	$path = isset($urlParts['path']) ? $urlParts['path'] : '';
+	$query = isset($urlParts['query']) ? '?'.$urlParts['query'] : '';
+	$fragment = isset($urlParts['fragment']) ? '#'.$urlParts['fragment'] : '';
+	return "$scheme$user$pass$host$port$path$query$fragment";
+} 
+
 function wpac_comment_post_redirect($location)
 {
 	global $comment;
@@ -656,6 +675,14 @@ function wpac_comment_post_redirect($location)
 		if (strpos(strtolower($url), strtolower($siteUrl)) === 0) {
 			$url = preg_replace('/'.preg_quote($siteUrl, '/').'/', rtrim($baseUrl, '/'), $url, 1);
 		}
+	}
+	
+	// Add "disable cache" query parameter
+	if (wpac_get_option('disableCache')) {
+		$urlParts = parse_url($url);
+		$queryParam = 'WPACRandom='.time();
+		$urlParts['query'] = isset($urlParts['query']) ? $urlParts['query'].'&'.$queryParam : $queryParam;
+		$url = wpac_unparse_url($urlParts);
 	}
 	
 	// Save comment data in session

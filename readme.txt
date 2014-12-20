@@ -64,7 +64,7 @@ If the plugin does not work out of the box with your theme, custom selectors cou
 == Installation ==
 
 1. Upload wp-ajaxify-comments.zip to your WordPress plugins directory, usually `wp-content/plugins/` and unzip the file. It will create a `wp-content/plugins/wp-ajaxify-comments/` directory.
-1. Activate the plugin through the 'Plugins' menu in WordPress.
+1. Activate the plugin through the "Plugins" menu in WordPress.
 1. Enable the plugin on the plugin's settings page (Settings > WP Ajaxify Comments)
 
 
@@ -73,6 +73,11 @@ If the plugin does not work out of the box with your theme, custom selectors cou
 Please find the <a href="https://weweave.net/s/wp-ajaxify-comments/faq" target="_blank">FAQ on weweave.net</a>.
 
 == Changelog ==
+
+= 1.2.0 =
+
+* Added (expert) option "Disable Cache"
+* Use GET request when updating comments
 
 = 1.1.1 =
 
@@ -124,15 +129,15 @@ Please find the <a href="https://weweave.net/s/wp-ajaxify-comments/faq" target="
 
 = 0.21.0 =
 
-* Added option 'Disable scroll to anchor'
+* Added option "Disable scroll to anchor"
 * Fixed paging support and async comment loading for pages where comments are closed
 * Fixed compressed JavaScript file
 * Fixed support for URLs with comments anchor if async comment loading is enabled
 
 = 0.20.0 =
 
-* Added option 'Post container' to support for multiple comment forms per page
-* Added option 'Comment pages URL regex' to support none default WordPress comment pages
+* Added option "Post container" to support for multiple comment forms per page
+* Added option "Comment pages URL regex" to support none default WordPress comment pages
 
 = 0.19.0 =
 * Added parameter newDom to callbacks OnBeforeUpdateComments and OnAfterUpdateComments
@@ -153,7 +158,7 @@ Please find the <a href="https://weweave.net/s/wp-ajaxify-comments/faq" target="
 * Fixed compatibility to wpMandrill (thanks to paddywagon)
 
 = 0.17.1 =
-* 'OnAfterUpdateComments' callback is now called after form data has been reset
+* "OnAfterUpdateComments" callback is now called after form data has been reset
 
 = 0.17.0 =
 * Added options to customize (default) WordPress messages
@@ -322,6 +327,9 @@ Please find the <a href="https://weweave.net/s/wp-ajaxify-comments/faq" target="
 
 == Upgrade Notice ==
 
+= 1.2.0 =
+* Added (expert) option "Disable Cache", use GET request when updating comments
+
 = 1.1.1 =
 * Fixed link to settings page in admin frontend
 
@@ -350,7 +358,7 @@ Please find the <a href="https://weweave.net/s/wp-ajaxify-comments/faq" target="
 * Minor optimizations, Added (expert) option "Optimize AJAX response", Bugfix for HTTPS
 
 = 0.21.0 =
-* Added option 'Disable scroll to anchor', Bugfixes for pages where comments are closed and/or async comment loading is enabled, Fixed compressed JavaScript file
+* Added option "Disable scroll to anchor", Bugfixes for pages where comments are closed and/or async comment loading is enabled, Fixed compressed JavaScript file
 
 = 0.20.0 =
 * Added support for multiple comment forms per page and support for none default WordPress comment pages
@@ -371,7 +379,7 @@ Please find the <a href="https://weweave.net/s/wp-ajaxify-comments/faq" target="
 * Fixed compatibility to wpMandrill
 
 = 0.17.1 =
-'OnAfterUpdateComments' callback is now called after form data has been reset
+"OnAfterUpdateComments" callback is now called after form data has been reset
 
 = 0.17.0 =
 Options to customize (default) WordPress messages, Disabled (auto) scrolling when comments are updated by "Auto update idle time", Fixed compatibility to jQuery "no conflict mode"

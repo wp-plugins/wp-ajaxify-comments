@@ -318,7 +318,7 @@ WPAC.AttachForm = function(options) {
 				selectorRespondContainer: options.selectorRespondContainer,
 				beforeSelectElements: options.beforeSelectElements,
 				beforeUpdateComments: options.beforeUpdateComments,
-				afterUpdateComments: options.afterUpdateComments,
+				afterUpdateComments: options.afterUpdateComments
 			});
 		}
 	};
@@ -563,6 +563,7 @@ WPAC.LoadComments = function(url, options) {
 		selectorCommentForm: WPAC._Options.selectorCommentForm,
 		selectorCommentsContainer: WPAC._Options.selectorCommentsContainer,
 		selectorRespondContainer: WPAC._Options.selectorRespondContainer,
+		disableCache: WPAC._Options.disableCache,
 		beforeSelectElements: WPAC._Callbacks.beforeSelectElements, 
 		beforeUpdateComments: WPAC._Callbacks.beforeUpdateComments,
 		afterUpdateComments: WPAC._Callbacks.afterUpdateComments,
@@ -574,11 +575,14 @@ WPAC.LoadComments = function(url, options) {
 	// Show loading info
 	if (options.showLoadingInfo)
 		WPAC._ShowMessage(WPAC._Options.textRefreshComments, "loading");
-	
+
+	if (options.disableCache) 
+		url = WPAC._AddQueryParamStringToUrl(url, "WPACRandom", (new Date()).getTime());
+		
 	var request = jQuery.ajax({
 		url: url,
-		type: "POST",
-		beforeSend: function(xhr){ xhr.setRequestHeader('X-WPAC-REQUEST', '1'); },
+		type: "GET",
+		beforeSend: function(xhr){ xhr.setRequestHeader("X-WPAC-REQUEST", "1"); },
 		success: function (data) {
 
 			// Replace comments (and return if replacing failed)
