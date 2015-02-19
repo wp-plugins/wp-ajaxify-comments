@@ -5,7 +5,7 @@ Plugin URI: https://weweave.net/s/wp-ajaxify-comments
 Description: WP Ajaxify Comments hooks into your current theme and adds AJAX functionality to the comment form.
 Author: weweave GbR
 Author URI: https://weweave.net
-Version: 1.2.0
+Version: 1.3.0
 License: GPLv2
 Text Domain: wpac
 */ 
@@ -872,16 +872,25 @@ function wpac_admin_menu() {
 function wpac_comments_query_filter($query) {
 
 	// No comment filtering if request is a fallback or WPAC-AJAX request  
-	if ((isset($_REQUEST['WPACFallback']) && $_REQUEST['WPACFallback']) || wpac_is_ajax_request()) return $query;
+	if ((isset($_REQUEST['WPACFallback']) && $_REQUEST['WPACFallback'])) return $query;
 	
-	// Test asyncCommentsThreshold 
-	$asyncCommentsThreshold = wpac_get_option('asyncCommentsThreshold');
-	$commentsCount = count($query);
-	if (strlen($asyncCommentsThreshold) == 0 || $commentsCount == 0 || $asyncCommentsThreshold > $commentsCount) return $query;
-	
-	// Filter/remove comments and set options to load comments with secondary AJAX request 
-	echo '<script type="text/javascript">WPAC._Options["loadCommentsAsync"] = true;</script>';
-	return array();
+	if (wpac_is_ajax_request()) {
+
+		$skip = ((isset($_REQUEST['WPACSkip']) && is_numeric($_REQUEST['WPACSkip']))) ? $_REQUEST['WPACSkip'] : 0;
+		$take = ((isset($_REQUEST['WPACTake']) && is_numeric($_REQUEST['WPACTake']))) ? $_REQUEST['WPACTake'] : count($query);
+		
+		return array_slice($query, $skip, $take);
+		
+	} else {
+		// Test asyncCommentsThreshold 
+		$asyncCommentsThreshold = wpac_get_option('asyncCommentsThreshold');
+		$commentsCount = count($query);
+		if (strlen($asyncCommentsThreshold) == 0 || $commentsCount == 0 || $asyncCommentsThreshold > $commentsCount) return $query;
+		
+		// Filter/remove comments and set options to load comments with secondary AJAX request 
+		echo '<script type="text/javascript">WPAC._Options["loadCommentsAsync"] = true;</script>';
+		return array();
+	}
 }
 
 function wpac_filter_gettext($translation, $text, $domain) {
@@ -915,6 +924,16 @@ function wpac_wp_die_handler($handler) {
 	return "wpac_default_wp_die_handler";
 }
 
+function wpac_option_page_comments($page_comments) {
+	return(wpac_is_ajax_request() && isset($_REQUEST['WPACGetAll']) && $_REQUEST['WPACGetAll'] == "1") ?
+		false : $page_comments;
+}
+
+function wpac_option_comments_per_page($comments_per_page) {
+	return(wpac_is_ajax_request() && isset($_REQUEST['WPACGetAll']) && $_REQUEST['WPACGetAll'] == "1") ?
+		0 : $comments_per_page;
+}
+
 if (!is_admin() && !wpac_is_login_page()) {
 	if (wpac_get_option('enable')) {
 		add_filter('comments_array', 'wpac_comments_query_filter');
@@ -922,6 +941,8 @@ if (!is_admin() && !wpac_is_login_page()) {
 		add_action('wp_enqueue_scripts', 'wpac_enqueue_scripts');
 		add_filter('gettext', 'wpac_filter_gettext', 20, 3);
 		add_filter('wp_die_handler', 'wpac_wp_die_handler');
+		add_filter('option_page_comments', 'wpac_option_page_comments');
+		add_filter('option_comments_per_page', 'wpac_option_comments_per_page');
 	}
 } else {
 	add_action('admin_menu', 'wpac_admin_menu');
