@@ -925,12 +925,12 @@ function wpac_wp_die_handler($handler) {
 }
 
 function wpac_option_page_comments($page_comments) {
-	return(wpac_is_ajax_request() && isset($_REQUEST['WPACAll']) && $_REQUEST['WPACAll'] == "1") ?
+	return(wpac_is_ajax_request() && isset($_REQUEST['WPACAll']) && $_REQUEST['WPACAll']) ?
 		false : $page_comments;
 }
 
 function wpac_option_comments_per_page($comments_per_page) {
-	return(wpac_is_ajax_request() && isset($_REQUEST['WPACAll']) && $_REQUEST['WPACAll'] == "1") ?
+	return(wpac_is_ajax_request() && isset($_REQUEST['WPACAll']) && $_REQUEST['WPACAll']) ?
 		0 : $comments_per_page;
 }
 
