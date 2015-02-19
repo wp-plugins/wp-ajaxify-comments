@@ -76,7 +76,7 @@ Please find the <a href="https://weweave.net/s/wp-ajaxify-comments/faq" target="
 
 = 1.3.0 =
 
-* Added request parameters "WPACGetAll", "WPACSkip" and" WPACTake" to query comments
+* Added request parameters "WPACAll", "WPACSkip" and" WPACTake" to query comments
 
 = 1.2.0 =
 
@@ -332,7 +332,7 @@ Please find the <a href="https://weweave.net/s/wp-ajaxify-comments/faq" target="
 == Upgrade Notice ==
 
 = 1.3.0 =
-* Added request parameters "WPACGetAll", "WPACSkip" and "WPACTake"
+* Added request parameters "WPACAll", "WPACSkip" and "WPACTake"
 
 = 1.2.0 =
 * Added (expert) option "Disable Cache", use GET request when updating comments
