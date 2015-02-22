@@ -876,10 +876,14 @@ function wpac_comments_query_filter($query) {
 	
 	if (wpac_is_ajax_request()) {
 
-		$skip = ((isset($_REQUEST['WPACSkip']) && is_numeric($_REQUEST['WPACSkip']))) ? $_REQUEST['WPACSkip'] : 0;
-		$take = ((isset($_REQUEST['WPACTake']) && is_numeric($_REQUEST['WPACTake']))) ? $_REQUEST['WPACTake'] : count($query);
+		$skip = ((isset($_REQUEST['WPACSkip']) && is_numeric($_REQUEST['WPACSkip']) && $_REQUEST['WPACSkip'] > 0)) ? $_REQUEST['WPACSkip'] : 0;
+		$take = ((isset($_REQUEST['WPACTake']) && is_numeric($_REQUEST['WPACTake']) && $_REQUEST['WPACTake'] > 0)) ? $_REQUEST['WPACTake'] : count($query);
 		
-		return array_slice($query, $skip, $take);
+		if (get_option('comment_order') === 'desc') {
+			return array_slice($query, -$skip-$take, $take); // Comment order: Newest at the top
+		} else {
+			return array_slice($query, $skip, $take); // Comment order:Oldest on the top
+		}
 		
 	} else {
 		// Test asyncCommentsThreshold 
