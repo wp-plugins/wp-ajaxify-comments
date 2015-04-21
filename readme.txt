@@ -1,10 +1,10 @@
-=== WP Ajaxify Comments ===
+﻿=== WP Ajaxify Comments ===
 Contributors: weweave
 Donate link: https://weweave.net/s/wp-ajaxify-comments
 Tags: AJAX, comments, comment, themes, theme
 Requires at least: 3.1.3
-Tested up to: 4.1.0
-Stable tag: 1.2.0
+Tested up to: 4.2
+Stable tag: 1.3.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
